@@ -37,5 +37,3 @@ La interfaz `DataService` entiende dos mensajes:
 ### Recuerden que:
 - No pueden modificar las interfaces `EspecieService` y `DataService`, solo implementarlas.
 - Pueden agregar nuevos métodos y atributos a los objetos `Especie` y `Bicho`, pero no eliminar o renombrar atributos / métodos ya provistos.
-- Se considerará a un TP como entregado solo cuando tenga implementada toda la funcionalidad que se pide para la entrega.
-- Se evaluará no solo que el TP cumpla con todos los requisitos, sino la calidad del mismo (buen diseño, simplicidad, buena distribución de responsabilidades, prolijidad del código, código no repetido, etc)
