@@ -4,7 +4,7 @@
 
 El líder del equipo de frontend se reúne con nosotros y nos muestra una interfaz:
 
-[Especie Service](EspecieService.png)
+![EspecieService](EspecieService.png)
 
 Nos comenta que su equipo ya se encuentra bastante adelantado, llevan trabajando semanas contra una implementación mock de dicha interfaz y ya tienen la ui casi lista, pero es hora de hacer una implementación verdadera para dicho servicio. Obviamente no podemos modificar la interfaz `EspecieService` porque eso causaría incompatibilidades entre ambos equipos.
 
@@ -19,6 +19,8 @@ La interfaz `EspecieService` declara los siguientes métodos que nosotros debemo
 - `Bicho crearBicho(String nombreEspecie, String nombreBicho)` - crea un nuevo `Bicho` perteneciente a la especie especificada. El nuevo objeto `Bicho` no es persistido (de momento), solo devuelto. Para llevar una mejor estadística de los bichos que han sido creados cada especie cuenta con un contador cantidadBichos. El mismo deberá ser incrementado en 1.
 
 Adicionalmente, el equipo de frontend ha realizado unos tests de integración que tienen como fin comprobar que nuestro `EspecieService` funciona como ellos esperan.  En dichos tests ellos están haciendo uso de la siguiente interfaz, para la cual también deberemos proveer una implementación:
+
+![DataService](DataService.png)
 
 La interfaz `DataService` entiende dos mensajes:
 
