@@ -31,9 +31,12 @@ La interfaz `DataService` entiende dos mensajes:
 ### Se pide:
 - Que provean implementaciones para las interfaces descriptas anteriormente, haciendo uso de todo lo visto en clase.
 - Asignen propiamente las responsabilidades a todos los objetos intervinientes, discriminando entre servicios, DAOs y objetos de negocio.
-- Creen test unitarios para cada unidad de código entregada que prueben todas las funcionalidades pedidas, con casos favorables y desfavorables.
+- Creen test unitarios para cada unidad de código entregada que prueben todas las funcionalidades pedidas, con casos favorables y desfavorables. Si quieren van a poder probar la aplicación utilizando la UI provista, pero **deben** hacer test unitarios de cualquier forma.
 - Provean un archivo .sql con las sentencias DDL que sean necesarias para crear el schema de la base de datos (create tables).
 
 ### Recuerden que:
 - No pueden modificar las interfaces `EspecieService` y `DataService`, solo implementarlas.
 - Pueden agregar nuevos métodos y atributos a los objetos `Especie` y `Bicho`, pero no eliminar o renombrar atributos / métodos ya provistos.
+
+### UI
+Pueden levantar la UI de la aplicación por medio de maven ejecutando el siguiente comando `mvn jetty:run`. Después de eso la aplicación quedará corriendo en la siguiente url `http://localhost:8080/main.html`. Recuerden que la UI no está terminada, por lo que tiene muchos pendientes (pero pueden usarla para darse una idea de que se trata la cosa)
