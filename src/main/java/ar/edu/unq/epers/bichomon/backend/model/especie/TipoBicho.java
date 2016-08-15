@@ -6,6 +6,8 @@ public enum TipoBicho {
 	AGUA,
 	TIERRA,
 	ELECTRICIDAD,
-	PLANTA
+	PLANTA,
+	AIRE,
+	CHOCOLATE
 
 }
