@@ -1,9 +1,9 @@
-package ar.edu.unq.epers.bichomon.service.especie;
+package ar.edu.unq.epers.bichomon.backend.service.especie;
 
 import java.util.List;
 
-import ar.edu.unq.epers.bichomon.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 /**
  * @author Steve Frontend

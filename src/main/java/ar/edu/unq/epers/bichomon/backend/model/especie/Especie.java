@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.bichomon.model.especie;
+package ar.edu.unq.epers.bichomon.backend.model.especie;
 
 /**
  * Representa una {@link Especie} de bicho.
@@ -18,6 +18,9 @@ public class Especie {
 	
 	private int cantidadBichos;
 	
+	public Especie(){
+	}
+	
 	public Especie(String nombre, TipoBicho tipo) {
 		this.nombre = nombre;
 		this.tipo = tipo;
@@ -28,6 +31,9 @@ public class Especie {
 	 */
 	public String getNombre() {
 		return this.nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 	
 	/**
@@ -78,6 +84,9 @@ public class Especie {
 	public TipoBicho getTipo() {
 		return this.tipo;
 	}
+	public void setTipo(TipoBicho tipo) {
+		this.tipo = tipo;
+	}
 	
 	/**
 	 * @return la cantidad de bichos que se han creado para esta
@@ -85,6 +94,9 @@ public class Especie {
 	 */
 	public int getCantidadBichos() {
 		return this.cantidadBichos;
+	}
+	public void setCantidadBichos(int i) {
+		this.cantidadBichos = i;
 	}
 	
 }

@@ -1,7 +1,8 @@
-package ar.edu.unq.epers.bichomon.service;
+package ar.edu.unq.epers.bichomon.backend.service;
 
-import ar.edu.unq.epers.bichomon.service.data.DataService;
-import ar.edu.unq.epers.bichomon.service.especie.EspecieService;
+import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
+import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
+import ar.edu.unq.epers.bichomon.frontend.mock.EspecieServiceMock;
 
 /**
  * Esta clase es un singleton, el cual sera utilizado por equipo de frontend
@@ -19,7 +20,8 @@ public class ServiceFactory {
 	 * @return un objeto que implementa {@link EspecieService}
 	 */
 	public EspecieService getEspecieService() {
-		throw new RuntimeException("Todavia no se ha implementado este metodo");
+		return new EspecieServiceMock();
+		//throw new RuntimeException("Todavia no se ha implementado este metodo");
 	}
 	
 	/**

@@ -1,6 +1,6 @@
-package ar.edu.unq.epers.bichomon.model.bicho;
+package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
-import ar.edu.unq.epers.bichomon.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 /**
  * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
