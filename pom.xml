@@ -25,6 +25,13 @@
 	</developers>
 
 	<dependencies>
+		<!--  Sql Connector -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.39</version>
+		</dependency>
+	
 		<!-- Tests -->
 		<dependency>
 			<groupId>junit</groupId>
