@@ -10,6 +10,7 @@ import java.util.List;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieNoExistente;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.ConnectionBlock;
 
@@ -47,7 +48,7 @@ public class EspecieDAO implements EspecieService {
 			ps.execute();
 
 			if (ps.getUpdateCount() != 1){
-				throw new RuntimeException("No se inserto la especie: " + especie.getNombre());
+				throw new EspecieNoExistente(especie.getNombre());
 			}
 			ps.close();
 
