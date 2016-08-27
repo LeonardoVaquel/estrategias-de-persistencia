@@ -20,5 +20,5 @@ public interface DataService {
 	 * facilitar las pruebas de frontend.
 	 */
 	void crearSetDatosIniciales();
-	
+
 }

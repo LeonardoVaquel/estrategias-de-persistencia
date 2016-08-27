@@ -42,6 +42,10 @@ public class Bicho {
 	public int getEnergia() {
 		return this.energia;
 	}
+	public void setEspecie(Especie especie) {
+		this.especie = especie;
+	}
+
 	public void setEnergia(int energia) {
 		this.energia = energia;
 	}

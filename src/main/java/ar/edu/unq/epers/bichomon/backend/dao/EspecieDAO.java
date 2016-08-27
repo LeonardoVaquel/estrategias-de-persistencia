@@ -92,15 +92,65 @@ public class EspecieDAO implements EspecieService {
 	@Override
 	public List<Especie> getAllEspecies() {
 		// TODO Auto-generated method stub
-		return null;
+		
+		//INTENTADO hacer el get especie
+		return (List<Especie>) this.executeWithConnection(conn -> {
+			PreparedStatement ps = conn.prepareStatement( "SELECT altura, tipo, peso, energiaIicial, urlFoto, cantidadBichos "
+														+ "FROM especie");
+			
+			
+			ResultSet resultSet = ps.executeQuery();
+
+			List<Especie> especies = null;
+			while (resultSet.next()) {
+				Especie especie = new Especie();
+				especie.setAltura(resultSet.getInt("altura"));
+				especie.setPeso(resultSet.getInt("peso"));
+				especie.setTipo(TipoBicho.valueOf(resultSet.getString("tipo")));
+				especie.setEnergiaIncial(resultSet.getInt("energiaInicial"));
+				especie.setUrlFoto(resultSet.getString("urlFoto"));
+				especie.setCantidadBichos(resultSet.getInt("cantidadBichos"));
+			}
+
+			ps.close();
+			return especies;
+
+			});
+	
 	}
 
 	@Override
 	public Bicho crearBicho(String nombreEspecie, String nombreBicho) {
-		// TODO Auto-generated method stub
-		return null;
+			// preguntar por el Tipo del objeto especie que falta 
+			//y la energia que es el tercer atributo que falta con completar
+			Bicho bicho = new Bicho(new Especie(nombreEspecie, null),nombreBicho);
+			return bicho;	
 	}
+
 	
+	public void removeBicho(Bicho bicho){
+		this.executeWithConnection(conn -> {
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM bicho WHERE nombreBicho = ?");
+			ps.setString(1, bicho.getNombre());
+			ps.execute();
+			ps.close();
+			return null;
+		});		
+		
+	
+	};
+	
+	public void removeEspecie(Especie especie){
+		this.executeWithConnection(conn -> {
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM especie WHERE nombreEspecie = ?");
+			ps.setString(1, especie.getNombre());
+			ps.execute();
+			ps.close();
+			return null;
+		});		
+		
+	
+	};
 	
 	// Connection methods
 	
@@ -108,7 +158,8 @@ public class EspecieDAO implements EspecieService {
 	 * Ejecuta un bloque de codigo contra una conexion.
 	 */
 	private <T> T executeWithConnection(ConnectionBlock<T> bloque) {
-		Connection connection = this.openConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=lock");
+		//Connection connection = this.openConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=lock");
+		Connection connection = this.openConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=21768");
 		try {
 			return bloque.executeWith(connection);
 		} catch (SQLException e) {
@@ -126,7 +177,8 @@ public class EspecieDAO implements EspecieService {
 	private Connection openConnection(String url) {
 		try {
 			//La url de conexion no deberia estar harcodeada aca
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=lock");
+			//return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=lock");
+			return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=21768");
 		} catch (SQLException e) {
 			throw new RuntimeException("No se puede establecer una conexion", e);
 		}
@@ -143,5 +195,6 @@ public class EspecieDAO implements EspecieService {
 			throw new RuntimeException("Error al cerrar la conexion", e);
 		}
 	}	
-
+	
+	
 }
