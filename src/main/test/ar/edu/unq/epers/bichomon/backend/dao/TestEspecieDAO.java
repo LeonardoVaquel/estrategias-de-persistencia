@@ -91,13 +91,15 @@ public class TestEspecieDAO {
 				
 		List<Especie> todasLasEspecies = especieService.getAllEspecies();
 		
-		assertEquals(todasLasEspecies.size(), 3);
+		assertEquals(todasLasEspecies.size(), DataServiceEspecie.DATAEspecies.size());
 
 		// TODO: COMO TESTEAR QUE REALMENTE ESTAN ORDENADAS ALFABETICAMENTE? Santi B.
 	}
 	
 	@Test
 	public void testCuandoCreoUnBichoLoRetornoConLosAtributosNombreYEspecie(){
+		
+		
 		
 		// Se crea un dummyBicho
 		String especieNuevoBicho  = "Leomon";

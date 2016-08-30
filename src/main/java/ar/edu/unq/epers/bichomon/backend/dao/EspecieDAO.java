@@ -234,7 +234,7 @@ public class EspecieDAO implements EspecieService {
 			// Veo que cae una url como parámetro, pero executeWithConnection también utiliza una
 			// url hardodeada. Averigüemos en clase. Santi B.
 			
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=root");
+			return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=leonardo11");
 			//return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=21768");
 		} catch (SQLException e) {
 			throw new RuntimeException("No se puede establecer una conexion", e);
