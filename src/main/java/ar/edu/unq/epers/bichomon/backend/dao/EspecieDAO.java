@@ -18,6 +18,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.ConnectionBlock;
 public class EspecieDAO implements EspecieService {
 
 	private EspecieFactory especieFactory;
+	private String urlBichomongoRoot;
 	
 	public EspecieDAO() {
 		try {
@@ -26,7 +27,8 @@ public class EspecieDAO implements EspecieService {
 			throw new RuntimeException("No se puede encontrar la clase del driver", e);
 		}
 		
-		especieFactory = new EspecieFactory();
+		especieFactory 	  = new EspecieFactory();
+		urlBichomongoRoot = "jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root"; 
 	}
 	
 	@Override
@@ -196,8 +198,7 @@ public class EspecieDAO implements EspecieService {
 	 * Ejecuta un bloque de codigo contra una conexion.
 	 */
 	private <T> T executeWithConnection(ConnectionBlock<T> bloque) {
-		Connection connection = this.openConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root");
-		//Connection connection = this.openConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=21768");
+		Connection connection = this.openConnection(this.urlBichomongoRoot);
 		try {
 			return bloque.executeWith(connection);
 		} catch (SQLException e) {
@@ -214,14 +215,7 @@ public class EspecieDAO implements EspecieService {
 	 */
 	private Connection openConnection(String url) {
 		try {
-			// TODO para discutir en clase
-			//La url de conexion no deberia estar harcodeada aca
-			
-			// Veo que cae una url como parámetro, pero executeWithConnection también utiliza una
-			// url hardodeada. Averigüemos en clase. Santi B.
-			
-			///return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=leonardo11");
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root");
+			return DriverManager.getConnection(url);
 		} catch (SQLException e) {
 			throw new RuntimeException("No se puede establecer una conexion", e);
 		}
