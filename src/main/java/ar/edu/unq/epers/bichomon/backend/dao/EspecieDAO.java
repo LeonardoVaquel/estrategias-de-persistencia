@@ -94,7 +94,6 @@ public class EspecieDAO implements EspecieService {
 											resultSet.getString("urlFoto"),
 											resultSet.getInt("cantidadBichos"));
 			}
-
 			ps.close();
 			return especie;
 		});
@@ -131,7 +130,6 @@ public class EspecieDAO implements EspecieService {
 							resultSet.getInt("cantidadBichos"));
 					especies.add(especie);
 			}
-
 			ps.close();
 			return especies;
 		});

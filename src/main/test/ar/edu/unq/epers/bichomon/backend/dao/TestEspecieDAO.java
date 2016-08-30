@@ -107,12 +107,20 @@ public class TestEspecieDAO {
 		String nombreNuevoBicho   = "fort";
 		Bicho nuevoBicho 	      = especieService.crearBicho(especieNuevoBicho, nombreNuevoBicho);
 		
+		int cantidadDeBichosInicial = especieService.getEspecie(especieNuevoBicho).getCantidadBichos();
+		
+		// Excersice
+		nuevoBicho = especieService.crearBicho(especieNuevoBicho, nombreNuevoBicho);
+		
+		int cantidadDeBichosFinal = especieService.getEspecie(especieNuevoBicho).getCantidadBichos();
+		 
 		// Se espera obtener nombre y especie:
 		String expectedNombre  = nuevoBicho.getNombre();
 		String expectedEspecie = nuevoBicho.getEspecie().getNombre();		
 		
 		assertEquals(expectedNombre, nombreNuevoBicho);
 		assertEquals(expectedEspecie, especieNuevoBicho);
+		assertEquals(cantidadDeBichosInicial+1, cantidadDeBichosFinal);
 	}
 	
 	@After
