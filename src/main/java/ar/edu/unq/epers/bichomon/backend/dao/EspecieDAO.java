@@ -92,7 +92,6 @@ public class EspecieDAO implements EspecieService {
 											resultSet.getString("urlFoto"),
 											resultSet.getInt("cantidadBichos"));
 			}
-
 			ps.close();
 			return especie;
 		});
@@ -129,7 +128,6 @@ public class EspecieDAO implements EspecieService {
 							resultSet.getInt("cantidadBichos"));
 					especies.add(especie);
 			}
-
 			ps.close();
 			return especies;
 		});
@@ -214,13 +212,8 @@ public class EspecieDAO implements EspecieService {
 	 */
 	private Connection openConnection(String url) {
 		try {
-			// TODO para discutir en clase
-			//La url de conexion no deberia estar harcodeada aca
-			
-			// Veo que cae una url como parámetro, pero executeWithConnection también utiliza una
-			// url hardodeada. Averigüemos en clase. Santi B.
-			
-			///return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=leonardo11");
+			//return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=21768");
+			//return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=leonardo11");
 			return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root");
 		} catch (SQLException e) {
 			throw new RuntimeException("No se puede establecer una conexion", e);
