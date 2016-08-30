@@ -63,8 +63,6 @@ public class TestEspecieDAO {
 		assertEquals(retrievedEspecie.getEnergiaInicial(), energiaEspecie);
 		assertEquals(retrievedEspecie.getUrlFoto(), 	   urlEspecie);
 		assertEquals(retrievedEspecie.getCantidadBichos(), cantidadBichosEspecie);
-		
-		// TODO ¿Cómo testear crearEspecie sin utlizar getEspecie?
 	}
 	
 	@Test
@@ -93,14 +91,17 @@ public class TestEspecieDAO {
 		
 		assertEquals(todasLasEspecies.size(), DataServiceEspecie.DATAEspecies.size());
 
-		// TODO: COMO TESTEAR QUE REALMENTE ESTAN ORDENADAS ALFABETICAMENTE? Santi B.
+		assertEquals(todasLasEspecies.get(0).getNombre(), DataServiceEspecie.DATAEspecies.get("Bottimon").getNombre());
+		assertEquals(todasLasEspecies.get(1).getNombre(), DataServiceEspecie.DATAEspecies.get("Gisemon").getNombre());
+		assertEquals(todasLasEspecies.get(2).getNombre(), DataServiceEspecie.DATAEspecies.get("Leomon").getNombre());
+		
+		// Asumimos que ya conocemos la información en un DATAService,
+		// dónde existen solamente 3 Especies con los nombres utilizados en el test 
 	}
 	
 	@Test
 	public void testCuandoCreoUnBichoLoRetornoConLosAtributosNombreYEspecie(){
-		
-		
-		
+
 		// Se crea un dummyBicho
 		String especieNuevoBicho  = "Leomon";
 		String nombreNuevoBicho   = "fort";
@@ -112,8 +113,6 @@ public class TestEspecieDAO {
 		
 		assertEquals(expectedNombre, nombreNuevoBicho);
 		assertEquals(expectedEspecie, especieNuevoBicho);
-		
-		// TODO COMO TESTEAR EL CONTADOR ACTUALIZADO cantidadBichos (ya está implementado) Santi B.
 	}
 	
 	@After

@@ -6,11 +6,11 @@ import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
-public class EspecieServices implements EspecieService {
+public class ServiceEspecie implements EspecieService {
 
 	private EspecieService especieDAO;
 	
-	public EspecieServices() {
+	public ServiceEspecie() {
 		
 		this.especieDAO = new EspecieDAO();
 	}

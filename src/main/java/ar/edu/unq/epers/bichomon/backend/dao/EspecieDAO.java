@@ -13,7 +13,6 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.EspecieFactory;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieNoExistente;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
-import ar.edu.unq.epers.bichomon.backend.service.especie.NoHayEspecies;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.ConnectionBlock;
 
 public class EspecieDAO implements EspecieService {
@@ -114,13 +113,12 @@ public class EspecieDAO implements EspecieService {
 														+ "ORDER BY nombre");
 			
 			ResultSet resultSet    = ps.executeQuery();
-		    int cantidadColumnas   = resultSet.getMetaData().getColumnCount();
 			List<Especie> especies = new ArrayList<>();
 			
 			while (resultSet.next()) {
 
 				Especie especie = new Especie();
-		        for (int i=1; i <= cantidadColumnas; i++) {
+		        
 					especie = especieFactory.crearEspecie(
 							resultSet.getString("nombre"),
 							resultSet.getInt("altura"),
@@ -129,12 +127,7 @@ public class EspecieDAO implements EspecieService {
 							resultSet.getInt("energiaInicial"),
 							resultSet.getString("urlFoto"),
 							resultSet.getInt("cantidadBichos"));
-		        }
-		        especies.add(especie);
-				
-				if (especies.isEmpty()) {
-					throw new NoHayEspecies();
-				}
+					especies.add(especie);
 			}
 
 			ps.close();
@@ -144,14 +137,7 @@ public class EspecieDAO implements EspecieService {
 	
 	@Override
 	public Bicho crearBicho(String nombreEspecie, String nombreBicho) {
-		// preguntar por el Tipo del objeto especie que falta 
-		//y la energia que es el tercer atributo que falta con completar
-		
-		// TODO para discutir en clase
-		// Estuve mirando el tema del tipo y como no está apuntado en la consigna llego
-		// a la conclusión que por ahora no lo necesitamos (o sea, el mensaje que nos da
-		// frontend no trae el tipo por parámetro, lo mismo para la energía) Santi B.  
-		
+
 		return this.executeWithConnection(conn -> {
 			PreparedStatement ps = conn.prepareStatement( "UPDATE Especie "
 														+ "SET cantidadBichos = cantidadBichos + 1 "
@@ -210,8 +196,8 @@ public class EspecieDAO implements EspecieService {
 	 * Ejecuta un bloque de codigo contra una conexion.
 	 */
 	private <T> T executeWithConnection(ConnectionBlock<T> bloque) {
-		Connection connection = this.openConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=root");
-		//Connection connection = this.openConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=21768");
+		Connection connection = this.openConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root");
+		//Connection connection = this.openConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=21768");
 		try {
 			return bloque.executeWith(connection);
 		} catch (SQLException e) {
@@ -234,8 +220,8 @@ public class EspecieDAO implements EspecieService {
 			// Veo que cae una url como parámetro, pero executeWithConnection también utiliza una
 			// url hardodeada. Averigüemos en clase. Santi B.
 			
-			return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=leonardo11");
-			//return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomongo?user=root&password=21768");
+			///return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=leonardo11");
+			return DriverManager.getConnection("jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root");
 		} catch (SQLException e) {
 			throw new RuntimeException("No se puede establecer una conexion", e);
 		}
