@@ -18,7 +18,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.ConnectionBlock;
 public class EspecieDAO implements EspecieService {
 
 	private EspecieFactory especieFactory;
-	private String urlBichomongoRoot;
+	private String urlBichomongo;
 	
 	public EspecieDAO() {
 		try {
@@ -28,12 +28,13 @@ public class EspecieDAO implements EspecieService {
 		}
 		
 		especieFactory 	  = new EspecieFactory();
-		urlBichomongoRoot = "jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root"; 
+		urlBichomongo = "jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root"; 
 	}
 	
 	@Override
 	public void crearEspecie(Especie especie) {
 		this.executeWithConnection(conn -> {
+			
 			PreparedStatement ps = conn.prepareStatement("INSERT INTO Especie ("
 														+ 						"nombre, "
 														+ 						"altura, "
@@ -51,7 +52,6 @@ public class EspecieDAO implements EspecieService {
 			ps.setInt	(5, especie.getEnergiaInicial());
 			ps.setString(6, especie.getUrlFoto());
 			ps.setInt	(7, especie.getCantidadBichos());
-
 			ps.execute();
 			
 			if (ps.getUpdateCount() != 1){
@@ -102,6 +102,7 @@ public class EspecieDAO implements EspecieService {
 	@Override
 	public List<Especie> getAllEspecies() {
 		return this.executeWithConnection(conn -> {
+			
 			PreparedStatement ps = conn.prepareStatement( "SELECT "
 														+ 			"nombre,"
 														+ 			"altura, "
@@ -117,18 +118,17 @@ public class EspecieDAO implements EspecieService {
 			List<Especie> especies = new ArrayList<>();
 			
 			while (resultSet.next()) {
-
-				Especie especie = new Especie();
-		        
-					especie = especieFactory.crearEspecie(
-							resultSet.getString("nombre"),
-							resultSet.getInt("altura"),
-							resultSet.getInt("peso"),
-							resultSet.getString("tipo"),
-							resultSet.getInt("energiaInicial"),
-							resultSet.getString("urlFoto"),
-							resultSet.getInt("cantidadBichos"));
-					especies.add(especie);
+				
+				//Especie especie = new Especie();
+				Especie especie = especieFactory.crearEspecie(
+						resultSet.getString("nombre"),
+						resultSet.getInt("altura"),
+						resultSet.getInt("peso"),
+						resultSet.getString("tipo"),
+						resultSet.getInt("energiaInicial"),
+						resultSet.getString("urlFoto"),
+						resultSet.getInt("cantidadBichos"));
+				especies.add(especie);
 			}
 			ps.close();
 			return especies;
@@ -196,7 +196,7 @@ public class EspecieDAO implements EspecieService {
 	 * Ejecuta un bloque de codigo contra una conexion.
 	 */
 	private <T> T executeWithConnection(ConnectionBlock<T> bloque) {
-		Connection connection = this.openConnection(this.urlBichomongoRoot);
+		Connection connection = this.openConnection(this.urlBichomongo);
 		try {
 			return bloque.executeWith(connection);
 		} catch (SQLException e) {
@@ -230,6 +230,4 @@ public class EspecieDAO implements EspecieService {
 			throw new RuntimeException("Error al cerrar la conexion", e);
 		}
 	}	
-	
-	
 }
