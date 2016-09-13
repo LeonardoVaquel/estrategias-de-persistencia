@@ -97,7 +97,7 @@ public class EspecieServiceTestCatedra {
 	}
 	
 	@Test
-	@Ignore //No estaba demarcado de forma explicita en el enunciado.
+//	@Ignore //No estaba demarcado de forma explicita en el enunciado.
 	public void al_crear_un_bicho_el_mismo_debe_tener_su_energia_igual_a_la_energia_incial_de_la_especie() {
 		Bicho bicho = this.service.crearBicho("EspecieTest1", "Bicho1");
 		

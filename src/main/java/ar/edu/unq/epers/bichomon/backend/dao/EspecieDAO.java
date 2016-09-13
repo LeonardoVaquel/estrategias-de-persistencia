@@ -55,7 +55,7 @@ public class EspecieDAO implements EspecieService {
 			ps.execute();
 			
 			if (ps.getUpdateCount() != 1){
-				throw new EspecieNoExistente(especie.getNombre());
+				throw new RuntimeException();
 			}
 			ps.close();
 			return null;
@@ -77,7 +77,7 @@ public class EspecieDAO implements EspecieService {
 			ps.setString(1, nombreEspecie);
 			
 			ResultSet resultSet = ps.executeQuery();
-
+			
 			Especie especie = null;
 			while (resultSet.next()) {
 

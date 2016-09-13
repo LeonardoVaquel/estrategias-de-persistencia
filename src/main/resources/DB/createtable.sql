@@ -4,15 +4,15 @@ USE `BICHOMONGO`;
 DROP TABLE IF EXISTS `Especie`;
 
 CREATE TABLE `Especie` (
-  `idEspecie` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(30) NOT NULL,
+  
+  `nombre` varchar(30) NOT NULL ,
   `tipo` varchar(20) DEFAULT NULL,
   `altura` int(11) DEFAULT NULL,
   `peso` int(11) DEFAULT NULL,
   `energiaInicial` int(11) DEFAULT NULL,
   `urlFoto` varchar(100) DEFAULT NULL,
   `cantidadBichos` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idEspecie`)
+  PRIMARY KEY (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `Especie` WRITE;

@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.bichomon.backend.dao;
+package ar.edu.unq.epers.bichomon.backend.service.especie;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +16,7 @@ import ar.edu.unq.epers.bichomon.backend.service.ServiceFactory;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 
-public class TestEspecieDAO {
+public class TestEspecieService {
 
 	EspecieService especieService;
 	DataService dataServiceEspecie;
