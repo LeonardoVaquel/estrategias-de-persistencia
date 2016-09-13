@@ -10,14 +10,14 @@ import java.util.List;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.especie.EspecieFactory;
+import ar.edu.unq.epers.bichomon.backend.model.management.BichomonFactory;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieNoExistente;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.ConnectionBlock;
 
 public class EspecieDAO implements EspecieService {
 
-	private EspecieFactory especieFactory;
+	private BichomonFactory bichomonFactory;
 	private String urlBichomongo;
 	
 	public EspecieDAO() {
@@ -27,8 +27,8 @@ public class EspecieDAO implements EspecieService {
 			throw new RuntimeException("No se puede encontrar la clase del driver", e);
 		}
 		
-		especieFactory 	  = new EspecieFactory();
-		urlBichomongo = "jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root"; 
+		bichomonFactory = new BichomonFactory();
+		urlBichomongo  = "jdbc:mysql://localhost:3306/BICHOMONGO?user=root&password=root"; 
 	}
 	
 	@Override
@@ -85,7 +85,7 @@ public class EspecieDAO implements EspecieService {
 					throw new EspecieNoExistente(nombreEspecie);
 				}
 				
-				especie = especieFactory.crearEspecie(
+				especie = bichomonFactory.crearEspecie(
 											nombreEspecie,
 											resultSet.getInt("altura"),
 											resultSet.getInt("peso"),
@@ -120,7 +120,7 @@ public class EspecieDAO implements EspecieService {
 			while (resultSet.next()) {
 				
 				//Especie especie = new Especie();
-				Especie especie = especieFactory.crearEspecie(
+				Especie especie = bichomonFactory.crearEspecie(
 						resultSet.getString("nombre"),
 						resultSet.getInt("altura"),
 						resultSet.getInt("peso"),
@@ -146,11 +146,10 @@ public class EspecieDAO implements EspecieService {
 			ps.executeUpdate();
 
 			Bicho bicho = null;
-
-			Especie especie = new Especie();
-			especie.setNombre(nombreEspecie);	
-			bicho = new Bicho(especie, nombreBicho);
-
+			
+			Especie especie = this.getEspecie(nombreEspecie);
+			bicho = bichomonFactory.crearBicho(especie, nombreBicho);
+			
 			ps.close();
 			return bicho;
 		});		

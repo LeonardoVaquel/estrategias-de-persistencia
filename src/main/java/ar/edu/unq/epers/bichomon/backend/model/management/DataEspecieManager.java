@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.bichomon.backend.service.data;
+package ar.edu.unq.epers.bichomon.backend.model.management;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 
 /**
  * Esta clase mantiene un repositorio con dummyData Especie 
@@ -13,7 +14,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
  * @author santiago
  *
  */
-public class DataServiceEspecie implements DataService {
+public class DataEspecieManager implements DataService {
 
 	public EspecieDAO dao = new EspecieDAO(); 
 	

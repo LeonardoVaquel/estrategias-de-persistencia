@@ -1,17 +1,19 @@
-package ar.edu.unq.epers.bichomon.backend.service.especie;
+package ar.edu.unq.epers.bichomon.backend.model.management;
 
 import java.util.List;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 
-public class ServiceEspecie implements EspecieService {
+public class EspecieManager implements EspecieService {
 
 	private EspecieService especieDAO;
 	
-	public ServiceEspecie() {
-		
+	public EspecieManager() {
+
+		// TODO pendiente de abstracción (preferiblemente habría que traerlo como parámetro) Santi B.
 		this.especieDAO = new EspecieDAO();
 	}
 

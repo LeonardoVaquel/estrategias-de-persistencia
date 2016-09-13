@@ -11,9 +11,9 @@ import org.junit.Test;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import ar.edu.unq.epers.bichomon.backend.model.management.DataEspecieManager;
 import ar.edu.unq.epers.bichomon.backend.service.ServiceFactory;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
-import ar.edu.unq.epers.bichomon.backend.service.data.DataServiceEspecie;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 
 public class TestEspecieDAO {
@@ -73,7 +73,7 @@ public class TestEspecieDAO {
 		Especie retrievedEspecie = especieService.getEspecie(nombreEspecie);
 
 		// Se espera recibir la misma información que en el dummy data
-		Especie expectedData = DataServiceEspecie.DATAEspecies.get(nombreEspecie);
+		Especie expectedData = DataEspecieManager.DATAEspecies.get(nombreEspecie);
 		
 		assertEquals(retrievedEspecie.getNombre(), 		   expectedData.getNombre());
 		assertEquals(retrievedEspecie.getTipo(), 		   expectedData.getTipo());
@@ -89,11 +89,11 @@ public class TestEspecieDAO {
 				
 		List<Especie> todasLasEspecies = especieService.getAllEspecies();
 		
-		assertEquals(todasLasEspecies.size(), DataServiceEspecie.DATAEspecies.size());
+		assertEquals(todasLasEspecies.size(), DataEspecieManager.DATAEspecies.size());
 
-		assertEquals(todasLasEspecies.get(0).getNombre(), DataServiceEspecie.DATAEspecies.get("Bottimon").getNombre());
-		assertEquals(todasLasEspecies.get(1).getNombre(), DataServiceEspecie.DATAEspecies.get("Gisemon").getNombre());
-		assertEquals(todasLasEspecies.get(2).getNombre(), DataServiceEspecie.DATAEspecies.get("Leomon").getNombre());
+		assertEquals(todasLasEspecies.get(0).getNombre(), DataEspecieManager.DATAEspecies.get("Bottimon").getNombre());
+		assertEquals(todasLasEspecies.get(1).getNombre(), DataEspecieManager.DATAEspecies.get("Gisemon").getNombre());
+		assertEquals(todasLasEspecies.get(2).getNombre(), DataEspecieManager.DATAEspecies.get("Leomon").getNombre());
 		
 		// Asumimos que ya conocemos la información en un DATAService,
 		// dónde existen solamente 3 Especies con los nombres utilizados en el test 

@@ -1,9 +1,9 @@
 package ar.edu.unq.epers.bichomon.backend.service;
 
+import ar.edu.unq.epers.bichomon.backend.model.management.DataEspecieManager;
+import ar.edu.unq.epers.bichomon.backend.model.management.EspecieManager;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
-import ar.edu.unq.epers.bichomon.backend.service.data.DataServiceEspecie;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
-import ar.edu.unq.epers.bichomon.backend.service.especie.ServiceEspecie;
 
 /**
  * Esta clase es un singleton, el cual sera utilizado por equipo de frontend
@@ -21,14 +21,14 @@ public class ServiceFactory {
 	 * @return un objeto que implementa {@link EspecieService}
 	 */
 	public EspecieService getEspecieService() {
-		return new ServiceEspecie();
+		return new EspecieManager();
 	}
 	
 	/**
 	 * @return un objeto que implementa {@link DataService}
 	 */
 	public DataService getDataService() {
-		return new DataServiceEspecie();
+		return new DataEspecieManager();
 	}
 
 }
