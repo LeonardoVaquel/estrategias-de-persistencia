@@ -1,9 +1,8 @@
-package ar.edu.unq.epers.bichomon.backend.model.management;
+package ar.edu.unq.epers.bichomon.backend.dao.jdbc;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
@@ -16,7 +15,7 @@ import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
  */
 public class DataEspecieManager implements DataService {
 
-	public EspecieDAO dao = new EspecieDAO(); 
+	public JDBCEspecieDAO dao = new JDBCEspecieDAO(); 
 	
 	public static Map<String, Especie> DATAEspecies = new HashMap<>();
 	

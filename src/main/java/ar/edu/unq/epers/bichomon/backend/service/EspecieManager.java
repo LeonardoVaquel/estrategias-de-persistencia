@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.bichomon.backend.model.management;
+package ar.edu.unq.epers.bichomon.backend.service;
 
 import java.util.List;
 
@@ -7,33 +7,38 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 
+/**
+ * Clase que implementa la interfaz provista por el equipo de Frontend
+ * para obtener los servicios de especie requeridos sobre un DAO.
+ * 
+ * @author santiago
+ */
 public class EspecieManager implements EspecieService {
 
-	private EspecieService especieDAO;
+	private EspecieDAO especieDAO;
 	
-	public EspecieManager() {
-
-		// TODO pendiente de abstracción (preferiblemente habría que traerlo como parámetro) Santi B.
-		this.especieDAO = new EspecieDAO();
+	public EspecieManager(EspecieDAO especieDAO) {
+		
+		this.especieDAO = especieDAO;
 	}
 
 	@Override
 	public void crearEspecie(Especie especie) {
-		this.especieDAO.crearEspecie(especie);
+		especieDAO.crearEspecie(especie);
 	}
 
 	@Override
 	public Especie getEspecie(String nombreEspecie) {
-		return this.especieDAO.getEspecie(nombreEspecie);
+		return especieDAO.getEspecie(nombreEspecie);
 	}
 
 	@Override
 	public List<Especie> getAllEspecies() {
-		return this.especieDAO.getAllEspecies();
+		return especieDAO.getAllEspecies();
 	}
 
 	@Override
 	public Bicho crearBicho(String nombreEspecie, String nombreBicho) {
-		return this.especieDAO.crearBicho(nombreEspecie, nombreBicho);
+		return especieDAO.crearBicho(nombreEspecie, nombreBicho);
 	}
 }

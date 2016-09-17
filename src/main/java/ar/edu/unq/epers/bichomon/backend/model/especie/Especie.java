@@ -1,19 +1,32 @@
 package ar.edu.unq.epers.bichomon.backend.model.especie;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+
 /**
  * Representa una {@link Especie} de bicho.
  * 
  * @author Charly Backend
  */
+@Entity
 public class Especie {
 
+	@Id
 	private String nombre;
+
 	private int altura;
 	private int peso;
+	
+	@Column(name="tipoBicho")
+	@Enumerated(EnumType.STRING)
 	private TipoBicho tipo;
 
 	private int energiaInicial;
 	
+	@Column(name="urlFoto", length=100000)
 	private String urlFoto;
 	
 	private int cantidadBichos;

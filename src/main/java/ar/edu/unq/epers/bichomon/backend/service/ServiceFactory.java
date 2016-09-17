@@ -1,7 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.service;
 
-import ar.edu.unq.epers.bichomon.backend.model.management.DataEspecieManager;
-import ar.edu.unq.epers.bichomon.backend.model.management.EspecieManager;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEspecieDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.jdbc.DataEspecieManager;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 
@@ -11,9 +11,6 @@ import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
  * 
  * @author Steve Frontend
  * 
- * TODO: Gente de backend, una vez que tengan las implementaciones de sus
- * servicios propiamente realizadas apunten a ellas en los metodos provistos
- * debajo. Gracias!
  */
 public class ServiceFactory {
 	
@@ -21,7 +18,7 @@ public class ServiceFactory {
 	 * @return un objeto que implementa {@link EspecieService}
 	 */
 	public EspecieService getEspecieService() {
-		return new EspecieManager();
+		return new EspecieManager(new HibernateEspecieDAO());
 	}
 	
 	/**
