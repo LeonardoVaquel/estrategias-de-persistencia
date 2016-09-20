@@ -2,11 +2,15 @@ package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 
 import javax.persistence.Entity;
 
+import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.ExpHandler;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 /**
- * Entrenador es una clase que representa un jugador del sistema
+ * Entrenador es una clase que representa un jugador del sistema.
+ * Consta de un nombre, puntos de experiencia, nivel, una ubicación que varía
+ * y una colección de bichos.
  * @author santiago
  *
  */
@@ -18,17 +22,31 @@ public class Entrenador {
 	private Double totalExp;
 	protected ExpHandler expHandler;
 	private int nivel;
+	private BichoCollection bichoCollection;
 	private Ubicacion ubicacion;
 	
-	
-	public Entrenador(String nombre, ExpHandler exphandler, Ubicacion ubicacion) {
-		this.nombre     = nombre;
+	/**
+	 * Crea un Entrenador con un nombre, experiencia actual, experiencia total, nivel y 
+	 * una ubicación por default pasada por parámetro.
+	 * 
+	 * @param nombre El nombre de un entrendaor
+	 * @param exphandler Instancia que maneja puntos de experiencia
+	 * @param ubicacion Instancia de Ubicacion por default
+	 * @param bichoCollection Una instancia de BichoCollection
+	 */
+	public Entrenador(String nombre, ExpHandler exphandler, Ubicacion ubicacion, BichoCollection bichoCollection) {
+		this.nombre = nombre;
 		this.setCurrentExp(0d);
 		this.setTotalExp(0d);
 		this.expHandler = exphandler;
+		this.bichoCollection = bichoCollection;
 		this.setNivel(1);
 		this.setUbicacion(ubicacion);
 	}
+	
+	/**
+	 * Getters & Setters
+	 */
 	
 	public String getNombre() {
 		return this.nombre;
@@ -50,16 +68,13 @@ public class Entrenador {
 		this.totalExp = exp;
 	}
 	
-	public void gainsExp(Double exp) {
-		expHandler.evaluateGainedExp(exp, this);
-	}
-	
 	public int getNivel() {
 		return this.nivel;
 	}
 	
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
+		this.bichoCollection.setNivel(nivel);
 	}
 	
 	public Ubicacion getUbicacion() {
@@ -69,6 +84,34 @@ public class Entrenador {
 	public void setUbicacion(Ubicacion ubicacion) {
 		this.ubicacion = ubicacion;
 	}
+
+	public BichoCollection getBichos() {
+		return bichoCollection;
+	}
+
+	public void setBichos(BichoCollection coleccion) {
+		this.bichoCollection = coleccion;
+	}
 	
+	/**
+	 * Delega en un handler de experiencia para evaluar la cantidad de puntos obtenida
+	 * @param exp una cantidad de experiencia
+	 */
+	public void gainsExp(Double exp) {
+		expHandler.evaluateGainedExp(exp, this);
+	}
+	
+	/**
+	 * Consulta si una colección de Bicho tiene espacio para almacenar bichos 
+	 * @return boolean indicando si puede buscar o no.
+	 */
+	public Boolean puedeBuscar() {
+		return this.bichoCollection.isFull();
+	}
+	
+	public void obtenerBicho(Bicho bicho) {
+		this.bichoCollection.add(bicho);
+	}
+
 	// TODO acciones
 }

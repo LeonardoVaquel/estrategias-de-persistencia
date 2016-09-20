@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.ExpHandler;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -15,12 +16,15 @@ public class TestEntrenador {
 	private Entrenador entrenador;
 	private @Mock ExpHandler handler; 
 	private @Mock Ubicacion ubicacion;
+	private @Mock BichoCollection collection;
 	
 	@Before
 	public void setUp() {
 		
-		entrenador = new Entrenador("TestTrainer", handler, ubicacion);
 		MockitoAnnotations.initMocks(this);
+		
+		entrenador = new Entrenador("TestTrainer", handler, ubicacion, collection);
+		
 	}
 	
 	@Test
