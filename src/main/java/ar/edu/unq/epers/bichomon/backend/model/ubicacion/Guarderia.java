@@ -16,37 +16,29 @@ public class Guarderia  extends Ubicacion{
 //Al buscar en esta ubicación un entrenador adoptará bichos que hayan
 //sido abandonados anteriormente por algún entrenador distinto a el mismo.
 	
-	private List<Bicho> bichosAbandonados;
 	private Random random;
+	
 	public Guarderia(Random random){
 		super();
-		this.setBichosAbandonados(new ArrayList<>());
-		this.random=random;
+		this.random = random;
+		this.bichos = new ArrayList<>();
 	}
 	
-	public void abandonar(Entrenador entrenador, Bicho bicho){
+	public void abandonar(Bicho bicho){
 		
-		this.bichosAbandonados.add(bicho);
+		this.bichos.add(bicho);
 
 	}
 	
 
-	public List<Bicho> getBichosAbandonados() {
-		return bichosAbandonados;
-	}
-
-	public void setBichosAbandonados(List<Bicho> bichosAbandonados) {
-		this.bichosAbandonados = bichosAbandonados;
-	}
-	
 	public Integer cantidadDeBichosAbandonados(){
-		return this.getBichosAbandonados().size();
+		return this.getBichos().size();
 	}
 	
-	public Bicho adoptarBicho(){
+	public Bicho adoptarBichoAbandonado(){
 		Integer index = this.numeroRandom();
 		
-		return this.getBichosAbandonados().get(index);
+		return this.getBichos().get(index);
 		
 	}
 	public Integer numeroRandom(){
@@ -58,7 +50,7 @@ public class Guarderia  extends Ubicacion{
 		
 		if (entrenador.puedeBuscar()){
 			
-			entrenador.obtenerBicho(adoptarBicho());
+			entrenador.obtenerBicho(adoptarBichoAbandonado());
 		}
 		
 	}
