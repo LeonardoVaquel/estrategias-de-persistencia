@@ -8,9 +8,9 @@ import ar.edu.unq.epers.bichomon.backend.model.experiencia.ExpHandler;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 /**
- * Entrenador es una clase que representa un jugador del sistema.
- * Consta de un nombre, puntos de experiencia, nivel, una ubicación que varía
- * y una colección de bichos.
+ * {@link Entrenador} es una clase que representa un jugador del sistema.
+ * Consta de un nombre, puntos de experiencia, nivel, una {@link Ubicación} que varía
+ * y una {@link BichoCollection}.
  * @author santiago
  *
  */
@@ -26,13 +26,13 @@ public class Entrenador {
 	private Ubicacion ubicacion;
 	
 	/**
-	 * Crea un Entrenador con un nombre, experiencia actual, experiencia total, nivel y 
+	 * Crea un {@link Entrenador} con un nombre, experiencia actual, experiencia total, nivel y 
 	 * una ubicación por default pasada por parámetro.
 	 * 
 	 * @param nombre El nombre de un entrendaor
-	 * @param exphandler Instancia que maneja puntos de experiencia
-	 * @param ubicacion Instancia de Ubicacion por default
-	 * @param bichoCollection Una instancia de BichoCollection
+	 * @param exphandler Instancia de {@link ExpHandler} que maneja puntos de experiencia
+	 * @param ubicacion Instancia de {@link Ubicacion} por default
+	 * @param bichoCollection Una instancia de {@link BichoCollection}
 	 */
 	public Entrenador(String nombre, ExpHandler exphandler, Ubicacion ubicacion, BichoCollection bichoCollection) {
 		this.nombre = nombre;
@@ -112,6 +112,13 @@ public class Entrenador {
 	public void obtenerBicho(Bicho bicho) {
 		this.bichoCollection.add(bicho);
 	}
+	
+	public void abandonarBicho(Bicho bicho) {
+		this.bichoCollection.remove(bicho);
+	}
 
 	// TODO acciones
+	
+
+	
 }

@@ -1,32 +1,38 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
+import javax.persistence.Entity;
+
+import org.joda.time.DateTime;
+
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 /**
- * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
- * y pertenece a una {@link Especie} en particular.
+ * Un {@link Bicho} existente en el sistema. 
+ * Constade una {@link Especie}, que puede variar, puntos de energia y se
+ * considera que un Bicho pertenece a un {@link Entrenador} al ser capturado.
  * 
- * @author Charly Backend
+ * @author santiago
  */
+@Entity
 public class Bicho {
 	
-	private String nombre;
 	private Especie especie;
 	private int energia;
+	private Entrenador owner;
+	private Integer victorias;
+	private DateTime fechaCaptura;
 	
 	public Bicho(Especie especie, String nombre) {
-		this.especie = especie;
-		this.nombre = nombre;
-	}
 
-	/**
-	 * @return el nombre de un bicho (todos los bichos tienen
-	 * nombre). Este NO es el nombre de su especie.
-	 */
-	public String getNombre() {
-		return this.nombre;
 	}
 	
+	public Bicho(Especie especie) {
+		this.especie = especie;
+		this.energia = especie.getEnergiaInicial();
+		this.owner   = null;
+	}
+
 	/**
 	 * @return la especie a la que este bicho pertenece.
 	 */
@@ -48,6 +54,10 @@ public class Bicho {
 
 	public void setEnergia(int energia) {
 		this.energia = energia;
+	}
+	
+	public void puedeEvolucionar() {
+		//this.especie.puedeEvolucionar(this, this.owner)
 	}
 
 }
