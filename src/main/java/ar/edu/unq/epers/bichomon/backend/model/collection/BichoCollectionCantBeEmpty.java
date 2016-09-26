@@ -1,6 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.model.collection;
 
-public class BichoCollectionCantBeEmpty extends Exception {
+public class BichoCollectionCantBeEmpty extends RuntimeException {
 
 	/**
 	 * Situación excepcional en la que se intenta eliminar el último elemento
@@ -9,7 +9,7 @@ public class BichoCollectionCantBeEmpty extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public BichoCollectionCantBeEmpty() {
-		super("No es posible del único Bicho en la colección.");
+		super("No es posible deshacerse del único Bicho en la colección.");
 	}
 	
 }

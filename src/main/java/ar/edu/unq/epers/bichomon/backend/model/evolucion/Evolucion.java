@@ -15,12 +15,12 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 @Entity
 public class Evolucion {
 
-	Especie especie;
-	Especie raiz;
-	Especie evolucion;
-	List<Boolean> criterios;
+	private Especie especie;
+	private Especie raiz;
+	private Especie evolucion;
+	private List<CriterioEvolucion> criterios;
 
-	public Evolucion(Especie especie, Especie raiz, Especie evolucion, List<Boolean> criterios) {
+	public Evolucion(Especie especie, Especie raiz, Especie evolucion, List<CriterioEvolucion> criterios) {
 	
 		this.setEspecie(especie);
 		this.setRaiz(raiz);
@@ -52,11 +52,11 @@ public class Evolucion {
 		this.evolucion = evolucion;
 	}
 
-	public List<Boolean> getCriterios() {
+	public List<CriterioEvolucion> getCriterios() {
 		return criterios;
 	}
 
-	public void setCriterios(List<Boolean> criterios) {
+	public void setCriterios(List<CriterioEvolucion> criterios) {
 		this.criterios = criterios;
 	}
 	

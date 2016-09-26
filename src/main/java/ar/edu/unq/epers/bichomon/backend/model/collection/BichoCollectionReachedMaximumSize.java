@@ -1,6 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.model.collection;
 
-public class BichoCollectionReachedMaximumSize extends Exception {
+public class BichoCollectionReachedMaximumSize extends RuntimeException {
 
 	/**
 	 * Situación excepcional en la que una colección de bichos

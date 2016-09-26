@@ -1,19 +1,17 @@
 package ar.edu.unq.epers.bichomon.backend.dao.impl;
 
-
-import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EvolucionDAO;
-import ar.edu.unq.epers.bichomon.backend.dao.jdbc.JDBCEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.Evolucion;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
- * Una implementacion de {@link JDBCEspecieDAO} que persiste
+ * Una implementacion de {@link EvolucionDAO} que persiste
  * en una base de datos relacional utilizando JDBC
  * 
  */
@@ -32,7 +30,7 @@ public class HibernateEvolucionDAO implements EvolucionDAO {
 	 * TODO
 	 */
 	@Override
-	public Collection<CriterioEvolucion> getCriteriosDeEvolucion(String nombreEspecie) {
+	public List<CriterioEvolucion> getCriteriosDeEvolucion(String nombreEspecie) {
 		
 		Session session = Runner.getCurrentSession();
 		

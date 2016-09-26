@@ -38,7 +38,7 @@ public class BichoCollection {
 	 */
 	public BichoCollection(Integer trainerLevel, Integer coeficiente) {
 		this.bichos  = new ArrayList<>();
-		this.coeficiente = coeficiente;
+		this.setCoeficiente(coeficiente);
 		this.setNivel(trainerLevel);
 		this.updateSize();
 	}
@@ -49,6 +49,19 @@ public class BichoCollection {
 	
 	public Integer getMaxSize() {
 		return this.maxSize;
+	}
+	
+	public Integer getSize() {
+		return this.bichos.size();
+	}
+	
+	public void updateSize() {
+		this.setMaxSize(this.nivel * this.coeficiente);
+	}
+	
+	public void setCoeficiente(Integer coeficiente) {
+		this.coeficiente = coeficiente;
+		this.updateSize();
 	}
 	
 	public Integer getCoeficiente() {
@@ -79,39 +92,27 @@ public class BichoCollection {
 	 */
 	public void add(Bicho bicho) {
 		
-		try {
-			if(this.isFull()) {
-				throw new BichoCollectionReachedMaximumSize();
-			} else {
-				this.bichos.add(bicho);
-			}
-			
-		} catch (Exception e) {
-			e.getMessage();
+		if (this.isFull()) {
+			throw new BichoCollectionReachedMaximumSize();
 		}
+		else {
+			this.bichos.add(bicho);
+		}
+		
 	}
 	
 	/**
-	 * El método remove intentará eliminar un Bicho de la colección.
+	 * El método remove intentará eliminar un BichoException de la colección.
 	 * En caso de tener un solo elemento, se lanza una excepción.
 	 * @param bicho
 	 */	
 	public void remove(Bicho bicho) {
-		try {
-			if(this.isSingleton()) {
-				throw new BichoCollectionCantBeEmpty();
-			}
-			else {
-				this.bichos.remove(bicho);
-				}
-			}
-		catch (Exception e){
-			e.getMessage();
+		if(this.isSingleton()) {
+			throw new BichoCollectionCantBeEmpty();
 		}
-	}
-	
-	public void updateSize() {
-		this.setMaxSize(this.nivel * this.coeficiente);
+		else {
+			this.bichos.remove(bicho);
+		}
 	}
 	
 }

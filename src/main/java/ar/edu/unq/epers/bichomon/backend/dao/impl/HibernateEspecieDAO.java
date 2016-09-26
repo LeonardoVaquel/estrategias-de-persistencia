@@ -6,14 +6,13 @@ import java.util.List;
 import org.hibernate.Session;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.dao.jdbc.JDBCEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
- * Una implementacion de {@link JDBCEspecieDAO} que persiste
+ * Una implementacion de {@link EspecieDAO} que persiste
  * en una base de datos relacional utilizando JDBC
  * 
  */

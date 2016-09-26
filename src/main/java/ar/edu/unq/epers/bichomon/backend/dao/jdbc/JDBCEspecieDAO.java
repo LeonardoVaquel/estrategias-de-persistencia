@@ -155,15 +155,15 @@ public class JDBCEspecieDAO implements EspecieService {
 	}
 
 	// Por ahora no existe la tabla Bicho
-	public void removeBicho(Bicho bicho){
-		this.executeWithConnection(conn -> {
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM Bicho WHERE nombre = ?");
-			ps.setString(1, bicho.getNombre());
-			ps.execute();
-			ps.close();
-			return null;
-		});		
-	};
+//	public void removeBicho(Bicho bicho){
+//		this.executeWithConnection(conn -> {
+//			PreparedStatement ps = conn.prepareStatement("DELETE FROM Bicho WHERE nombre = ?");
+//			ps.setString(1, bicho.getNombre());
+//			ps.execute();
+//			ps.close();
+//			return null;
+//		});		
+//	};
 	
 	/**
 	 * Dada una especie, la elimina de la tabla Especie

@@ -1,0 +1,39 @@
+package ar.edu.unq.epers.bichomon.backend.model.evolucion;
+
+import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.NotEnoughVictoriesToEvolve;
+
+/**
+ * {@link CriterioEvolucionVictorias} es una clase que representa un {@link CriterioEvolucion} teniendo
+ * en cuenta la cantidad de victorias de un {@link Bicho} para poder evolucionar
+ * @author santiago
+ *
+ */
+public class CriterioEvolucionVictorias extends CriterioEvolucion {
+
+	/**
+	 * Se crea una nueva instancia de {@link CriterioEvolucionVictorias}
+	 * @param especie La {@link Especie} que representa la evolución
+	 * @param tipo String que representa el tipo de criterio basado en las victorias de un {@link Bicho}
+	 * @param valor Integer que representa la cantidad de victorias de un {@link Bicho} 
+	 */
+	public CriterioEvolucionVictorias(Especie especie, Integer valor) {
+		super(especie, valor);
+		this.setTipo("Victorias");
+	}
+
+	@Override
+	public Boolean seCumple(Bicho bicho, Entrenador entrenador) {
+		Boolean condicion = bicho.getVictorias() > this.getValor(); 
+		if (!condicion) {
+			throw new NotEnoughVictoriesToEvolve(this.getValor());
+		}
+		else {
+			return condicion;
+		}
+		
+	}
+
+}

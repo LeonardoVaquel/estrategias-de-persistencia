@@ -7,19 +7,22 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 /**
- * TODO
+ * {@link CriterioEvolucion} es una clase que modela un criterio que se debe
+ * cumplir para que una {@link >Especie} pueda evolucionar.
+ * Existen distintos tipos de criterios que se resuelven con un valor dado, de tipo Integer que 
+ * son representados por subclasificación de ésta clase.
  * @author santiago
  *
  */
 @Entity
-public class CriterioEvolucion {
+public abstract class CriterioEvolucion {
 
-	Especie especie;
-	String tipo;
-	Integer valor;
+	private Especie especie;
+	private String tipo;
+	private Integer valor;
 	
-	public CriterioEvolucion(Especie especie, String tipo, Integer valor) {
-		this.setTipo(tipo);
+	public CriterioEvolucion(Especie especie, Integer valor) {
+		this.setEspecie(especie);
 		this.setValor(valor);
 	}
 	
@@ -47,9 +50,5 @@ public class CriterioEvolucion {
 		this.tipo = tipo;
 	}
 	
-	public Boolean seCumple(Bicho bicho, Entrenador entrenador) {
-		
-		
-		return false;
-	}
+	public abstract Boolean seCumple(Bicho bicho, Entrenador entrenador);
 }

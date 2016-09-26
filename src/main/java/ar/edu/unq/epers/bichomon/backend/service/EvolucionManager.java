@@ -1,6 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.service;
 
-import java.util.Collection;
+import java.util.List;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EvolucionDAO;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
@@ -28,7 +28,7 @@ public class EvolucionManager implements EvolucionService {
 	}
 
 	@Override
-	public Collection<CriterioEvolucion> getCriteriosDeEvolucion(String nombreEspecie) {
+	public List<CriterioEvolucion> getCriteriosDeEvolucion(String nombreEspecie) {
 		return evolucionDAO.getCriteriosDeEvolucion(nombreEspecie);
 	}
 	

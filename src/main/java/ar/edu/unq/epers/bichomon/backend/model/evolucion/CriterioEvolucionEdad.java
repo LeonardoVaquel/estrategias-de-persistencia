@@ -1,0 +1,42 @@
+package ar.edu.unq.epers.bichomon.backend.model.evolucion;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
+import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.NotEnoughAgeToEvolve;
+
+/**
+ * {@link CriterioEvolucionEdad} es una clase que representa un {@link CriterioEvolucion} teniendo
+ * en cuenta la edad de un {@link Bicho} desde su fecha de captura, calculado en días.
+ * @author santiago
+ *
+ */
+public class CriterioEvolucionEdad extends CriterioEvolucion {
+
+	/**
+	 * Se crea una nueva instancia de {@link CriterioEvolucionEdad}
+	 * @param especie La {@link Especie} que representa la evolución
+	 * @param tipo String que representa el tipo de criterio basado en la edad de un {@link Bicho}
+	 * @param valor Integer que representa la edad en días de un {@link Bicho} 
+	 */
+	public CriterioEvolucionEdad(Especie especie, Integer valor) {
+		super(especie, valor);
+		this.setTipo("Edad");
+	}
+
+	@Override
+	public Boolean seCumple(Bicho bicho, Entrenador entrenador) {
+		DateTime today = new DateTime();
+		Boolean condicion = Days.daysBetween(bicho.getFechaCaptura(), today).getDays() > this.getValor(); 
+		if (!condicion) {
+			throw new NotEnoughAgeToEvolve(this.getValor());
+		}
+		else {
+			return condicion;
+		}		
+	}
+
+}

@@ -1,6 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.dao;
 
-import java.util.Collection;
+import java.util.List;
 
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
@@ -29,6 +29,6 @@ public interface EvolucionDAO {
 	/**
 	 * TODO
 	 */
-	Collection<CriterioEvolucion> getCriteriosDeEvolucion(String nombreEspecie);
+	List<CriterioEvolucion> getCriteriosDeEvolucion(String nombreEspecie);
 	
 }
