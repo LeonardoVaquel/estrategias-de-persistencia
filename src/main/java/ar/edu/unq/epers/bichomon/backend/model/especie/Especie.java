@@ -1,10 +1,17 @@
 package ar.edu.unq.epers.bichomon.backend.model.especie;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 
 /**
  * Representa una {@link Especie} de bicho.
@@ -16,7 +23,16 @@ public class Especie {
 
 	@Id
 	private String nombre;
+	
+	@ManyToOne
+	private Especie raiz;
 
+	@OneToOne
+	private Especie evolucion;
+	
+	@OneToMany
+	private List<CriterioEvolucion> criteriosDeEvolucion;
+	
 	private int altura;
 	private int peso;
 	
@@ -39,6 +55,35 @@ public class Especie {
 		this.tipo = tipo;
 	}
 	
+	public Especie(String nombre, Especie raiz, Especie evolucion, 
+			List<CriterioEvolucion> criteriosEvolucion, int altura, int peso, TipoBicho tipo, 
+			int energiaInicial, String urlFoto, int cantidadBichos) {
+		this.nombre = nombre;
+		this.raiz   = raiz;
+		this.evolucion = evolucion;
+		this.criteriosDeEvolucion = criteriosEvolucion;
+		this.altura = altura;
+		this.peso = peso;
+		this.tipo = tipo;
+		this.energiaInicial = energiaInicial;
+		this.urlFoto = urlFoto;
+		this.cantidadBichos = cantidadBichos;
+	}
+	
+	public Especie(String nombre, Especie evolucion, 
+			List<CriterioEvolucion> criteriosEvolucion, int altura, int peso, TipoBicho tipo, 
+			int energiaInicial, String urlFoto, int cantidadBichos) {
+		this.nombre = nombre;
+		this.evolucion = evolucion;
+		this.criteriosDeEvolucion = criteriosEvolucion;
+		this.altura = altura;
+		this.peso = peso;
+		this.tipo = tipo;
+		this.energiaInicial = energiaInicial;
+		this.urlFoto = urlFoto;
+		this.cantidadBichos = cantidadBichos;
+	}	
+	
 	/**
 	 * @return el nombre de la especie (por ejemplo: Perromon)
 	 */
@@ -47,6 +92,39 @@ public class Especie {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	/**
+	 * @return - la especie raíz
+	 */
+	public Especie getRaiz() {
+		return this.raiz;
+	}
+	
+	public void setRaiz(Especie raiz) {
+		this.raiz = raiz;
+	}
+	
+	/**
+	 * @return - la especie que representa la evolución
+	 */
+	public Especie getEvolucion() {
+		return this.evolucion;
+	}
+	
+	public void setEvolucion(Especie evolucion) {
+		this.evolucion = evolucion;
+	}
+	
+	/**
+	 * @return - la lista de criterios para evolucionar
+	 */
+	public List<CriterioEvolucion> getCriteriosDeEvolucion() {
+		return this.criteriosDeEvolucion;
+	}
+	
+	public void setCriteriosDeEvolucion(List<CriterioEvolucion> criteriosDeEvolucion) {
+		this.criteriosDeEvolucion = criteriosDeEvolucion;
 	}
 	
 	/**
