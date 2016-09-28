@@ -1,4 +1,4 @@
-package hibernate;
+package ar.edu.unq.epers.bichomon.backend.service.especie;
 
 import static org.junit.Assert.*;
 
@@ -41,9 +41,9 @@ public class TestHibernateBuscarEnPueblo{
 	@Test
 	public void testSeBuscaUnBichomonDeEspecie1(){
 		
-		List<Tupla> result = this.buscador.buscar();
-		List<Integer>ls = result.get(1).getLsValue();
-		assertEquals(result.size(),3);
+		List<Tupla> result 	= this.buscador.buscar();
+		List<Integer>ls 	= result.get(1).getLsValue();
+		assertEquals(result,tupla1);
 		
 	}
 }
