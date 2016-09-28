@@ -2,12 +2,15 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import java.util.Random;
 
+import javax.persistence.Entity;
+
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 //import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
+@Entity
 public class Dojo extends Ubicacion {
-	private Campeon campeon;
+	private Bicho campeon;
 	//private Duelo duelo;
 	//private List<String > historialCampeon; deberia ser una tupla que contenga el campeon+un dataTime?
 	
@@ -16,11 +19,11 @@ public class Dojo extends Ubicacion {
 		super(nombreDojo,random);
 	}
 
-	public Campeon getCampeon() {
+	public Bicho getCampeon() {
 		return campeon;
 	}
 
-	public void setCampeon(Campeon campeon) {
+	public void setCampeon(Bicho campeon) {
 		this.campeon = campeon;
 	}
 	
@@ -55,7 +58,6 @@ public class Dojo extends Ubicacion {
 
 			entrenador.obtenerBicho(asignarBicho());
 		}
-
 
 		return null;
 	}

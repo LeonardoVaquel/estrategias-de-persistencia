@@ -1,18 +1,20 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
+
+import javax.persistence.Entity;
+
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollectionReachedMaximumSize;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
+@Entity
 public class Guarderia  extends Ubicacion{
 	
-	public Guarderia( String nombreGuarderia,Random random){
+	public Guarderia(String nombreGuarderia,Random random){
 		super(nombreGuarderia, random);
-		
-		
 	}
+	
 	public void abandonar(Entrenador entrenador, Bicho bicho){
 		
 		this.getBichos().add(bicho);
@@ -28,17 +30,14 @@ public class Guarderia  extends Ubicacion{
 		Integer index = this.numeroRandom();
 		
 		return this.getBichos().get(index);
-		
+		//falta sacarlo de la lista de bichos
 	}
+	
 	public Integer numeroRandom(){
-		Integer valor = random.nextInt(this.cantidadDeBichosAbandonados());
-		return valor;
+		return random.nextInt(this.cantidadDeBichosAbandonados());
 	}
-	
-	
 	
 	public Bicho buscar(Entrenador entrenador) {
-		
 		
 		try {
 			if (entrenador.puedeBuscar()) {
@@ -47,7 +46,7 @@ public class Guarderia  extends Ubicacion{
 				return bicho;
 			}
 			else {
-				throw new RuntimeException("balballa");
+				throw new BichoCollectionReachedMaximumSize();
 			}
 		}
 		catch(RuntimeException e) {

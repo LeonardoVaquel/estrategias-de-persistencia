@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Buscador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
+@Entity
 public class Pueblo extends Ubicacion{
 	
+	@Transient
 	private Buscador buscador;
 	
 	public Pueblo(String nombrePueblo,Random random ){
