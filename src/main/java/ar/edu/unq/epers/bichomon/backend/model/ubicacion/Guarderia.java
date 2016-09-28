@@ -7,27 +7,16 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 public class Guarderia  extends Ubicacion{
-//Debido a que los entrenadores poseen un máximo de bichos en su 
-//inventario de capturados los mismos podrán abandonar aquellos
-//que no deseen utilizar nuevamente en esta ubicación. 
-//Un entrenador no podrá quedarse sin bichos como consecuencia de 
-//abandonar.
-
-//Al buscar en esta ubicación un entrenador adoptará bichos que hayan
-//sido abandonados anteriormente por algún entrenador distinto a el mismo.
 	
-	private Random random;
-	
-	public Guarderia(Random random){
-		super();
-		this.random = random;
-		this.bichos = new ArrayList<>();
-	}
-	
-	public void abandonar(Bicho bicho){
+	public Guarderia( String nombreGuarderia,Random random){
+		super(nombreGuarderia, random);
 		
-		this.bichos.add(bicho);
-
+		
+	}
+	public void abandonar(Entrenador entrenador, Bicho bicho){
+		
+		this.getBichos().add(bicho);
+		entrenador.abandonarBicho(bicho);
 	}
 	
 
@@ -45,14 +34,28 @@ public class Guarderia  extends Ubicacion{
 		Integer valor = random.nextInt(this.cantidadDeBichosAbandonados());
 		return valor;
 	}
-	@Override
-	public void buscar(Entrenador entrenador) {
+	
+	
+	
+	public Bicho buscar(Entrenador entrenador) {
 		
-		if (entrenador.puedeBuscar()){
-			
-			entrenador.obtenerBicho(adoptarBichoAbandonado());
+		
+		try {
+			if (entrenador.puedeBuscar()) {
+				Bicho bicho = adoptarBichoAbandonado();
+				entrenador.obtenerBicho(bicho);
+				return bicho;
+			}
+			else {
+				throw new RuntimeException("balballa");
+			}
+		}
+		catch(RuntimeException e) {
+			System.out.println(e.getMessage());
+			return null;
 		}
 		
 	}
+	
 }
 

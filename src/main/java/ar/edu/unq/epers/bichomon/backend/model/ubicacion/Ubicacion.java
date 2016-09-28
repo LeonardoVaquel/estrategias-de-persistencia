@@ -1,6 +1,8 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -9,7 +11,12 @@ public abstract class Ubicacion {
 
 	protected String nombre;
 	protected List<Bicho> bichos;
-	
+	protected Random random;
+	public Ubicacion (String nombre, Random random){
+		this.setNombre(nombre);
+		this.setBicho(new ArrayList <>());
+		this.random= random;
+	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -22,5 +29,5 @@ public abstract class Ubicacion {
 	public void setBicho(List<Bicho> bichos) {
 		this.bichos = bichos;
 	}
-	public abstract void buscar(Entrenador entrenador);
+	public abstract Bicho buscar(Entrenador entrenador);
 }
