@@ -30,4 +30,9 @@ public class Tupla{
 	public List<Integer> getLsValue(){
 		return this.lsValue;
 	}
+	
+	//@Override
+	//public boolean equals(Tupla anotherTupla){
+		//anotherTupla.getKey() == this.getKey() 
+	//}
 }
