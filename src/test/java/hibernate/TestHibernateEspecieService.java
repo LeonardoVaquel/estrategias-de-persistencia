@@ -27,7 +27,11 @@ public class TestHibernateEspecieService {
 		this.service = new EspecieSessionService(especieDAO);
 		this.testService = new TestService();
 		
+		
 		Especie nuevaEspecie = this.bichoFactory.crearEspecie( "Fortmon",
+																null,
+																null,
+																null,
 						  										180,
 						  										90,
 						  										"CHOCOLATE",

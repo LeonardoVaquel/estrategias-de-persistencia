@@ -2,11 +2,14 @@ package ar.edu.unq.epers.bichomon.backend.model.evolucion;
 
 import java.util.List;
 
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEvolucionDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.EvolutionException;
+import ar.edu.unq.epers.bichomon.backend.service.BichoManager;
+import ar.edu.unq.epers.bichomon.backend.service.EspecieManager;
 import ar.edu.unq.epers.bichomon.backend.service.EvolucionManager;
 
 /**
@@ -28,14 +31,16 @@ public class EvolutionHandler {
 	private Especie especie;
 	private Evolucion evolucion;
 	private EvolucionManager evolucionManager;
+	private BichoManager bichoManager;
 	private List<CriterioEvolucion> criterios;
 	
 	public EvolutionHandler() {
-		this.setEvolucionManager(new EvolucionManager(new HibernateEvolucionDAO())); 
+		//this.setEvolucionManager(new EvolucionManager(new HibernateEvolucionDAO())); 
+		this.setBichoManager(new BichoManager(new HibernateBichoDAO()));
 	}
 
-	public void setEvolucionManager(EvolucionManager evolucionManager) {
-		this.evolucionManager = evolucionManager;
+	public void setBichoManager(BichoManager bichoManager) {
+		this.bichoManager = bichoManager;
 	}
 	
 	public Bicho getBicho() {
@@ -44,6 +49,7 @@ public class EvolutionHandler {
 
 	public void setBicho(Bicho bicho) {
 		this.bicho = bicho;
+		this.setEspecie(this.bicho.getEspecie());
 	}
 
 	public Entrenador getEntrenador() {
@@ -82,7 +88,7 @@ public class EvolutionHandler {
 	 */
 	public Boolean puedeEvolucionar() {
 		
-		criterios = this.evolucionManager.getCriteriosDeEvolucion(this.especie.getNombre());
+		criterios = this.especie.getCriteriosDeEvolucion();
 		Boolean result = true;
 		try {
 			for (CriterioEvolucion criterio : criterios) {
@@ -96,11 +102,17 @@ public class EvolutionHandler {
 		}
 	}
 	
-	public void evolucionar() {
+	/**
+	 * Se evalúan las condiciones de un {@link Bicho} para evolucionar.
+	 * De ser posible se retorna una instancia de bicho con su especie evolucionada.
+	 * @return - una instancia de {@link Bicho}
+	 */
+	public Bicho evolucionar() {
 		if (this.puedeEvolucionar()) {
-			Evolucion evolucion = this.evolucionManager.getEvolucion(this.especie.getNombre());
-			this.bicho.evolucionar(evolucion.getEvolucion());
+			this.bicho.evolucionar(especie.getEvolucion());
+			this.bichoManager.guardarBicho(bicho);
 		}
+		return bicho;
 	}
 
 }

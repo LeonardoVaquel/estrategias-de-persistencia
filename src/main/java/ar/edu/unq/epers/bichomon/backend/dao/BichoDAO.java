@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.bichomon.backend.service.bicho;
+package ar.edu.unq.epers.bichomon.backend.dao;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
@@ -8,8 +8,14 @@ import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
  * @author santiago
  *
  */
-public interface BichoService {
+public interface BichoDAO {
 
+	/**
+	 * Este método persiste el estado actual de un bicho en una base de datos 
+	 * @param bicho - el {@link Bicho} a ser persistido
+	 */
+	public void guardarBicho(Bicho bicho);
+	
 	/**
 	 * Éste método realiza una busqueda en la ubicación actual de un Entrenador.
 	 * Se espera retornar un resultado Bicho si la busqueda resultó exitosa.

@@ -37,9 +37,12 @@ public class TestBicho {
 	public void cuando_un_bicho_desea_evolucionar_un_handler_interviene() {
 		
 		bicho.evolucionar();
-		
-		verify(dummyHandler, times(1)).setBicho(bicho);
-		verify(dummyHandler, times(1)).setEntrenador(dummyEntrenador);
 		verify(dummyHandler, times(1)).evolucionar();
+	}
+	
+	@Test
+	public void un_bicho_consulta_si_puede_evolucionar() {
+		bicho.puedeEvolucionar();
+		verify(dummyHandler, times(1)).puedeEvolucionar();
 	}
 }

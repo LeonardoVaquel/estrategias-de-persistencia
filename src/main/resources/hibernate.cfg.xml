@@ -30,6 +30,12 @@
 <!--         </property> -->
         
 	
+		
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion" />
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionEnergia" />
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionVictorias" />
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionEdad" />
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionNivel" />
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.especie.Especie" />
 	
 	</session-factory>

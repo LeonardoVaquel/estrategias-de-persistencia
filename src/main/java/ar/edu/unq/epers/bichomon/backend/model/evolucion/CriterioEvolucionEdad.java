@@ -1,5 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.evolucion;
 
+import javax.persistence.Entity;
+
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -14,6 +16,7 @@ import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.NotEnoughAge
  * @author santiago
  *
  */
+@Entity
 public class CriterioEvolucionEdad extends CriterioEvolucion {
 
 	/**

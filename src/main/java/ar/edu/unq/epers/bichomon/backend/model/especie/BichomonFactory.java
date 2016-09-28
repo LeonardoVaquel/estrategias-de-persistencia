@@ -1,6 +1,9 @@
 package ar.edu.unq.epers.bichomon.backend.model.especie;
 
+import java.util.List;
+
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 
 /**
  * Esta clase simplifica la tarea de crear instancias de clases propias
@@ -15,11 +18,15 @@ public class BichomonFactory {
 	public BichomonFactory() {
 	}
 	
-	public Especie crearEspecie(String nombre, int altura, int peso, String tipo, 
+	public Especie crearEspecie(String nombre, Especie raiz, Especie evolucion, 
+			List<CriterioEvolucion> criteriosDeEvolucion, int altura, int peso, String tipo, 
 			int energiaInicial, String urlFoto, int cantidadBichos) {
 		
 		Especie especie = new Especie();
 				especie.setNombre(nombre);
+				especie.setRaiz(raiz);
+				especie.setEvolucion(evolucion);
+				especie.setCriteriosDeEvolucion(criteriosDeEvolucion);
 				especie.setAltura(altura);
 				especie.setPeso(peso);
 				especie.setTipo(TipoBicho.valueOf(tipo));

@@ -38,6 +38,8 @@ public class Bicho {
 		this.victorias    = 0;
 		this.setFechaCaptura();
 		this.setHandler(new EvolutionHandler());
+		handler.setBicho(this);
+		handler.setEntrenador(this.owner);
 	}
 
 	/**
@@ -102,10 +104,12 @@ public class Bicho {
 	 * Caso contrario el handler se encargará de se levantar una excepción.
 	 * 
 	 */
-	public void evolucionar() {
-		handler.setBicho(this);
-		handler.setEntrenador(this.owner);
-		handler.evolucionar();
+	public Bicho evolucionar() {
+		return handler.evolucionar();
+	}
+	
+	public boolean puedeEvolucionar() {
+		return handler.puedeEvolucionar();
 	}
 	
 	/**

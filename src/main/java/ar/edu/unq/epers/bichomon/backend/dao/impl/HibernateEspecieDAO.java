@@ -13,7 +13,7 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
  * Una implementacion de {@link EspecieDAO} que persiste
- * en una base de datos relacional utilizando JDBC
+ * en una base de datos relacional utilizando Hibernate
  * 
  */
 public class HibernateEspecieDAO implements EspecieDAO, EspecieService {

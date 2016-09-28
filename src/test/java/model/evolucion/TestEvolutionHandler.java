@@ -23,6 +23,7 @@ import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionNivel;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionVictorias;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.Evolucion;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.EvolutionHandler;
+import ar.edu.unq.epers.bichomon.backend.service.BichoManager;
 import ar.edu.unq.epers.bichomon.backend.service.EvolucionManager;
 
 public class TestEvolutionHandler {
@@ -30,8 +31,8 @@ public class TestEvolutionHandler {
 	private @Mock Especie especie;
 	private @Mock Entrenador entrenador;
 	private @Mock Bicho bicho;
-	private @Mock EvolucionManager evolutionManager;
-	private @Mock Evolucion evolucion;
+	private @Mock BichoManager bichoManager;
+	//private @Mock Evolucion evolucion;
 	private @Mock Especie especieEvolucion;
 	
 	private List<CriterioEvolucion> criterios = new ArrayList<>();
@@ -60,18 +61,18 @@ public class TestEvolutionHandler {
 		criterios.add(criterioPorNivel);
 
 		
-		handler.setEvolucionManager(evolutionManager);
+		handler.setBichoManager(bichoManager);
 		handler.setBicho(bicho);
 		handler.setEntrenador(entrenador);
 		handler.setEspecie(especie);
 		
 		when(bicho.getEspecie()).thenReturn(especie);
 		
-		when(evolutionManager.getCriteriosDeEvolucion(anyString())).thenReturn(criterios);
+		when(especie.getCriteriosDeEvolucion()).thenReturn(criterios);
 		when(especie.getNombre()).thenReturn("testNombre");
 		
-		when(evolucion.getEvolucion()).thenReturn(especieEvolucion);
-		when(evolutionManager.getEvolucion("testNombre")).thenReturn(evolucion);
+		when(especie.getEvolucion()).thenReturn(especieEvolucion);
+		//when(evolutionManager.getEvolucion("testNombre")).thenReturn(evolucion);
 	}
 	
 	@After
@@ -105,7 +106,7 @@ public class TestEvolutionHandler {
 		when(bicho.getFechaCaptura()).thenReturn(new DateTime(2016, 1, 20, 0, 0));
 		when(entrenador.getNivel()).thenReturn(51);
 		
-		Assert.assertEquals(4, evolutionManager.getCriteriosDeEvolucion("testNombre").size());
+		Assert.assertEquals(4, especie.getCriteriosDeEvolucion().size());
 		Assert.assertTrue(handler.puedeEvolucionar());
 	}
 	
