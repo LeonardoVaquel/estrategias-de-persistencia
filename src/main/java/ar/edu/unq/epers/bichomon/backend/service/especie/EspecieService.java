@@ -13,7 +13,7 @@ public interface EspecieService {
 	/**
 	 * Este método será utilizado por una interfaz de administración para crear nuevas
 	 * especies de bichos. Recibe por parametro un objeto {@link Especie} previamente
-	 * construido y se encarga de persistirlo en la ase de datos.  Tener en cuenta que
+	 * construido y se encarga de persistirlo en la base de datos.  Tener en cuenta que
 	 * el nombre de cada especie debe ser único para toda la aplicación.
 	 * 
 	 * @param especie - un objeto Especie previamente construido por la gente de frontend
@@ -52,4 +52,16 @@ public interface EspecieService {
 	 */
 	Bicho crearBicho(String nombreEspecie, String nombreBicho);
 
+// Descomentar al implementar los servicios en DAO y demás clases	
+//	/** 
+//	 * TODO
+//	 * @return
+//	 */
+//	public List<Especie> populares();
+//	
+//	/**
+//	 * TODO
+//	 * @return
+//	 */
+//	public List<Especie> impopulares();
 }

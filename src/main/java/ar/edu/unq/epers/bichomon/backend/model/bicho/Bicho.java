@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import org.joda.time.DateTime;
 
@@ -23,6 +24,7 @@ public class Bicho {
 	private Entrenador owner;
 	private Integer victorias;
 	private DateTime fechaCaptura;
+	@Transient
 	private EvolutionHandler handler;
 	
 	public Bicho(Especie especie, String nombre) {
@@ -83,6 +85,10 @@ public class Bicho {
 	
 	public Integer getVictorias() {
 		return victorias;
+	}
+	
+	public void nuevaVictoria() {
+		this.setVictorias(victorias + 1);
 	}
 	
 	public void setHandler(EvolutionHandler handler) {
