@@ -35,6 +35,10 @@ public abstract class CriterioEvolucion {
 		this.setValor(valor);
 	}
 	
+	public CriterioEvolucion(Integer valor) {
+		this.setValor(valor);
+	}
+	
 	public Especie getEspecie() {
 		return especie;
 	}

@@ -11,6 +11,12 @@ import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
 public interface BichoDAO {
 
 	/**
+	 * Éste método buscara un bicho de un nombre en particular
+	 * @param nombreBicho - el nombre del bicho a ser buscado 
+	 */
+	public Bicho getBicho(String nombreBicho);
+	
+	/**
 	 * Este método persiste el estado actual de un bicho en una base de datos 
 	 * @param bicho - el {@link Bicho} a ser persistido
 	 */

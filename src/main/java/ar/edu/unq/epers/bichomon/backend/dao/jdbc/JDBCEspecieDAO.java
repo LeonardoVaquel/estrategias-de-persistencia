@@ -84,14 +84,14 @@ public class JDBCEspecieDAO implements EspecieService {
 					throw new EspecieNoExistente(nombreEspecie);
 				}
 				
-				especie = bichomonFactory.crearEspecie(
-											nombreEspecie,
-											resultSet.getInt("altura"),
-											resultSet.getInt("peso"),
-											resultSet.getString("tipo"),
-											resultSet.getInt("energiaInicial"),
-											resultSet.getString("urlFoto"),
-											resultSet.getInt("cantidadBichos"));
+//				especie = bichomonFactory.crearEspecie(
+//											nombreEspecie,
+//											resultSet.getInt("altura"),
+//											resultSet.getInt("peso"),
+//											resultSet.getString("tipo"),
+//											resultSet.getInt("energiaInicial"),
+//											resultSet.getString("urlFoto"),
+//											resultSet.getInt("cantidadBichos"));
 			}
 			ps.close();
 			return especie;
@@ -119,15 +119,15 @@ public class JDBCEspecieDAO implements EspecieService {
 			while (resultSet.next()) {
 				
 				//Especie especie = new Especie();
-				Especie especie = bichomonFactory.crearEspecie(
-						resultSet.getString("nombre"),
-						resultSet.getInt("altura"),
-						resultSet.getInt("peso"),
-						resultSet.getString("tipo"),
-						resultSet.getInt("energiaInicial"),
-						resultSet.getString("urlFoto"),
-						resultSet.getInt("cantidadBichos"));
-				especies.add(especie);
+//				Especie especie = bichomonFactory.crearEspecie(
+//						resultSet.getString("nombre"),
+//						resultSet.getInt("altura"),
+//						resultSet.getInt("peso"),
+//						resultSet.getString("tipo"),
+//						resultSet.getInt("energiaInicial"),
+//						resultSet.getString("urlFoto"),
+//						resultSet.getInt("cantidadBichos"));
+//				especies.add(especie);
 			}
 			ps.close();
 			return especies;

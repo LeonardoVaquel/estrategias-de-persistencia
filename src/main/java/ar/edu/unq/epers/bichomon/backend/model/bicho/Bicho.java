@@ -1,8 +1,14 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -19,11 +25,24 @@ import ar.edu.unq.epers.bichomon.backend.model.evolucion.EvolutionHandler;
 @Entity
 public class Bicho {
 	
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
+	
+	@OneToOne
 	private Especie especie;
+	
 	private int energia;
+	
+	@OneToOne
 	private Entrenador owner;
+	
 	private Integer victorias;
+	
+	//@Column
+	//@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Transient
 	private DateTime fechaCaptura;
+	
 	@Transient
 	private EvolutionHandler handler;
 	
@@ -42,6 +61,10 @@ public class Bicho {
 		handler.setEntrenador(this.owner);
 	}
 
+	public int getId() {
+		return this.id;
+	}
+	
 	/**
 	 * @return la especie a la que este bicho pertenece.
 	 */

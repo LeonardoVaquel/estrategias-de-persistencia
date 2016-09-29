@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ar.edu.unq.epers.bichomon.backend.dao.jdbc.DataEspecieManager;
+import ar.edu.unq.epers.bichomon.backend.dao.jdbc.DataEspecieManagerJDBC;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
@@ -73,7 +73,7 @@ public class TestEspecieService {
 		Especie retrievedEspecie = especieService.getEspecie(nombreEspecie);
 
 		// Se espera recibir la misma información que en el dummy data
-		Especie expectedData = DataEspecieManager.DATAEspecies.get(nombreEspecie);
+		Especie expectedData = DataEspecieManagerJDBC.DATAEspecies.get(nombreEspecie);
 		
 		assertEquals(retrievedEspecie.getNombre(), 		   expectedData.getNombre());
 		assertEquals(retrievedEspecie.getTipo(), 		   expectedData.getTipo());
@@ -89,11 +89,11 @@ public class TestEspecieService {
 				
 		List<Especie> todasLasEspecies = especieService.getAllEspecies();
 		
-		assertEquals(todasLasEspecies.size(), DataEspecieManager.DATAEspecies.size());
+		assertEquals(todasLasEspecies.size(), DataEspecieManagerJDBC.DATAEspecies.size());
 
-		assertEquals(todasLasEspecies.get(0).getNombre(), DataEspecieManager.DATAEspecies.get("Bottimon").getNombre());
-		assertEquals(todasLasEspecies.get(1).getNombre(), DataEspecieManager.DATAEspecies.get("Gisemon").getNombre());
-		assertEquals(todasLasEspecies.get(2).getNombre(), DataEspecieManager.DATAEspecies.get("Leomon").getNombre());
+		assertEquals(todasLasEspecies.get(0).getNombre(), DataEspecieManagerJDBC.DATAEspecies.get("Bottimon").getNombre());
+		assertEquals(todasLasEspecies.get(1).getNombre(), DataEspecieManagerJDBC.DATAEspecies.get("Gisemon").getNombre());
+		assertEquals(todasLasEspecies.get(2).getNombre(), DataEspecieManagerJDBC.DATAEspecies.get("Leomon").getNombre());
 		
 		// Asumimos que ya conocemos la información en un DATAService,
 		// dónde existen solamente 3 Especies con los nombres utilizados en el test 

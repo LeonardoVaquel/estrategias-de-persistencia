@@ -51,4 +51,8 @@ public interface EspecieDAO {
 	 */
 	Bicho crearBicho(String nombreEspecie, String nombreBicho);
 	
+	/**
+	 * Borra todos los registros de {@link Especie}
+	 */
+	void removeAllEspecies();
 }

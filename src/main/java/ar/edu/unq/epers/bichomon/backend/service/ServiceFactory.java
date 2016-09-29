@@ -1,7 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.service;
 
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.dao.jdbc.DataEspecieManager;
+import ar.edu.unq.epers.bichomon.backend.dao.jdbc.DataEspecieManagerJDBC;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 
@@ -25,7 +25,7 @@ public class ServiceFactory {
 	 * @return un objeto que implementa {@link DataService}
 	 */
 	public DataService getDataService() {
-		return new DataEspecieManager();
+		return new DataEspecieManagerJDBC();
 	}
 
 }

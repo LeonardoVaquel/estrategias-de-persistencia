@@ -1,12 +1,9 @@
 package ar.edu.unq.epers.bichomon.backend.dao.impl;
 
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
@@ -17,6 +14,11 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  */
 public class HibernateBichoDAO implements BichoDAO {
 
+	public Bicho getBicho(String nombreBicho) {
+		Session session = Runner.getCurrentSession();
+		return session.get(Bicho.class, nombreBicho);
+	}
+	
 	@Override
 	public Bicho buscar(String entrenador) {
 		Session session = Runner.getCurrentSession();

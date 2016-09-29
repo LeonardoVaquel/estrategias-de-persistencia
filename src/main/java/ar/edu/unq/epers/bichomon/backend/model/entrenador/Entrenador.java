@@ -1,6 +1,10 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
@@ -16,13 +20,17 @@ import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
  */
 @Entity
 public class Entrenador {
-
+	
+	@Id
 	private String nombre;
 	private Double currentExp;
 	private Double totalExp;
+	@Transient
 	protected ExpHandler expHandler;
 	private int nivel;
+	@OneToOne
 	private BichoCollection bichoCollection;
+	@OneToMany
 	private Ubicacion ubicacion;
 	
 	/**
@@ -42,6 +50,16 @@ public class Entrenador {
 		this.bichoCollection = bichoCollection;
 		this.setNivel(1);
 		this.setUbicacion(ubicacion);
+	}
+	
+	public Entrenador(String nombre) {
+		this.nombre = nombre;
+		this.setCurrentExp(0d);
+		this.setTotalExp(0d);
+		this.expHandler = null;
+		this.bichoCollection = new BichoCollection(1);
+		this.setNivel(1);
+		this.setUbicacion(null);
 	}
 	
 	/**

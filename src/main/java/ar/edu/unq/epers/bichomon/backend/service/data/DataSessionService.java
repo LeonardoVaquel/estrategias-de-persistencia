@@ -1,6 +1,5 @@
-package ar.edu.unq.epers.bichomon.backend.service.bicho;
+package ar.edu.unq.epers.bichomon.backend.service.data;
 
-import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
@@ -12,26 +11,30 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  * 
  * @author santiago
  */
-public class BichoSessionService {
+public class DataSessionService implements DataService {
 
 	
-	private BichoDAO bichoDAO;
+	private DataService dataService;
 	
-	public BichoSessionService(BichoDAO bichoDAO) {
-		this.bichoDAO = bichoDAO;
+	public DataSessionService(DataService dataService) {
+		this.dataService = dataService;
 	}
 	
-	public Bicho getBicho(String nombreBicho) {
-		return Runner.runInSession(() -> {
-			bichoDAO.getBicho(nombreBicho);
-			return null;
-		});
-	}
-	
-	public void puedeEvolucionar(String entrenador, int bicho) {
+	@Override
+	public void eliminarDatos() {
 		Runner.runInSession(() -> {
-			bichoDAO.puedeEvolucionar(entrenador, bicho);
+			dataService.eliminarDatos();
 			return null;
 		});
+		
+	}
+
+	@Override
+	public void crearSetDatosIniciales() {
+		Runner.runInSession(() -> {
+			dataService.crearSetDatosIniciales();
+			return null;
+		});
+		
 	}
 }

@@ -41,4 +41,8 @@ public class EspecieManager implements EspecieService {
 	public Bicho crearBicho(String nombreEspecie, String nombreBicho) {
 		return especieDAO.crearBicho(nombreEspecie, nombreBicho);
 	}
+	
+	public void removeAllEspecies() {
+		especieDAO.removeAllEspecies();
+	}
 }

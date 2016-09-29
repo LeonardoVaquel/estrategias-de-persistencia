@@ -13,7 +13,7 @@ import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
  * @author santiago
  *
  */
-public class DataEspecieManager implements DataService {
+public class DataEspecieManagerJDBC implements DataService {
 
 	public JDBCEspecieDAO dao = new JDBCEspecieDAO(); 
 	
@@ -43,6 +43,8 @@ public class DataEspecieManager implements DataService {
 		bottiMon.setUrlFoto("http://bichomongo/var/www/html/static/bichomon/bottimon.jpg");
 		bottiMon.setCantidadBichos(0);
 		DATAEspecies.put(bottiMon.getNombre(), bottiMon);
+		
+		
 	}
 	
 	@Override

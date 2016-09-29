@@ -27,6 +27,10 @@ public class CriterioEvolucionEnergia extends CriterioEvolucion {
 		super(especie, valor);
 		this.setTipo("Energia");
 	}
+	
+	public CriterioEvolucionEnergia(Integer valor) {
+		super(valor);
+	}
 
 	@Override
 	public Boolean seCumple(Bicho bicho, Entrenador entrenador) {

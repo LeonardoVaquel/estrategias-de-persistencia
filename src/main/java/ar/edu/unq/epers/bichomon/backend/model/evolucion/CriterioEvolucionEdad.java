@@ -29,6 +29,10 @@ public class CriterioEvolucionEdad extends CriterioEvolucion {
 		super(especie, valor);
 		this.setTipo("Edad");
 	}
+	
+	public CriterioEvolucionEdad(Integer valor) {
+		super(valor);
+	}
 
 	@Override
 	public Boolean seCumple(Bicho bicho, Entrenador entrenador) {
