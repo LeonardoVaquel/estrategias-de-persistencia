@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -19,7 +20,7 @@ public abstract class Ubicacion {
 	@Id
 	protected String nombre;
 	
-	@OneToMany
+	@OneToMany(cascade = {CascadeType.ALL})
 	protected List<Bicho> bichos;
 	
 	@Transient
@@ -30,6 +31,8 @@ public abstract class Ubicacion {
 		this.setBicho(new ArrayList <>());
 		this.random= random;
 	}
+	
+	public Ubicacion() {}
 	
 	public String getNombre() {
 		return nombre;
