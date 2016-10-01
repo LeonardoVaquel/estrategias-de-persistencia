@@ -7,6 +7,7 @@ import org.mockito.MockitoAnnotations;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import junit.framework.TestCase;
 
@@ -31,9 +32,11 @@ public class TestDuelo extends TestCase{
 		bichoRetado.setEnergia(20);
 		bichoRetador.setEnergia(20);
 		
-		duelo.iniciarDuelo();
+		ResultadoCombate result = duelo.iniciarDuelo();
 		
 		assertEquals(duelo.getGanador(), bichoRetado);
+		assertEquals(result.getBichoGanador(), bichoRetado);
+		assertEquals(result.getBichoPerdedor(), bichoRetador);
 	}
 	
 	@Test
@@ -42,9 +45,11 @@ public class TestDuelo extends TestCase{
 		bichoRetado.setEnergia(20);
 		bichoRetador.setEnergia(10);
 		
-		duelo.iniciarDuelo();
+		ResultadoCombate result = duelo.iniciarDuelo();
 		
 		assertEquals(duelo.getGanador().getVictorias(), new Integer(1));
+		assertEquals(result.getBichoGanador().getVictorias(), new Integer(1));
+		assertEquals(result.getBichoPerdedor().getVictorias(), new Integer(0));
 	}
 	
 	@Test
@@ -53,9 +58,11 @@ public class TestDuelo extends TestCase{
 		bichoRetador.setEnergia(50);
 		bichoRetado.setEnergia(10);
 		
-		duelo.iniciarDuelo();
+		ResultadoCombate result = duelo.iniciarDuelo();
 		
 		assertEquals(duelo.getGanador(), bichoRetador);
+		assertEquals(result.getBichoGanador(), bichoRetador);
+		assertEquals(result.getBichoPerdedor(), bichoRetado);
 		
 	}
 	
@@ -65,9 +72,11 @@ public class TestDuelo extends TestCase{
 		bichoRetado.setEnergia(20);
 		bichoRetador.setEnergia(10);
 		
-		duelo.iniciarDuelo();
+		ResultadoCombate result = duelo.iniciarDuelo();
 		
 		assertEquals(duelo.getGanador(), bichoRetado);
+		assertEquals(result.getBichoGanador(), bichoRetado);
+		assertEquals(result.getBichoPerdedor(), bichoRetador);
 	}
 	
 	
