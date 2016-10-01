@@ -1,7 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.dao;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 
 /**
  * Interfaz para servicios de bicho que utilizarán los encargados de frontend.
@@ -14,7 +14,7 @@ public interface BichoDAO {
 	 * Éste método buscara un bicho de un nombre en particular
 	 * @param nombreBicho - el nombre del bicho a ser buscado 
 	 */
-	public Bicho getBicho(String nombreBicho);
+	public Bicho getBicho(int idBicho);
 	
 	/**
 	 * Este método persiste el estado actual de un bicho en una base de datos 

@@ -86,7 +86,7 @@ public class EvolutionHandler {
 	 * criterio que no cumpla la condición. 
 	 * @return - Booleano indicando que un {@link Bicho} está en condiciones de evolucionar.
 	 */
-	public Boolean puedeEvolucionar() {
+	public boolean puedeEvolucionar() {
 		
 		criterios = this.especie.getCriteriosDeEvolucion();
 		Boolean result = true;

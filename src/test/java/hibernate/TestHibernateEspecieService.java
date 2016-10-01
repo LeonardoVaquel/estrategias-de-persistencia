@@ -1,5 +1,7 @@
 package hibernate;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,8 @@ public class TestHibernateEspecieService {
 	private BichomonFactory bichoFactory;
 	private EspecieDAO especieDAO;
 	
+	private Especie nuevaEspecie;
+	
 	@Before
 	public void prepare() {
 		this.especieDAO = new HibernateEspecieDAO();
@@ -28,7 +32,7 @@ public class TestHibernateEspecieService {
 		this.testService = new TestService();
 		
 		
-		Especie nuevaEspecie = this.bichoFactory.crearEspecie( "Fortmon",
+		nuevaEspecie = this.bichoFactory.crearEspecie( "Fortmon",
 																null,
 																null,
 																null,
@@ -60,18 +64,22 @@ public class TestHibernateEspecieService {
 		});
 	}
 
-//	@Test
-//	public void test_se_obtienen_todas_las_especies_existentes() {
-//		
-//		this.service.getAllEspecies();
-//	
-//		Runner.runInSession(() -> {
-//			
-//			List<Especie> especies = this.especieDAO.getAllEspecies();
-//			
-//			return null;
-//		});
-//		
-//	}
+	@Test
+	public void test_se_obtienen_todas_las_especies_existentes() {
+		
+		this.service.getAllEspecies();
+	
+		Runner.runInSession(() -> {
+			
+			List<Especie> especies = this.especieDAO.getAllEspecies();
+			
+			Especie expectedEspecie = especies.get(0);
+			
+			Assert.assertEquals(expectedEspecie.getNombre(), "Fortmon");
+			
+			return null;
+		});
+		
+	}
 	
 }

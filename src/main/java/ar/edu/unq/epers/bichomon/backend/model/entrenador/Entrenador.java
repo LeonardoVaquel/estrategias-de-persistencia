@@ -1,18 +1,19 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
-import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.ExpHandler;
+import ar.edu.unq.epers.bichomon.backend.model.experiencia.Experiencia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 /**
@@ -37,7 +38,7 @@ public class Entrenador {
 	@Transient
 	protected ExpHandler expHandler;
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Bicho> bichos;
 	
 	private int nivel;
@@ -57,25 +58,29 @@ public class Entrenador {
 	 * @param ubicacion Instancia de {@link Ubicacion} por default
 	 * @param bichoCollection Una instancia de {@link BichoCollection}
 	 */
-	public Entrenador(String nombre, ExpHandler exphandler, Ubicacion ubicacion, BichoCollection bichoCollection) {
+	public Entrenador(String nombre, ExpHandler exphandler, Ubicacion ubicacion) {
 		this.nombre = nombre;
 		this.setCurrentExp(0d);
 		this.setTotalExp(0d);
 		this.expHandler = exphandler;
-		this.bichoCollection = bichoCollection;
+		this.bichoCollection = new BichoCollection(1);
 		this.setNivel(1);
 		this.setUbicacion(ubicacion);
+		this.bichos = new ArrayList<>();
 	}
 	
 	public Entrenador(String nombre) {
 		this.nombre = nombre;
 		this.setCurrentExp(0d);
 		this.setTotalExp(0d);
-		this.expHandler = null;
+		this.expHandler = new ExpHandler(new Experiencia(1000d));
 		this.bichoCollection = new BichoCollection(1);
 		this.setNivel(1);
 		this.setUbicacion(null);
+		this.bichos = new ArrayList<>();
 	}
+	
+	public Entrenador() {};
 	
 	/**
 	 * Getters & Setters
@@ -117,12 +122,20 @@ public class Entrenador {
 	public void setUbicacion(Ubicacion ubicacion) {
 		this.ubicacion = ubicacion;
 	}
+	
+	public List<Bicho> getBichos() {
+		return this.bichos;
+	}
+	
+	public void setBichos(List<Bicho> bichos) {
+		this.bichos = bichos;
+	}
 
-	public BichoCollection getBichos() {
+	public BichoCollection getBichoCollection() {
 		return bichoCollection;
 	}
 
-	public void setBichos(BichoCollection coleccion) {
+	public void setBichoCollection(BichoCollection coleccion) {
 		this.bichoCollection = coleccion;
 	}
 	
@@ -153,7 +166,7 @@ public class Entrenador {
 	}
 
 	public ResultadoCombate duelo(Bicho bicho) {
-		return this.ubicacion.iniciarDuelo(bicho);
+		return this.ubicacion.duelo(this, bicho);
 	}
 	
 }

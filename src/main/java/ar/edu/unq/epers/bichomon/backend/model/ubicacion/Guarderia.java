@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollectionReachedMaximumSize;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 
 @Entity
 public class Guarderia  extends Ubicacion{
@@ -30,8 +30,9 @@ public class Guarderia  extends Ubicacion{
 	public Bicho adoptarBichoAbandonado(){
 		Integer index = this.numeroRandom();
 		
-		return this.getBichos().get(index);
-		//falta sacarlo de la lista de bichos
+		Bicho bicho = this.getBichos().get(index);
+		this.bichos.remove(bicho);
+		return bicho;
 	}
 	
 	public Integer numeroRandom(){
@@ -59,8 +60,7 @@ public class Guarderia  extends Ubicacion{
 
 	@Override
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NoSePuedeRealizarDueloEnUbicacion(this.getNombre());
 	}
 	
 }

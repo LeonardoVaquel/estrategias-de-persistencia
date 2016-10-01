@@ -30,9 +30,11 @@ public class CriterioEvolucionVictorias extends CriterioEvolucion {
 	public CriterioEvolucionVictorias(Integer valor) {
 		super(valor);
 	}
+	
+	public CriterioEvolucionVictorias() {}
 
 	@Override
-	public Boolean seCumple(Bicho bicho, Entrenador entrenador) {
+	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		Boolean condicion = bicho.getVictorias() > this.getValor(); 
 		if (!condicion) {
 			throw new NotEnoughVictoriesToEvolve(this.getValor());

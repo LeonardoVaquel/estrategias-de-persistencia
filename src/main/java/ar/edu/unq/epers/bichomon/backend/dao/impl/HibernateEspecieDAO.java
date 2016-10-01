@@ -34,8 +34,13 @@ public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
 	
 	@Override
 	public List<Especie> getAllEspecies() {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = Runner.getCurrentSession();
+		
+		String hql = "from Especie e";
+		
+		Query<Especie> query = session.createQuery(hql, Especie.class);
+		
+		return query.getResultList();
 	}
 
 	@Override
@@ -47,8 +52,10 @@ public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
 	public void removeAllEspecies() {
 		Session session = Runner.getCurrentSession();
 		
-		Query query = session.createQuery("delete from Especie");
-		query.executeUpdate();
+//		Query query = session.createQuery("delete from Especie");
+//		query.executeUpdate();
+		
+		session.delete(Especie.class);
 		
 	}
 

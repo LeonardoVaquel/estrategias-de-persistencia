@@ -21,15 +21,22 @@ public class BichoSessionService {
 		this.bichoDAO = bichoDAO;
 	}
 	
-	public Bicho getBicho(String nombreBicho) {
+	public Bicho getBicho(int idBicho) {
 		return Runner.runInSession(() -> {
-			bichoDAO.getBicho(nombreBicho);
+			bichoDAO.getBicho(idBicho);
 			return null;
 		});
 	}
 	
-	public void puedeEvolucionar(String entrenador, int bicho) {
+	public void guardarBicho(Bicho bicho) {
 		Runner.runInSession(() -> {
+			bichoDAO.guardarBicho(bicho);
+			return null;
+		});
+	}
+	
+	public boolean puedeEvolucionar(String entrenador, int bicho) {
+		return Runner.runInSession(() -> {
 			bichoDAO.puedeEvolucionar(entrenador, bicho);
 			return null;
 		});

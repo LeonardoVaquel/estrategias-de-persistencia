@@ -23,7 +23,7 @@ public class TestEntrenador {
 		
 		MockitoAnnotations.initMocks(this);
 		
-		entrenador = new Entrenador("TestTrainer", handler, ubicacion, collection);
+		entrenador = new Entrenador("TestTrainer", handler, ubicacion);
 		
 	}
 	

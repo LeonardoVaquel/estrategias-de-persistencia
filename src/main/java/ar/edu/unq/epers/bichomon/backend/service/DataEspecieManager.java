@@ -132,14 +132,14 @@ public class DataEspecieManager implements DataService {
 	@Override
 	public void crearSetDatosIniciales() {
 
-		dao.crearEspecie(DATAEspecies.get("Leomon"));
+//		dao.crearEspecie(DATAEspecies.get("Leomon"));
 //		dao.crearEspecie(DATAEspecies.get("LeomonEvolucion"));
 //		dao.crearEspecie(DATAEspecies.get("Gisemon"));
 //		dao.crearEspecie(DATAEspecies.get("GisemonEvolucion"));
 //		dao.crearEspecie(DATAEspecies.get("Bottimon"));
-		
-		bichoDAO.guardarBicho(DATABichos.get("bichoLeomon"));
-		bichoDAO.guardarBicho(DATABichos.get("bichoGisemon"));
+//		
+//		bichoDAO.guardarBicho(DATABichos.get("bichoLeomon"));
+//		bichoDAO.guardarBicho(DATABichos.get("bichoGisemon"));
 	}
 	
 }

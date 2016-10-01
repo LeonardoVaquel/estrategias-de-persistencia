@@ -32,8 +32,10 @@ public class CriterioEvolucionEnergia extends CriterioEvolucion {
 		super(valor);
 	}
 
+	public CriterioEvolucionEnergia() {}
+	
 	@Override
-	public Boolean seCumple(Bicho bicho, Entrenador entrenador) {
+	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		Boolean condicion = bicho.getEnergia() > this.getValor(); 
 		if (!condicion) {
 			throw new NotEnoughEnergyToEvolve(this.getValor());

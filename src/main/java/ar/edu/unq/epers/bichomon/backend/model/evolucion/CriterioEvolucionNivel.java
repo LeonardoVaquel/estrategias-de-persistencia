@@ -31,9 +31,11 @@ public class CriterioEvolucionNivel extends CriterioEvolucion {
 	public CriterioEvolucionNivel(Integer valor) {
 		super(valor);
 	}
+	
+	public CriterioEvolucionNivel() {}
 
 	@Override
-	public Boolean seCumple(Bicho bicho, Entrenador entrenador) {
+	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		
 		Boolean condicion = entrenador.getNivel() >= this.getValor(); 
 		if (!condicion) {

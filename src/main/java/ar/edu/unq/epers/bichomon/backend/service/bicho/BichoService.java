@@ -1,7 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.service.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 
 /**
  * Interfaz para servicios de bicho que utilizarán los encargados de frontend.

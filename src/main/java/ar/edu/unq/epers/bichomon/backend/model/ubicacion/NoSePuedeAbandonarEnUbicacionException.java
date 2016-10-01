@@ -1,10 +1,10 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
-public class NoSePuedeAbandonarEnUbicacion extends RuntimeException {
+public class NoSePuedeAbandonarEnUbicacionException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public NoSePuedeAbandonarEnUbicacion() {
+	public NoSePuedeAbandonarEnUbicacionException() {
 		super("Ubicación Incorrecta. Unicamente se puede abandonar bichos en Guarderías.");
 	}
 	

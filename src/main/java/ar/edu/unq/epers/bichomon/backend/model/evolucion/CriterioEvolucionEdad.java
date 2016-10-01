@@ -34,8 +34,10 @@ public class CriterioEvolucionEdad extends CriterioEvolucion {
 		super(valor);
 	}
 
+	public CriterioEvolucionEdad() {}
+	
 	@Override
-	public Boolean seCumple(Bicho bicho, Entrenador entrenador) {
+	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		DateTime today = new DateTime();
 		Boolean condicion = Days.daysBetween(bicho.getFechaCaptura(), today).getDays() > this.getValor(); 
 		if (!condicion) {

@@ -34,7 +34,7 @@ public class TestDojo {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		this.entrenador= new Entrenador("Pedro",handler, dojo, collection);
+		this.entrenador= new Entrenador("Pedro",handler, dojo);
 
 		this.entrenador.obtenerBicho(bicho1);
 		this.entrenador.obtenerBicho(bicho2);

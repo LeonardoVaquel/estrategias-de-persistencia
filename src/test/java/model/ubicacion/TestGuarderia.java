@@ -33,8 +33,8 @@ public class TestGuarderia {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		this.entrenador= new Entrenador("Pedro",handler, guarderiaSut, collection);
-		this.entrenador2= new Entrenador("Juan",handler, guarderiaSut, collection);
+		this.entrenador= new Entrenador("Pedro",handler, guarderiaSut);
+		this.entrenador2= new Entrenador("Juan",handler, guarderiaSut);
 		Random myRandom = mock(Random.class);
 		when(myRandom.nextInt(3)).thenReturn(1);
 		this.guarderiaSut= new Guarderia("guarderia", myRandom);

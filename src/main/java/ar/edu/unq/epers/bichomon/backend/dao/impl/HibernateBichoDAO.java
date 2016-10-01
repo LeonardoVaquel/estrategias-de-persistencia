@@ -1,11 +1,13 @@
 package ar.edu.unq.epers.bichomon.backend.dao.impl;
 
+import java.io.Serializable;
+
 import org.hibernate.Session;
 
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
@@ -15,9 +17,17 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  */
 public class HibernateBichoDAO implements BichoDAO {
 
-	public Bicho getBicho(String nombreBicho) {
+	public Bicho getBicho(int idBicho) {
 		Session session = Runner.getCurrentSession();
-		return session.get(Bicho.class, nombreBicho);
+		return session.get(Bicho.class, idBicho);
+	}
+	
+	public <T> T recuperarEntidad(Class<T> tipo, Serializable key) {
+		return Runner.runInSession(() -> {
+			Session session = Runner.getCurrentSession();
+			T valor = session.get(tipo, key);
+			return valor;
+		});
 	}
 	
 	@Override

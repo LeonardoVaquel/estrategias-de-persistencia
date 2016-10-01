@@ -39,6 +39,8 @@ public abstract class CriterioEvolucion {
 		this.setValor(valor);
 	}
 	
+	public CriterioEvolucion() {}
+	
 	public Especie getEspecie() {
 		return especie;
 	}
@@ -63,5 +65,5 @@ public abstract class CriterioEvolucion {
 		this.tipo = tipo;
 	}
 	
-	public abstract Boolean seCumple(Bicho bicho, Entrenador entrenador);
+	public abstract boolean seCumple(Bicho bicho, Entrenador entrenador);
 }

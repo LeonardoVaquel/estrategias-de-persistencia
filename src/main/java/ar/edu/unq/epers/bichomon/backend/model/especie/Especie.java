@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
+
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 
 /**
@@ -25,10 +27,10 @@ public class Especie {
 	@Id
 	private String nombre;
 	
-	@OneToOne
+	@OneToOne(cascade = {CascadeType.ALL})
 	private Especie raiz;
 
-	@OneToOne
+	@OneToOne(cascade = {CascadeType.ALL})
 	private Especie evolucion;
 	
 	@OneToMany(cascade = CascadeType.ALL)
