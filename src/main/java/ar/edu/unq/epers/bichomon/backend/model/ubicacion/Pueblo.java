@@ -10,6 +10,7 @@ import javax.persistence.Transient;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Buscador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
 
 @Entity
 public class Pueblo extends Ubicacion{
@@ -30,6 +31,18 @@ public class Pueblo extends Ubicacion{
 	
 	@Override
 	public Bicho buscar(Entrenador entrenador) {
+		return null;
+	}
+
+	@Override
+	public void abandonar(Entrenador entrenador, Bicho bicho) {
+		
+		
+	}
+
+	@Override
+	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -38,7 +38,6 @@ public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
 		return null;
 	}
 
-	// TODO Bicho no tiene mas nombre
 	@Override
 	public Bicho crearBicho(String nombreEspecie, String nombreBicho) {
 		// TODO Auto-generated method stub

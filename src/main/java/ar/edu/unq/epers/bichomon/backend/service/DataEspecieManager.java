@@ -10,6 +10,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
@@ -35,7 +36,7 @@ public class DataEspecieManager implements DataService {
 	
 	static {
 		Especie leoMon = new Especie("Leomon", TipoBicho.CHOCOLATE);
-		Especie leoMonEvolucion = new Especie("EvolucionLeomon", TipoBicho.CHOCOLATE);
+		Especie leoMonEvolucion = new Especie("LeomonEvolucion", TipoBicho.CHOCOLATE);
 		
 		// Leomon
 		leoMon.setRaiz(leoMon);
@@ -80,7 +81,7 @@ public class DataEspecieManager implements DataService {
 		DATAEspecies.put(giseMon.getNombre(), giseMon);
 		
 		//GisemonEvolucion		
-		giseMonEvolucion.setRaiz(giseMon );
+		giseMonEvolucion.setRaiz(giseMon);
 		giseMonEvolucion.setEvolucion(null);
 			List<CriterioEvolucion> criteriosEvolucionGisemon = new ArrayList<>();
 			criteriosEvolucionGisemon.add(new CriterioEvolucionNivel(5));
@@ -108,13 +109,19 @@ public class DataEspecieManager implements DataService {
 		bottiMon.setCantidadBichos(0);
 		DATAEspecies.put(bottiMon.getNombre(), bottiMon);
 		
+		Entrenador entrenador = new Entrenador("Santiago");
+		
 		Bicho bichoLeomon = new Bicho(leoMon);
 		bichoLeomon.setEnergia(250);
+		bichoLeomon.setOwner(entrenador);
 		DATABichos.put("bichoLeomon", bichoLeomon);
 		
 		Bicho bichoGisemon = new Bicho(giseMon);
 		bichoGisemon.setVictorias(10);
+		bichoGisemon.setOwner(entrenador);
 		DATABichos.put("bichoGisemon", bichoGisemon);
+		
+		
 	}
 	
 	@Override
@@ -126,10 +133,10 @@ public class DataEspecieManager implements DataService {
 	public void crearSetDatosIniciales() {
 
 		dao.crearEspecie(DATAEspecies.get("Leomon"));
-		dao.crearEspecie(DATAEspecies.get("LeomonEvolucion"));
-		dao.crearEspecie(DATAEspecies.get("Gisemon"));
-		dao.crearEspecie(DATAEspecies.get("GisemonEvolucion"));
-		dao.crearEspecie(DATAEspecies.get("Bottimon"));
+//		dao.crearEspecie(DATAEspecies.get("LeomonEvolucion"));
+//		dao.crearEspecie(DATAEspecies.get("Gisemon"));
+//		dao.crearEspecie(DATAEspecies.get("GisemonEvolucion"));
+//		dao.crearEspecie(DATAEspecies.get("Bottimon"));
 		
 		bichoDAO.guardarBicho(DATABichos.get("bichoLeomon"));
 		bichoDAO.guardarBicho(DATABichos.get("bichoGisemon"));

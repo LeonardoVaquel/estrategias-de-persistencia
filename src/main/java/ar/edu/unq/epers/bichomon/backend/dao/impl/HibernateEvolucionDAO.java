@@ -12,7 +12,7 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
  * Una implementacion de {@link EvolucionDAO} que persiste
- * en una base de datos relacional utilizando JDBC
+ * en una base de datos relacional utilizando Hibernate
  * 
  */
 public class HibernateEvolucionDAO implements EvolucionDAO {

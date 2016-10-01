@@ -41,7 +41,6 @@ public class TestHibernateBichoService {
 		
 	}
 	
-	@After
 	public void deleteAll() {
 		this.dataService.eliminarDatos();
 		// solamente se eliminan las especies
@@ -51,7 +50,6 @@ public class TestHibernateBichoService {
 	public void dado_un_bicho_este_puede_evolucionar() {
 		
 		Bicho bicho = this.service.getBicho("Leomon");
-		bicho.setOwner(entrenador);
 		
 		this.service.puedeEvolucionar(entrenador.getNombre(), bicho.getId());
 	}

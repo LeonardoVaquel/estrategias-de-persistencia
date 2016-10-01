@@ -4,6 +4,7 @@ import org.hibernate.Session;
 
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
@@ -27,17 +28,31 @@ public class HibernateBichoDAO implements BichoDAO {
 
 	// TODO
 	@Override
-	public void abandonar(String entrenador, int bicho) {
+	public void abandonar(String nombreEntrenador, int idBicho) {
 		Session session = Runner.getCurrentSession();
-		session.save(entrenador, bicho);
+		
+		Bicho bicho = session.get(Bicho.class, idBicho);
+		Entrenador entrenador = session.get(Entrenador.class, nombreEntrenador);
+		
+		entrenador.abandonarBicho(bicho);
+		
+		session.save(entrenador);
+		session.save(bicho);
+		
+		
+		
 	}
 
 	@Override
-	public ResultadoCombate duelo(String entrenador, int bicho) {
+	public ResultadoCombate duelo(String nombreEntrenador, int idBicho) {
 		Session session = Runner.getCurrentSession();
 		
-		session.get(Bicho.class, bicho);
-		return null;
+		Bicho bicho = session.get(Bicho.class, idBicho);
+		Entrenador entrenador = session.get(Entrenador.class, nombreEntrenador);
+		
+		// historial
+		
+		return entrenador.duelo(bicho);
 	}
 
 	@Override

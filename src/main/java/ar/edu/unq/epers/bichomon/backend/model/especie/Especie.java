@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.model.especie;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,13 +25,13 @@ public class Especie {
 	@Id
 	private String nombre;
 	
-	@ManyToOne
+	@OneToOne
 	private Especie raiz;
 
 	@OneToOne
 	private Especie evolucion;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<CriterioEvolucion> criteriosDeEvolucion;
 	
 	private int altura;

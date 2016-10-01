@@ -8,6 +8,10 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -23,6 +27,8 @@ public class TestBichoCollection {
 	private @Mock Entrenador entrenador;
 	private @Mock Bicho bicho;
 	
+	private List<Bicho> listaDeBichos;
+	
 	@Rule    
 	public ExpectedException fullCollection;
 	
@@ -35,6 +41,8 @@ public class TestBichoCollection {
 
 		collection = new BichoCollection(entrenador.getNivel());
 	
+		listaDeBichos = new ArrayList<>();
+		
 		fullCollection = ExpectedException.none();
 	}
 	
@@ -71,12 +79,12 @@ public class TestBichoCollection {
 		
 		collection.setCoeficiente(1);
 		
-		collection.add(bicho);
-		collection.add(bicho);
-		collection.add(bicho);
+		collection.add(bicho, listaDeBichos);
+		collection.add(bicho, listaDeBichos);
+		collection.add(bicho, listaDeBichos);
 		
 		Assert.assertEquals(3, collection.getMaxSize(), 0);
-		Assert.assertEquals(true, collection.isFull());
+		Assert.assertEquals(true, collection.isFull(listaDeBichos));
 		
 	}
 	
@@ -100,17 +108,17 @@ public class TestBichoCollection {
 	@Test(expected=BichoCollectionCantBeEmpty.class)
 	public void cuando_intento_remover_el_unico_bicho_de_una_coleccion_obtengo_una_excepcion() {
 		
-		collection.add(bicho);
-		collection.remove(bicho);
+		collection.add(bicho, listaDeBichos);
+		collection.remove(bicho, listaDeBichos);
 	}
 	
 	@Test(expected=BichoCollectionReachedMaximumSize.class)
 	public void cuando_intento_agregar_un_bicho_a_una_lista_llena_obtengo_una_excepcion() {
 		
-		collection.add(bicho);
-		collection.add(bicho);
-		collection.add(bicho);
-		collection.add(bicho);
+		collection.add(bicho, listaDeBichos);
+		collection.add(bicho, listaDeBichos);
+		collection.add(bicho, listaDeBichos);
+		collection.add(bicho, listaDeBichos);
 		
 	}
 }

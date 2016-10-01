@@ -1,9 +1,16 @@
 package ar.edu.unq.epers.bichomon.backend.model.collection;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 /**
  * {@link BichoCollection} es una clase que representa una colección de {@link Bicho}, para un 
@@ -12,12 +19,15 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
  * @author santiago
  *
  */
+
 public class BichoCollection {
 
-	private List<Bicho> bichos;
+	private int id;
+	
 	private Integer maxSize;
 	private Integer nivel;
 	private Integer coeficiente;
+
 	
 	/**
 	 * Construye una colección de bichos con un nivel y un coeficiente de capacidad fijo.
@@ -25,7 +35,6 @@ public class BichoCollection {
 	 * @param trainerLevel
 	 */
 	public BichoCollection(Integer trainerLevel) {
-		this.bichos  = new ArrayList<>();
 		this.coeficiente = 3;
 		this.setNivel(trainerLevel);
 	}
@@ -37,7 +46,6 @@ public class BichoCollection {
 	 * @param coeficiente
 	 */
 	public BichoCollection(Integer trainerLevel, Integer coeficiente) {
-		this.bichos  = new ArrayList<>();
 		this.setCoeficiente(coeficiente);
 		this.setNivel(trainerLevel);
 		this.updateSize();
@@ -49,10 +57,6 @@ public class BichoCollection {
 	
 	public Integer getMaxSize() {
 		return this.maxSize;
-	}
-	
-	public Integer getSize() {
-		return this.bichos.size();
 	}
 	
 	public void updateSize() {
@@ -77,12 +81,12 @@ public class BichoCollection {
 		return this.nivel;
 	}
 	
-	public Boolean isFull() {
-		return !(this.bichos.size() < this.maxSize);
+	public Boolean isFull(List<Bicho> bichos) {
+		return !(bichos.size() < this.maxSize);
 	}
 	
-	public Boolean isSingleton() {
-		return this.bichos.size() == 1;
+	public Boolean isSingleton(List<Bicho> bichos) {
+		return bichos.size() == 1;
 	}
 	
 	/**
@@ -90,13 +94,13 @@ public class BichoCollection {
 	 * En caso de no tener espacio para agregar, se lanza una excepción.
 	 * @param bicho
 	 */
-	public void add(Bicho bicho) {
+	public void add(Bicho bicho, List<Bicho> bichos) {
 		
-		if (this.isFull()) {
+		if (this.isFull(bichos)) {
 			throw new BichoCollectionReachedMaximumSize();
 		}
 		else {
-			this.bichos.add(bicho);
+			bichos.add(bicho);
 		}
 		
 	}
@@ -106,12 +110,12 @@ public class BichoCollection {
 	 * En caso de tener un solo elemento, se lanza una excepción.
 	 * @param bicho
 	 */	
-	public void remove(Bicho bicho) {
-		if(this.isSingleton()) {
+	public void remove(Bicho bicho, List<Bicho> bichos) {
+		if(this.isSingleton(bichos)) {
 			throw new BichoCollectionCantBeEmpty();
 		}
 		else {
-			this.bichos.remove(bicho);
+			bichos.remove(bicho);
 		}
 	}
 	

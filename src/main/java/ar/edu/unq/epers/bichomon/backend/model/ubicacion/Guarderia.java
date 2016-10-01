@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollectionReachedMaximumSize;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
 
 @Entity
 public class Guarderia  extends Ubicacion{
@@ -54,6 +55,12 @@ public class Guarderia  extends Ubicacion{
 			return null;
 		}
 		
+	}
+
+	@Override
+	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
 
 @Entity
 public abstract class Ubicacion {
@@ -47,5 +48,9 @@ public abstract class Ubicacion {
 	}
 	
 	public abstract Bicho buscar(Entrenador entrenador);
+	
+	public abstract void abandonar(Entrenador entrenador, Bicho bicho);
+	
+	public abstract ResultadoCombate duelo(Entrenador entrenador, Bicho bicho);
 	
 }

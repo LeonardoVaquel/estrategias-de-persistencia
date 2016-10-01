@@ -5,12 +5,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.EvolutionHandler;
@@ -38,9 +41,8 @@ public class Bicho {
 	
 	private Integer victorias;
 	
-	//@Column
-	//@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
-	@Transient
+	@Column
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime fechaCaptura;
 	
 	@Transient
@@ -53,12 +55,9 @@ public class Bicho {
 	public Bicho(Especie especie) {
 		this.especie      = especie;
 		this.energia      = especie.getEnergiaInicial();
-		this.owner        = null;
 		this.victorias    = 0;
 		this.setFechaCaptura();
 		this.setHandler(new EvolutionHandler());
-		handler.setBicho(this);
-		handler.setEntrenador(this.owner);
 	}
 
 	public int getId() {
@@ -89,7 +88,7 @@ public class Bicho {
 	}
 
 	public Entrenador getOwner() {
-		return owner;
+		return this.owner;
 	}
 
 	public void setOwner(Entrenador owner) {
@@ -132,6 +131,8 @@ public class Bicho {
 	}
 	
 	public boolean puedeEvolucionar() {
+		handler.setBicho(this);
+		handler.setEntrenador(this.owner);
 		return handler.puedeEvolucionar();
 	}
 	

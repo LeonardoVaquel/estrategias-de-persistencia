@@ -1,13 +1,17 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
+import ar.edu.unq.epers.bichomon.backend.model.eventos.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.ExpHandler;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
@@ -23,14 +27,25 @@ public class Entrenador {
 	
 	@Id
 	private String nombre;
+	
+	
 	private Double currentExp;
+	
+	
 	private Double totalExp;
+	
 	@Transient
 	protected ExpHandler expHandler;
-	private int nivel;
-	@OneToOne
-	private BichoCollection bichoCollection;
+	
 	@OneToMany
+	private List<Bicho> bichos;
+	
+	private int nivel;
+	
+	@Transient
+	private BichoCollection bichoCollection;
+	//@ManyToOne
+	@Transient
 	private Ubicacion ubicacion;
 	
 	/**
@@ -124,19 +139,21 @@ public class Entrenador {
 	 * @return boolean indicando si puede buscar o no.
 	 */
 	public Boolean puedeBuscar() {
-		return this.bichoCollection.isFull();
+		return this.bichoCollection.isFull(this.bichos);
 	}
 	
 	public void obtenerBicho(Bicho bicho) {
-		this.bichoCollection.add(bicho);
+		this.bichoCollection.add(bicho, this.bichos);
+		bicho.setOwner(this);
 	}
 	
 	public void abandonarBicho(Bicho bicho) {
-		this.bichoCollection.remove(bicho);
+		this.bichoCollection.remove(bicho, this.bichos);
+		bicho.setOwner(null);
 	}
 
-	// TODO acciones
-	
-
+	public ResultadoCombate duelo(Bicho bicho) {
+		return this.ubicacion.iniciarDuelo(bicho);
+	}
 	
 }
