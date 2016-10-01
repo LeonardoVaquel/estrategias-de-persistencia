@@ -144,4 +144,8 @@ public class Bicho {
 		this.setEspecie(especie);
 	}
 
+	public void aumentarEnergiaEn(int n) {
+		energia = energia + n;		
+	}
+
 }
