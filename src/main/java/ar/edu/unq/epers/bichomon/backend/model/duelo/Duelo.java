@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionException;
 
 /**
  * El {@link Duelo} es una modalidad del juego que funciona
@@ -44,9 +45,21 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 	 * que es retado.
 	 */
 	public ResultadoCombate iniciarDuelo(){
-//		List<Integer> turnos = generarTurnos(10);
-		Integer turno	= 0;
+		try{
+			if(this.estaEnDojo(retador)){
+				this.comenzarCombate();
+			}
+		}catch(UbicacionException e){
+			System.out.println(e.getMessage());
+		}finally{
+			return combatResult;
+		}
+	}
 		
+		
+	private ResultadoCombate comenzarCombate(){
+		Integer turno	= 0;
+			
 		while(noHayGanador() && turno < 10){
 			this.ataqueRival();
 			this.verSiHayGanador();
@@ -62,6 +75,15 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 		ganador.nuevaVictoria();
 		return combatResult;
 	}
+		
+	private boolean estaEnDojo(Bicho bicho){
+		if(bicho.getOwner().getUbicacion().getNombre() == "Dojo"){
+			return true;
+		}else{
+			throw new UbicacionException("Solo se puede luchar en los Dojos");
+		}
+		
+	}
 	
 	private void ataqueRival() {
 		danioRetador = danioRetador + retador.getEnergia() * 1; // 1 debe ser un random(0.5,1)		
@@ -73,18 +95,20 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 
 	private void verSiHayGanador(){
 		if(danioRetado > retador.getEnergia()){
-			combatResult.setBichoGanador(retado);
-			combatResult.setEntrenadorGanador(retado.getOwner());
-			combatResult.setBichoPerdedor(retador);
+			this.refreshCombat(retado, retador);
 			ganador = retado;
 		}else{
 			if(danioRetador > retado.getEnergia()){
-				combatResult.setBichoGanador(retador);
-				combatResult.setEntrenadorGanador(retador.getOwner());
-				combatResult.setBichoPerdedor(retado);
+				this.refreshCombat(retador, retado);
 				ganador = retador;
 			}
 		}
+	}
+	
+	private void refreshCombat(Bicho ganador, Bicho perdedor){
+		combatResult.setBichoGanador(ganador);
+		combatResult.setEntrenadorGanador(ganador.getOwner());
+		combatResult.setBichoPerdedor(perdedor);
 	}
 	
 	private void decidirUnGanador(){

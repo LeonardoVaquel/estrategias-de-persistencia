@@ -1,5 +1,7 @@
 package model.duelo;
 
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -8,7 +10,10 @@ import org.mockito.MockitoAnnotations;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionException;
 import junit.framework.TestCase;
 
 public class TestDuelo extends TestCase{
@@ -17,6 +22,8 @@ public class TestDuelo extends TestCase{
 	private Bicho bichoRetador;
 	private Bicho bichoRetado;
 	private @Mock Especie especie1, especie2;
+	private @Mock Entrenador entrenador1, entrenador2;
+	private @Mock Dojo dojo;
 	
 	@Before
 	public void setUp(){
@@ -24,6 +31,11 @@ public class TestDuelo extends TestCase{
 		bichoRetador 	= new Bicho(especie1);
 		bichoRetado		= new Bicho(especie2);
 		duelo			= new Duelo(bichoRetador, bichoRetado);
+		bichoRetador.setOwner(entrenador1);
+		bichoRetado.setOwner(entrenador2);
+		when(entrenador1.getUbicacion()).thenReturn(dojo);
+		when(entrenador2.getUbicacion()).thenReturn(dojo);
+		when(dojo.getNombre()).thenReturn("Dojo");
 	}
 	
 	@Test
@@ -79,6 +91,10 @@ public class TestDuelo extends TestCase{
 		assertEquals(result.getBichoPerdedor(), bichoRetador);
 	}
 	
-	
+	@Test(expected = UbicacionException.class)
+	public void test_UnBichoQueNoEstaEnUnDojoNoPuedeLuchar(){
+		when(dojo.getNombre()).thenReturn("Guarderia");
+		duelo.iniciarDuelo();
+	}
 	
 }

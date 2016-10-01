@@ -5,7 +5,8 @@ import java.util.Random;
 import javax.persistence.Entity;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-//import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 @Entity
@@ -60,6 +61,17 @@ public class Dojo extends Ubicacion {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void abandonar(Entrenador entrenador, Bicho bicho) {
+		throw new NoSePuedeAbandonarEnUbicacion();
+		
+	}
+
+	@Override
+	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
+		return (new Duelo(bicho, campeon).iniciarDuelo());
 	}
 
 
