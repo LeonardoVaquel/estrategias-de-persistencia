@@ -73,6 +73,9 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 		}
 		
 		ganador.nuevaVictoria();
+		retador.aumentarEnergiaEn(3);
+		retado.aumentarEnergiaEn(2);
+		
 		return combatResult;
 	}
 		
