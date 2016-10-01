@@ -1,5 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 @Entity
 public class Dojo extends Ubicacion {
@@ -28,16 +31,16 @@ public class Dojo extends Ubicacion {
 		this.campeon = campeon;
 	}
 	
-	//public List<Bicho> mismaEspecieQueElCampeon(){
-		//Especie especieCampeon= this.campeon.getBicho().getEspecie();
-		//List<Bicho> bichosDeIgualEspecie= new ArrayList<>();
-		//for (Bicho bicho: this.getBichos()){
-			//if(bicho.getEspecie()== especieCampeon){
-				//bichosDeIgualEspecie.add(bicho);
-			//}
-		//}
-		//return  bichosDeIgualEspecie;
-	//}
+	public List<Bicho> mismaEspecieQueElCampeon(){
+		Especie especieCampeon= this.campeon.getEspecie().getRaiz();
+		List<Bicho> bichosDeIgualEspecie= new ArrayList<>();
+		for (Bicho bicho: this.getBichos()){
+			if(bicho.getEspecie()== especieCampeon){
+				bichosDeIgualEspecie.add(bicho);
+			}
+		}
+		return  bichosDeIgualEspecie;
+	}
 	
 	public Integer cantidadDeBichosEnDojo(){
 		return this.getBichos().size();
@@ -71,11 +74,10 @@ public class Dojo extends Ubicacion {
 
 	@Override
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
-		return (new Duelo(bicho, campeon).iniciarDuelo());
+		ResultadoCombate duelo = new Duelo(bicho, campeon).iniciarDuelo();
+		campeon = duelo.getBichoGanador();
+		
+		return duelo;
 	}
-
-
-
-
 
 }

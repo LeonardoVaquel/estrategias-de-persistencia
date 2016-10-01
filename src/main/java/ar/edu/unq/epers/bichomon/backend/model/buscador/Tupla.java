@@ -6,10 +6,10 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 public class Tupla{
 	private Especie key;
-	private double value;
+	private float value;
 	private List<Integer> lsValue;
 
-	public Tupla(Especie especie, double value){
+	public Tupla(Especie especie, float value){
 		this.key 	= especie;
 		this.value 	= value;
 	};
@@ -23,7 +23,7 @@ public class Tupla{
 		return this.key;
 	}
 	
-	public double getValue(){
+	public float getValue(){
 		return this.value;
 	}
 	
