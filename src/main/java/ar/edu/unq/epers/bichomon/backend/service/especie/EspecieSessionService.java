@@ -43,8 +43,8 @@ public class EspecieSessionService {
 	 * durante una sesión en una base de datos.
 	 * @param nombreEspecie
 	 */
-	public void getEspecie(String nombreEspecie) {
-		Runner.runInSession(() -> {
+	public Especie getEspecie(String nombreEspecie) {
+		return Runner.runInSession(() -> {
 			especieDAO.getEspecie(nombreEspecie);
 			
 			return null;
@@ -58,6 +58,13 @@ public class EspecieSessionService {
 	public void getAllEspecies() {
 		Runner.runInSession(() -> {
 			especieDAO.getAllEspecies();
+			return null;
+		});
+	}
+	
+	public void removeAllEspecies() {
+		Runner.runInSession(() -> {
+			especieDAO.removeAllEspecies();
 			return null;
 		});
 	}

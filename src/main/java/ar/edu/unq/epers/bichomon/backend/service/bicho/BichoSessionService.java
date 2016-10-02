@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.service.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
@@ -23,8 +24,7 @@ public class BichoSessionService {
 	
 	public Bicho getBicho(int idBicho) {
 		return Runner.runInSession(() -> {
-			bichoDAO.getBicho(idBicho);
-			return null;
+			return bichoDAO.getBicho(idBicho);
 		});
 	}
 	
@@ -37,8 +37,26 @@ public class BichoSessionService {
 	
 	public boolean puedeEvolucionar(String entrenador, int bicho) {
 		return Runner.runInSession(() -> {
-			bichoDAO.puedeEvolucionar(entrenador, bicho);
+			return bichoDAO.puedeEvolucionar(entrenador, bicho);
+		});
+	}
+	
+	public Bicho evolucionar(String entrenador, int bicho) {
+		return Runner.runInSession(() -> {
+			return bichoDAO.evolucionar(entrenador, bicho);
+		});
+	}
+	
+	public void abandonar(String entrenador, int bicho) {
+		Runner.runInSession(() -> {
+			bichoDAO.abandonar(entrenador, bicho);
 			return null;
+		});
+	}
+	
+	public ResultadoCombate duelo(String entrenador, int bicho) {
+		return Runner.runInSession(()-> {
+			return bichoDAO.duelo(entrenador, bicho);
 		});
 	}
 }

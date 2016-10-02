@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -44,9 +47,9 @@ public class Entrenador {
 	private int nivel;
 	
 	@Transient
-	private BichoCollection bichoCollection;
+	private BichoCollection bichoCollection = new BichoCollection(this.getNivel());
 	//@ManyToOne
-	@Transient
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Ubicacion ubicacion;
 	
 	/**
@@ -160,13 +163,36 @@ public class Entrenador {
 		bicho.setOwner(this);
 	}
 	
+	public boolean puedeAbandonar() {
+		return !this.bichoCollection.isSingleton(bichos);
+	}
+	
+	/**
+	 * Dado un bicho se espera que el entrenador pueda abandonarlo en la ubicación actual.
+	 * De lo contrario se levanta una excepción
+	 * @param bicho - el {@link Bicho} a ser despachado a la ubicación
+	 */
+	public void abandonar(Bicho bicho) {
+		this.ubicacion.abandonar(this, bicho);
+	}
+	
+	/**
+	 * Dado un {@link Bicho}, se elimina de la lista de bichos de un {@link Entrenador} 
+	 * @param bicho - el bicho a ser abandonado
+	 */
 	public void abandonarBicho(Bicho bicho) {
+		this.setBichoCollection(new BichoCollection(this.getNivel()));
+	
 		this.bichoCollection.remove(bicho, this.bichos);
 		bicho.setOwner(null);
 	}
 
 	public ResultadoCombate duelo(Bicho bicho) {
 		return this.ubicacion.duelo(this, bicho);
+	}
+	
+	public void mover(Ubicacion ubicacion) {
+		this.setUbicacion(ubicacion);
 	}
 	
 }

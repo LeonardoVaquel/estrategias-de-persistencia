@@ -11,7 +11,6 @@ import javax.persistence.Transient;
 import org.joda.time.LocalDateTime;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Historial;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
@@ -29,6 +28,10 @@ public class Dojo extends Ubicacion {
 		
 	public Dojo(String nombreDojo,Random random) {
 		super(nombreDojo,random);
+	}
+	
+	public Dojo(String nombreDojo) {
+		super(nombreDojo);
 	}
 
 	public Dojo() {}
@@ -87,7 +90,7 @@ public class Dojo extends Ubicacion {
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
 		ResultadoCombate duelo = new Duelo(bicho, campeon).iniciarDuelo();
 		campeon = duelo.getBichoGanador();
-		this.agregarAlHistorial(campeon, new LocalDateTime(), duelo.getBichoPerdedor());
+		//this.agregarAlHistorial(campeon, new LocalDateTime(), duelo.getBichoPerdedor());
 		
 		return duelo;
 	}

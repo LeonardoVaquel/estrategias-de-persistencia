@@ -21,10 +21,8 @@ import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionEdad;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionEnergia;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionNivel;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionVictorias;
-import ar.edu.unq.epers.bichomon.backend.model.evolucion.Evolucion;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.EvolutionHandler;
 import ar.edu.unq.epers.bichomon.backend.service.BichoManager;
-import ar.edu.unq.epers.bichomon.backend.service.EvolucionManager;
 
 public class TestEvolutionHandler {
 	

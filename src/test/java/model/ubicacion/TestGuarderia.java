@@ -67,7 +67,7 @@ public class TestGuarderia {
 		when (miListaDeBichos.get(0)).thenReturn(bicho2);
 		when(miListaDeBichos.get(1)).thenReturn(bichoSeleccionado);
 		when(miListaDeBichos.size()).thenReturn(3);
-		guarderiaSut.setBicho(miListaDeBichos);
+		guarderiaSut.setBichos(miListaDeBichos);
 			
 		
 		Entrenador expected = this.entrenador;

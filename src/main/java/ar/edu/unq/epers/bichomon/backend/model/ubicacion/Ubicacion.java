@@ -23,13 +23,20 @@ public abstract class Ubicacion {
 	@OneToMany(cascade = {CascadeType.ALL})
 	protected List<Bicho> bichos;
 	
+	@OneToMany(cascade = {CascadeType.ALL})
+	protected List<Entrenador> entrenadores;
+	
 	@Transient
 	protected Random random;
 	
 	public Ubicacion (String nombre, Random random){
 		this.setNombre(nombre);
-		this.setBicho(new ArrayList <>());
+		this.setBichos(new ArrayList <>());
 		this.random= random;
+	}
+	
+	public Ubicacion(String nombre) {
+		this.nombre = nombre;
 	}
 	
 	public Ubicacion() {}
@@ -46,7 +53,7 @@ public abstract class Ubicacion {
 		return bichos;
 	}
 	
-	public void setBicho(List<Bicho> bichos) {
+	public void setBichos(List<Bicho> bichos) {
 		this.bichos = bichos;
 	}
 	

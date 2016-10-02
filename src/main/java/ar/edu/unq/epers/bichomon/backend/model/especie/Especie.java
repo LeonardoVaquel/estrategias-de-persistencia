@@ -8,11 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.Cascade;
 
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 
@@ -27,10 +24,10 @@ public class Especie {
 	@Id
 	private String nombre;
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade = CascadeType.ALL)
 	private Especie raiz;
 
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade = CascadeType.ALL)
 	private Especie evolucion;
 	
 	@OneToMany(cascade = CascadeType.ALL)
@@ -86,7 +83,7 @@ public class Especie {
 		this.urlFoto = urlFoto;
 		this.cantidadBichos = cantidadBichos;
 	}	
-	
+
 	/**
 	 * @return el nombre de la especie (por ejemplo: Perromon)
 	 */
@@ -191,6 +188,10 @@ public class Especie {
 	}
 	public void setCantidadBichos(int i) {
 		this.cantidadBichos = i;
+	}
+	
+	public void incrementarCantidad() {
+		this.setCantidadBichos(this.cantidadBichos + 1);
 	}
 	
 }

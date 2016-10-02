@@ -3,7 +3,6 @@ package model.ubicacion;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -53,7 +52,7 @@ public class TestDojo {
 		List<Bicho> miListaDeBichos= mock(List.class);
 		when(miListaDeBichos.get(1)).thenReturn(bichoSeleccionado);
 		when(miListaDeBichos.size()).thenReturn(3);
-		dojo.setBicho(miListaDeBichos);
+		dojo.setBichos(miListaDeBichos);
 		
 		Entrenador expected = this.entrenador;
 		assertSame(expected,bichoSeleccionado.getOwner());

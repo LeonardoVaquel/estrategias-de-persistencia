@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Buscador;
+import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 
@@ -18,9 +21,11 @@ public class Pueblo extends Ubicacion{
 	@Transient
 	private Buscador buscador;
 	
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<Tupla> listaDeEspecies;
+	
 	public Pueblo(String nombrePueblo,Random random ){
 		super(nombrePueblo,random);
-		//this.buscador = new Buscador(this.bichos); descomentar desp del commit
 		
 		// aca va una instancia de UbicacionManager,
 		// que utiliza un servicio de DAO que todavia no esta
@@ -29,9 +34,18 @@ public class Pueblo extends Ubicacion{
 		// sobre la que trabajará el Buscador
 	}
 	
+	public Pueblo(String nombrePueblo) {
+		super(nombrePueblo);
+	}
+	
+	public Pueblo() {}
+	
 	@Override
 	public Bicho buscar(Entrenador entrenador) {
-		return null;
+		this.buscador = new Buscador(this.listaDeEspecies, 100);
+		
+		// por ahora siempre es exitosa
+		return this.buscador.buscar(1);
 	}
 
 	@Override

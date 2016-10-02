@@ -45,18 +45,26 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 	 * que es retado.
 	 */
 	public ResultadoCombate iniciarDuelo(){
-		try{
-			if(this.estaEnDojo(retador)){
-				this.comenzarCombate();
-			}
-		}catch(UbicacionException e){
-			System.out.println(e.getMessage());
-		}finally{
-			return combatResult;
-		}
+//		try{
+//			if(this.estaEnDojo(retador)){
+//				this.comenzarCombate();
+//			}
+//		}catch(UbicacionException e){
+//			System.out.println(e.getMessage());
+//		}finally{
+//			return combatResult;
+//		}
+		
+		this.comenzarCombate();
+		return combatResult;
 	}
 		
-		
+	/**
+	 * Se inicia un combate entre un {@link Bicho} retador y un {@link Bicho} retado que dura a lo sumo 10 turnos.
+	 * El ganador obtiene 3 puntos de energia, mientras que el perdedor obtiene 2 puntos de energia.
+	 * El ganador obtiene una victoria.
+	 * @return ResultadoCombate - el resultado del combate con el ganador, el perdedor, todos los turnos
+	 */
 	private ResultadoCombate comenzarCombate(){
 		Integer turno	= 0;
 			

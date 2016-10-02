@@ -2,6 +2,8 @@ package hibernate;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,12 +44,32 @@ public class TestHibernateEspecieService {
 										  						100,
 										  						"url",
 										  						0);
-		this.testService.crearEntidad(nuevaEspecie);
+		nuevaEspecie.setRaiz(nuevaEspecie);
+		this.service.crearEspecie(nuevaEspecie);
+		
+	}
+	
+	@After
+	public void limpiarTodo() {
+		
+		Runner.runInSession( () -> {
+
+
+			Session session = Runner.getCurrentSession();
+			List<String> nombreDeTablas = session.createNativeQuery("show tables").getResultList();
+			session.createNativeQuery("SET FOREIGN_KEY_CHECKS=0;").executeUpdate();
+			nombreDeTablas.forEach(tabla -> {
+				session.createNativeQuery("truncate table " + tabla).executeUpdate();
+			});
+			session.createNativeQuery("SET FOREIGN_KEY_CHECKS=1").executeUpdate();
+			return null;
+		});
 	}
 	
 	@Test
 	public void test_se_obtiene_una_especie_ya_persistida_con_todos_sus_atributos() {
-		this.service.getEspecie("Fortmon");
+		
+		// this.service.getEspecie("Fortmon"); 
 		
 		Runner.runInSession(() -> {
 			Especie especie = testService.recuperarEntidad(Especie.class, "Fortmon");

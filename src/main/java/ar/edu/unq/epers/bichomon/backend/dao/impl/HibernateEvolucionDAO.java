@@ -38,7 +38,7 @@ public class HibernateEvolucionDAO implements EvolucionDAO {
 				+ "where c.especie == :unaEspecie";
 		
 		Query<CriterioEvolucion> query = session.createQuery(hql,  CriterioEvolucion.class);
-		query.setParameter("unValorDado", nombreEspecie);
+		query.setParameter("unaEspecie", nombreEspecie);
 
 		return query.getResultList();
 	}

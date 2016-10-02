@@ -20,6 +20,8 @@
 		<property name="show_sql">true</property>
 		
 		<property name="hibernate.hbm2ddl.auto">create-drop</property>
+		<property name="current_session_context_class">thread</property> 
+		<property name="hibernate.enable_lazy_load_no_trans">true</property>
 		
 <!-- 		<property name="tipoBicho"> -->
 <!--             <column name="tipoBicho" /> -->
@@ -32,19 +34,23 @@
 <!--         <property name="org.joda.time.contrib.hibernate.PersistentDateTime">dateTime</property> -->
         
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho" />
+		
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador" />
-		<mapping class="ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection" />
+		
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion" />
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionEnergia" />
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionVictorias" />
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionEdad" />
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionNivel" />
+		
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.especie.Especie" />
 		
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion" />
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Pueblo" />
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo" />
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia" />
+		
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla" />
 
 		
 		

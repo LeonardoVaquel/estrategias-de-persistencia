@@ -9,7 +9,6 @@ import org.hibernate.query.Query;
 import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
@@ -52,8 +51,8 @@ public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
 	public void removeAllEspecies() {
 		Session session = Runner.getCurrentSession();
 		
-//		Query query = session.createQuery("delete from Especie");
-//		query.executeUpdate();
+		Query query = session.createQuery("delete from Especie");
+		query.executeUpdate();
 		
 		session.delete(Especie.class);
 		

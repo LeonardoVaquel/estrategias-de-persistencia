@@ -32,18 +32,19 @@ public class Bicho {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade=CascadeType.ALL)
 	private Especie especie;
 	
 	private int energia;
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade=CascadeType.ALL)
 	private Entrenador owner;
 	
 	private Integer victorias;
 	
-	@Column
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+	@Transient
+	//@Column
+	//@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime fechaCaptura;
 	
 	@Transient
@@ -61,9 +62,6 @@ public class Bicho {
 		this.setHandler(new EvolutionHandler());
 	}
 
-	public int getId() {
-		return this.id;
-	}
 	
 	public Bicho() {}
 	
@@ -72,6 +70,10 @@ public class Bicho {
 	 */
 	public Especie getEspecie() {
 		return this.especie;
+	}
+	
+	public int getId() {
+		return this.id;
 	}
 	
 	/**
@@ -130,10 +132,14 @@ public class Bicho {
 	 * 
 	 */
 	public Bicho evolucionar() {
+		handler = new EvolutionHandler();
+		handler.setBicho(this);
+		handler.setEntrenador(this.owner);
 		return handler.evolucionar();
 	}
 	
 	public boolean puedeEvolucionar() {
+		handler = new EvolutionHandler();
 		handler.setBicho(this);
 		handler.setEntrenador(this.owner);
 		return handler.puedeEvolucionar();

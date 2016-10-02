@@ -16,10 +16,18 @@ public class Guarderia  extends Ubicacion{
 		super(nombreGuarderia, random);
 	}
 	
+	public Guarderia(String nombre) {
+		super(nombre);
+	}
+	
+	public Guarderia() {}
+	
 	public void abandonar(Entrenador entrenador, Bicho bicho){
 		
-		this.getBichos().add(bicho);
-		entrenador.abandonarBicho(bicho);
+		if(entrenador.puedeAbandonar()) {
+			this.getBichos().add(bicho);
+			entrenador.abandonarBicho(bicho);
+		}
 	}
 	
 

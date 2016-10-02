@@ -44,12 +44,8 @@ public class HibernateBichoDAO implements BichoDAO {
 		Bicho bicho = session.get(Bicho.class, idBicho);
 		Entrenador entrenador = session.get(Entrenador.class, nombreEntrenador);
 		
-		entrenador.abandonarBicho(bicho);
-		
-		session.save(entrenador);
-		session.save(bicho);
-		
-		
+		// el entrenador no es necesario
+		entrenador.abandonar(bicho);
 		
 	}
 
@@ -68,9 +64,12 @@ public class HibernateBichoDAO implements BichoDAO {
 	@Override
 	public boolean puedeEvolucionar(String nombreEntrenador, int idBicho) {
 		Session session = Runner.getCurrentSession();
-		
+
 		Bicho bicho = session.get(Bicho.class, idBicho);
-		return bicho.puedeEvolucionar();
+
+		boolean result = bicho.puedeEvolucionar();
+		
+		return result;
 	}
 
 	@Override
@@ -84,6 +83,7 @@ public class HibernateBichoDAO implements BichoDAO {
 	@Override
 	public void guardarBicho(Bicho bicho) {
 		Session session = Runner.getCurrentSession();
+		bicho.getEspecie().incrementarCantidad();
 		session.save(bicho);
 	}
 
