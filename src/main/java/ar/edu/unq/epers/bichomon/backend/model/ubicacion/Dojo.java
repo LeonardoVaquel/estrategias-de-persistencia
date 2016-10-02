@@ -96,8 +96,8 @@ public class Dojo extends Ubicacion {
 	}
 	
 	private void agregarAlHistorial(Bicho campeon, LocalDateTime fecha, Bicho derrocado){
-		this.historial.agregar(campeon, fecha);
-		this.historial.modificar(derrocado, fecha);
+		this.historial.agregar(campeon, fecha, campeon.getOwner(), this.nombre);
+		this.historial.actualizarCampeon(derrocado, fecha);
 	}
 
 }

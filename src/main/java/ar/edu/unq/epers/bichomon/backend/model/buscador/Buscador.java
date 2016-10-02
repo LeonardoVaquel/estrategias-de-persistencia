@@ -111,4 +111,9 @@ public class Buscador {
 		return ls;
 	}
 
+	private Integer generarRandom(List<Tupla> lsTupla){
+		
+		
+		return 1;
+	}
 }
