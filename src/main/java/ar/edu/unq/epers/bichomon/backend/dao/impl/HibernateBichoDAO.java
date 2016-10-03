@@ -1,19 +1,20 @@
 package ar.edu.unq.epers.bichomon.backend.dao.impl;
 
-import java.io.Serializable;
-
 import org.hibernate.Session;
 
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.experiencia.Experiencia;
+import ar.edu.unq.epers.bichomon.backend.model.experiencia.TablaDeExperiencia;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
- * Una implementacion de {@link BichoDAO} que persiste
+ * Una implementacion de {@link BichoDAO} que persiste y recupera información
  * en una base de datos relacional utilizando Hibernate
  * 
+ * @author santiago
  */
 public class HibernateBichoDAO implements BichoDAO {
 
@@ -22,21 +23,26 @@ public class HibernateBichoDAO implements BichoDAO {
 		return session.get(Bicho.class, idBicho);
 	}
 	
-	public <T> T recuperarEntidad(Class<T> tipo, Serializable key) {
-		return Runner.runInSession(() -> {
-			Session session = Runner.getCurrentSession();
-			T valor = session.get(tipo, key);
-			return valor;
-		});
-	}
-	
 	@Override
-	public Bicho buscar(String entrenador) {
+	public Bicho buscar(String nombreEntrenador) {
 		Session session = Runner.getCurrentSession();
-		return session.get(Bicho.class, entrenador);
+		
+		Entrenador entrenador = session.get(Entrenador.class, nombreEntrenador); 
+		
+		Bicho bicho = entrenador.buscar();
+		
+		TablaDeExperiencia expTable = session.get(TablaDeExperiencia.class, "Capturar"); 
+		Experiencia expCfg = session.get(Experiencia.class, "v1.0.0");
+		
+		double experienciaPorCaptura = expTable.getValor();
+		
+		entrenador.gainsExp(experienciaPorCaptura, expCfg);
+		entrenador.obtenerBicho(bicho);
+		bicho.getEspecie().incrementarCantidad();
+		
+		return bicho;
 	}
 
-	// TODO
 	@Override
 	public void abandonar(String nombreEntrenador, int idBicho) {
 		Session session = Runner.getCurrentSession();
@@ -56,9 +62,17 @@ public class HibernateBichoDAO implements BichoDAO {
 		Bicho bicho = session.get(Bicho.class, idBicho);
 		Entrenador entrenador = session.get(Entrenador.class, nombreEntrenador);
 		
-		// historial
+		ResultadoCombate resultadoCombate = entrenador.duelo(bicho);
 		
-		return entrenador.duelo(bicho);
+		TablaDeExperiencia expTable = session.get(TablaDeExperiencia.class, "Combatir"); 
+		Experiencia expCfg = session.get(Experiencia.class, "v1.0.0");
+		
+		double experienciaPorCombate = expTable.getValor();
+		
+		resultadoCombate.getBichoPerdedor().getOwner().gainsExp(experienciaPorCombate, expCfg);
+		entrenador.gainsExp(experienciaPorCombate, expCfg);
+		
+		return resultadoCombate;
 	}
 
 	@Override

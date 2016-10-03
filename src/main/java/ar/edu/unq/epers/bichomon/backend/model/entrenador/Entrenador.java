@@ -47,7 +47,7 @@ public class Entrenador {
 	private int nivel;
 	
 	@Transient
-	private BichoCollection bichoCollection = new BichoCollection(this.getNivel());
+	private BichoCollection bichoCollection = new BichoCollection(this.getNivel(), 3);
 	//@ManyToOne
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Ubicacion ubicacion;
@@ -65,7 +65,6 @@ public class Entrenador {
 		this.nombre = nombre;
 		this.setCurrentExp(0d);
 		this.setTotalExp(0d);
-		this.expHandler = exphandler;
 		this.bichoCollection = new BichoCollection(1);
 		this.setNivel(1);
 		this.setUbicacion(ubicacion);
@@ -76,7 +75,6 @@ public class Entrenador {
 		this.nombre = nombre;
 		this.setCurrentExp(0d);
 		this.setTotalExp(0d);
-		this.expHandler = new ExpHandler(new Experiencia(1000d));
 		this.bichoCollection = new BichoCollection(1);
 		this.setNivel(1);
 		this.setUbicacion(null);
@@ -115,6 +113,7 @@ public class Entrenador {
 	
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
+		this.bichoCollection = new BichoCollection(nivel, 3);
 		this.bichoCollection.setNivel(nivel);
 	}
 	
@@ -146,7 +145,8 @@ public class Entrenador {
 	 * Delega en un handler de experiencia para evaluar la cantidad de puntos obtenida
 	 * @param exp una cantidad de experiencia
 	 */
-	public void gainsExp(Double exp) {
+	public void gainsExp(Double exp, Experiencia expCfg) {
+		expHandler = new ExpHandler(expCfg);
 		expHandler.evaluateGainedExp(exp, this);
 	}
 	
@@ -155,15 +155,19 @@ public class Entrenador {
 	 * @return boolean indicando si puede buscar o no.
 	 */
 	public Boolean puedeBuscar() {
-		return this.bichoCollection.isFull(this.bichos);
+		this.bichoCollection = new BichoCollection(this.getNivel(), 3);
+		return !this.bichoCollection.isFull(this.bichos);
 	}
 	
 	public void obtenerBicho(Bicho bicho) {
+		this.bichoCollection = new BichoCollection(this.getNivel(), 3);
+		
 		this.bichoCollection.add(bicho, this.bichos);
 		bicho.setOwner(this);
 	}
 	
 	public boolean puedeAbandonar() {
+		this.bichoCollection = new BichoCollection(this.getNivel(), 3);
 		return !this.bichoCollection.isSingleton(bichos);
 	}
 	
@@ -193,6 +197,11 @@ public class Entrenador {
 	
 	public void mover(Ubicacion ubicacion) {
 		this.setUbicacion(ubicacion);
+	}
+	
+	public Bicho buscar() {
+		
+		return this.ubicacion.buscar(this);
 	}
 	
 }

@@ -1,5 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,8 +8,6 @@ import java.util.Random;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-
-import org.joda.time.LocalDateTime;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
@@ -74,7 +73,7 @@ public class Dojo extends Ubicacion {
 	public Bicho buscar(Entrenador entrenador) {
 		if (entrenador.puedeBuscar()){
 
-			entrenador.obtenerBicho(asignarBicho());
+			return new Bicho(this.campeon.getEspecie().getRaiz()); 
 		}
 
 		return null;
@@ -90,13 +89,13 @@ public class Dojo extends Ubicacion {
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
 		ResultadoCombate duelo = new Duelo(bicho, campeon).iniciarDuelo();
 		campeon = duelo.getBichoGanador();
-		//this.agregarAlHistorial(campeon, new LocalDateTime(), duelo.getBichoPerdedor());
+		this.agregarAlHistorial(campeon, LocalDateTime.now(), duelo.getBichoPerdedor());
 		
 		return duelo;
 	}
 	
 	private void agregarAlHistorial(Bicho campeon, LocalDateTime fecha, Bicho derrocado){
-		this.historial.agregar(campeon, fecha, campeon.getOwner(), this.nombre);
+		this.historial.agregar(campeon, fecha, campeon.getOwner(), this);
 		this.historial.actualizarCampeon(derrocado, fecha);
 	}
 

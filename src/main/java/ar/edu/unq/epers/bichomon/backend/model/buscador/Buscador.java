@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.model.buscador;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
@@ -41,11 +42,18 @@ public class Buscador {
 	 */
 	public Bicho buscar(Integer n){
 		
+		
 		Especie especie = encontrarEspecie(this.buscarAux(), n); // Se busca la especie segun el random.
 		bichoEncontrado = new Bicho(especie); // Se crea el bicho que se encontro.
-		
 		return bichoEncontrado;
 	}
+	
+	
+	public Bicho buscar() {
+		
+		return this.buscar(this.generarRandom(this.buscarAux()));
+	}
+	
 	
 	/**
 	 * 
@@ -111,9 +119,22 @@ public class Buscador {
 		return ls;
 	}
 
-	private Integer generarRandom(List<Tupla> lsTupla){
+	/**
+	 * Dada una lista de {@link Tupla} devuelve un número random
+	 * @param lsTupla - lista de {@link Tupla)} ({@link Especie}, List<Integer)
+	 * @return int - el size total de todas las listas sumadas
+	 */
+	private int generarRandom(List<Tupla> lsTupla){
 		
+		int result = 0;
 		
-		return 1;
+		for(Tupla tupla:lsTupla) {
+			
+			result = result + tupla.getLsValue().size();
+		}
+		
+		//result = lsTupla.stream().sum(map(t -> t.getLsValue()));
+		
+		return new Random().nextInt(result);
 	}
 }

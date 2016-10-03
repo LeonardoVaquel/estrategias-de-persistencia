@@ -21,6 +21,14 @@ public class Pueblo extends Ubicacion{
 	@Transient
 	private Buscador buscador;
 	
+	public List<Tupla> getListaDeEspecies() {
+		return listaDeEspecies;
+	}
+
+	public void setListaDeEspecies(List<Tupla> listaDeEspecies) {
+		this.listaDeEspecies = listaDeEspecies;
+	}
+
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Tupla> listaDeEspecies;
 	
@@ -44,8 +52,11 @@ public class Pueblo extends Ubicacion{
 	public Bicho buscar(Entrenador entrenador) {
 		this.buscador = new Buscador(this.listaDeEspecies, 100);
 		
-		// por ahora siempre es exitosa
-		return this.buscador.buscar(1);
+		if (busquedaEnUbicacion(entrenador, this)) {
+			return this.buscador.buscar();
+		}
+		System.out.println("NO");
+		return null;
 	}
 
 	@Override
@@ -57,5 +68,6 @@ public class Pueblo extends Ubicacion{
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
 		throw new NoSePuedeRealizarDueloEnUbicacion(this.getNombre());
 	}
+
 
 }

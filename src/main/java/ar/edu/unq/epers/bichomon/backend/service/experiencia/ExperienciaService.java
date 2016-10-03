@@ -1,6 +1,8 @@
 package ar.edu.unq.epers.bichomon.backend.service.experiencia;
 
-import java.util.HashMap;
+import java.util.List;
+
+import ar.edu.unq.epers.bichomon.backend.model.experiencia.Level;
 
 /**
  * @author santiago
@@ -8,8 +10,8 @@ import java.util.HashMap;
 public interface ExperienciaService {
 	
 	/**
-	 * @return un hashmap con key Integer representando un nivel y value Double representando un coeficiente.
+	 * @return una lista de {@link Level}
 	 */
-	HashMap<Integer, Double> getAllLevels();
+	public List<Level> getAllLevels();
 
 }

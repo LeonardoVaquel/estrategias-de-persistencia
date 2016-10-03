@@ -1,5 +1,7 @@
 package hibernate;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,18 +10,27 @@ import org.junit.Test;
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollectionReachedMaximumSize;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.Turno;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoSePuedeAbandonarEnUbicacionException;
-import ar.edu.unq.epers.bichomon.backend.service.DataEspecieManager;
+import ar.edu.unq.epers.bichomon.backend.service.DataManager;
 import ar.edu.unq.epers.bichomon.backend.service.TestService;
 import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
+/**
+ * TestHibernateBichoService es una clase para hacer pruebas con servicios relacionados
+ * con la clase {@link Bicho} del juego, en un ambiente persistente.
+ * @author santiago
+ *
+ */
 public class TestHibernateBichoService {
 
 	
@@ -34,7 +45,7 @@ public class TestHibernateBichoService {
 		
 		this.hibernateBichoDAO = new HibernateBichoDAO();
 		this.service = new BichoSessionService(hibernateBichoDAO);
-		this.dataService = new DataSessionService(new DataEspecieManager());
+		this.dataService = new DataSessionService(new DataManager());
 		this.testService = new TestService();
 		
 		dataService.crearSetDatosIniciales();
@@ -42,7 +53,7 @@ public class TestHibernateBichoService {
 	}
 	@After
 	public void deleteAll() {
-		//this.dataService.eliminarDatos();
+		this.dataService.eliminarDatos();
 		// solamente se eliminan las especies
 //		Runner.runInSession( () -> {
 //
@@ -130,10 +141,65 @@ public class TestHibernateBichoService {
 		
 	}
 	
-	public void un_entrenador_realiza_una_busqueda_exitosa_y_se_devuelve_un_bicho() {
+	@Test
+	public void un_entrenador_realiza_una_busqueda_exitosa_en_un_pueblo_y_se_devuelve_un_bicho() {
 		
 		Runner.runInSession(() -> {
 
+			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Explorador2");
+			
+			Bicho bicho = this.service.buscar("Explorador2");
+
+			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
+			Assert.assertTrue(entrenador.getBichos().contains(bicho));
+			
+			return null;
+		});
+		
+	}
+	
+	@Test(expected=BichoCollectionReachedMaximumSize.class)
+	public void un_entrenador_no_puede_realizar_una_busqueda_en_un_pueblo() {
+		
+		Runner.runInSession(() -> {
+
+			Bicho bicho = this.service.buscar("Explorador1");
+
+			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Explorador1");
+			
+			return null;
+		});
+		
+	}
+	
+	@Test
+	public void test_un_entrenador_realiza_una_busqueda_exitosa_en_un_dojo() {
+		
+		Runner.runInSession(() -> {
+			
+			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Santiago");
+			
+			Bicho bicho = this.service.buscar("Santiago");
+
+			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
+			Assert.assertTrue(entrenador.getBichos().contains(bicho));
+			
+			return null;
+		});
+	}
+	
+	@Test
+	public void un_entrenador_realiza_una_busqueda_exitosa_en_una_guarderia() {
+		
+		Runner.runInSession(() -> {
+			
+			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Jackson");
+			
+			Bicho bicho = this.service.buscar("Jackson");
+
+			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
+			Assert.assertTrue(entrenador.getBichos().contains(bicho));
+			
 			return null;
 		});
 		
@@ -152,6 +218,14 @@ public class TestHibernateBichoService {
 			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getId(), 13);
 			
 			Dojo dojo = this.testService.recuperarEntidad(Dojo.class, "Torre Karin");
+			
+			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getCurrentExp(), 10d, 0);
+			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getOwner().getCurrentExp(), 10d, 0);
+			
+			List<Turno> turnos = resultadoCombate.getTurnos();
+			
+			Assert.assertEquals(turnos.iterator().next().getRetado().getId(), 13);
+			Assert.assertEquals(turnos.iterator().next().getRetador().getId(), 12);
 			
 			Assert.assertEquals(dojo.getCampeon().getId(), 12);
 			

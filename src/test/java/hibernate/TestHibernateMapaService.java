@@ -5,8 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateMapaDAO;
+import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.service.DataEspecieManager;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.service.DataManager;
 import ar.edu.unq.epers.bichomon.backend.service.TestService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
@@ -15,6 +18,12 @@ import ar.edu.unq.epers.bichomon.backend.service.mapa.MapaSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 import org.junit.Assert;
 
+/**
+ * TestHibernateLeaderbaordService es una clase para hacer pruebas con servicios relacionados
+ * con la {@link Ubicacion} de un {@link Entrenador} en el juego, en un ambiente persistente.
+ * 
+ * @author santiago
+ */
 public class TestHibernateMapaService {
 
 	
@@ -28,7 +37,7 @@ public class TestHibernateMapaService {
 		
 		this.hibernateMapaDAO = new HibernateMapaDAO();
 		this.service = new MapaSessionService(hibernateMapaDAO);
-		this.dataService = new DataSessionService(new DataEspecieManager());
+		this.dataService = new DataSessionService(new DataManager());
 		this.testService = new TestService();
 		
 		dataService.crearSetDatosIniciales();
@@ -71,6 +80,23 @@ public class TestHibernateMapaService {
 			Assert.assertEquals(entrenador1.getUbicacion().getNombre(), "Neverland");
 			Assert.assertEquals(entrenador2.getUbicacion().getNombre(), "Neverland");
 			Assert.assertEquals(entrenador3.getUbicacion().getNombre(), "Neverland");
+			
+			return null;
+		});
+		
+	}
+	
+	@Test
+	public void dado_un_dojo_se_obtiene_el_campeon_actual() {
+		
+		Runner.runInSession(() -> {
+			
+			Bicho bicho = this.service.campeon("Torre Karin");
+			Dojo dojo = this.testService.recuperarEntidad(Dojo.class, "Torre Karin");
+			
+			Assert.assertEquals(bicho.getId(), 13);
+			Assert.assertEquals(dojo.getCampeon().getId(), bicho.getId());
+			Assert.assertEquals(dojo.getCampeon().getId(), 13);
 			
 			return null;
 		});

@@ -8,6 +8,7 @@ import org.hibernate.query.Query;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
@@ -56,6 +57,12 @@ public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
 		
 		session.delete(Especie.class);
 		
+	}
+	
+	public void guardarTupla(Tupla tupla) {
+		Session session = Runner.getCurrentSession();
+		
+		session.save(tupla);
 	}
 
 }

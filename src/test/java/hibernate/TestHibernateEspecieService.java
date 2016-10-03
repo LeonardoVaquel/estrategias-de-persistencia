@@ -17,6 +17,12 @@ import ar.edu.unq.epers.bichomon.backend.service.TestService;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
+/**
+ * TestHibernateEspecieService es una clase para hacer pruebas con servicios relacionados
+ * con la {@link Especie} del juego, en un ambiente persistente.
+ * @author santiago
+ *
+ */
 public class TestHibernateEspecieService {
 	
 	private EspecieSessionService service;

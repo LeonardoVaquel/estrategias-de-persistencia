@@ -65,7 +65,6 @@ public class BichoCollection {
 	
 	public void setCoeficiente(Integer coeficiente) {
 		this.coeficiente = coeficiente;
-		this.updateSize();
 	}
 	
 	public Integer getCoeficiente() {

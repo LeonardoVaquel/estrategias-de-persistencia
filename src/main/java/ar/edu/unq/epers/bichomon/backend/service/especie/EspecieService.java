@@ -6,7 +6,10 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 /**
- * @author Steve Frontend
+ * EspecieService es una interfaz provista por los encargados frontend
+ * para obtener servicios sobre las distintas especies del juego
+ * 
+ * @author santiago
  */
 public interface EspecieService {
 	

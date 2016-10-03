@@ -1,6 +1,8 @@
 package ar.edu.unq.epers.bichomon.backend.model.experiencia;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
@@ -12,10 +14,11 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Level {
 
+	@Id
 	Integer nivel;
 	Double coeficiente;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	Experiencia configuracion;
 	
 	public Level(Integer nivel, Double coeficiente) {
@@ -23,6 +26,8 @@ public class Level {
 		this.coeficiente = coeficiente;
 	}
 
+	public Level() {}
+	
 	public Integer getNivel() {
 		return nivel;
 	}

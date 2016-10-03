@@ -1,9 +1,17 @@
 package ar.edu.unq.epers.bichomon.backend.model.duelo;
 
-import org.joda.time.LocalDateTime;
+import java.time.LocalDateTime;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 
 /**
  * Se lleva un registro de las fechas en donde un {@link Bicho} se corono campeon
@@ -12,20 +20,29 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
  * @author leonardo
  *
  */
+@Entity
 public class Campeon {
 
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
+	@OneToOne(cascade=CascadeType.ALL)
+	private Dojo dojo;
 	private LocalDateTime fechaCoronado;
 	private LocalDateTime fechaDerrocado;
+	@OneToOne(cascade=CascadeType.ALL)
 	private Bicho campeon;
+	@OneToOne(cascade=CascadeType.ALL)
 	private Entrenador entrenador;
-	private String dojo;
 	
-	public Campeon(Bicho bicho, LocalDateTime fechaCoronado, Entrenador entrenador, String dojo){
+	
+	public Campeon(Bicho bicho, LocalDateTime fechaCoronado, Entrenador entrenador, Dojo dojo){
 		this.fechaCoronado 	= fechaCoronado;
 		this.campeon	= bicho;
 		this.entrenador = entrenador;
 		this.dojo = dojo;
 	}
+	
+	public Campeon() {}
 
 	public LocalDateTime getCoronado() {
 		return fechaCoronado;
@@ -59,11 +76,11 @@ public class Campeon {
 		return entrenador;
 	}
 	
-	public void setDojo(String dojo){
+	public void setDojo(Dojo dojo){
 		this.dojo = dojo;
 	}
 	
-	public String getDojo(){
+	public Dojo getDojo(){
 		return dojo;
 	}
 	

@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.model.buscador;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +17,7 @@ public class Tupla{
 	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private Especie key;
 	private float value;
 	@Transient
@@ -31,6 +32,8 @@ public class Tupla{
 		this.key	 	= especie;
 		this.lsValue	= value;
 	};
+	
+	public Tupla() {}
 
 	public Especie getKey(){
 		return this.key;
@@ -44,8 +47,5 @@ public class Tupla{
 		return this.lsValue;
 	}
 	
-	//@Override
-	//public boolean equals(Tupla anotherTupla){
-		//anotherTupla.getKey() == this.getKey() 
-	//}
+
 }

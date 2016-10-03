@@ -3,10 +3,10 @@ package model.historial;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -16,23 +16,25 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Historial;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import junit.framework.TestCase;
 
 public class HistorialTestCase extends TestCase {
 
 	private Historial historial;
 	private List<Campeon> listaDeCampeones;
-	private @Mock Campeon Dummycampeon1,Dummycampeon2,Dummycampeon3;
-	private @Mock Entrenador DummyEntrenador;
-	private @Mock Bicho DummyBicho;
+	private @Mock Campeon dummycampeon1,dummycampeon2,dummycampeon3;
+	private @Mock Entrenador dummyEntrenador;
+	private @Mock Bicho dummyBicho;
+	private @Mock Dojo dummyDojo;
 	
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
 		listaDeCampeones = new ArrayList<>();
-		listaDeCampeones.add(Dummycampeon1);
-		listaDeCampeones.add(Dummycampeon2);
-		listaDeCampeones.add(Dummycampeon3);
+		listaDeCampeones.add(dummycampeon1);
+		listaDeCampeones.add(dummycampeon2);
+		listaDeCampeones.add(dummycampeon3);
 		historial = new Historial();
 		historial.setCampeones(listaDeCampeones);
 	}
@@ -45,20 +47,20 @@ public class HistorialTestCase extends TestCase {
 		
 	@Test
 	public void test2_SeAgregaAlHistorialUnNuevoCampeon(){
-		when(DummyBicho.getOwner()).thenReturn(DummyEntrenador);
+		when(dummyBicho.getOwner()).thenReturn(dummyEntrenador);
 		
-		historial.agregar(DummyBicho, new LocalDateTime(), DummyBicho.getOwner(), "Bernal-Dojo");
+		historial.agregar(dummyBicho, LocalDateTime.now(), dummyBicho.getOwner(), dummyDojo);
 	
 		assertEquals(historial.totalDeCampeones(), new Integer(4));
 	}
 	
 	@Test
 	public void test3_SeDerrocoAUnCampeonYSuFechaDeDerrocadoCambio(){
-		LocalDateTime fechaNueva = new LocalDateTime();
-		when(Dummycampeon3.getCampeon()).thenReturn(DummyBicho);
-		historial.actualizarCampeon(DummyBicho, fechaNueva);
+		LocalDateTime fechaNueva = LocalDateTime.now();
+		when(dummycampeon3.getCampeon()).thenReturn(dummyBicho);
+		historial.actualizarCampeon(dummyBicho, fechaNueva);
 	
-		verify(Dummycampeon3).setDerrocado(fechaNueva);
+		verify(dummycampeon3).setDerrocado(fechaNueva);
 	}
 	
 }

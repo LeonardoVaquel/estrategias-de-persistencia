@@ -1,16 +1,12 @@
 package ar.edu.unq.epers.bichomon.backend.model.duelo;
 
-import java.nio.channels.Selector;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.IntFunction;
-import java.util.stream.Collector;
-
-import org.joda.time.LocalDateTime;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 
 public class Historial {
 
@@ -30,7 +26,7 @@ public class Historial {
 
 
 
-	public void agregar(Bicho campeon, LocalDateTime fecha, Entrenador entrenador, String dojo){
+	public void agregar(Bicho campeon, LocalDateTime fecha, Entrenador entrenador, Dojo dojo){
 		Campeon nuevoCampeon = new Campeon(campeon, fecha, entrenador, dojo);
 		this.campeones.add(nuevoCampeon);
 	}

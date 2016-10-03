@@ -51,10 +51,15 @@
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia" />
 		
 		<mapping class="ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla" />
+		
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.experiencia.TablaDeExperiencia" />
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.experiencia.Experiencia" />
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.experiencia.Level" />
+		
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon" />
+		
+		<mapping class="ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla" />
 
 		
-		
-		
-	
 	</session-factory>
 </hibernate-configuration>

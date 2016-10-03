@@ -3,6 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.dao;
 import java.util.List;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieNoExistente;
 
@@ -55,4 +56,10 @@ public interface EspecieDAO {
 	 * Borra todos los registros de {@link Especie}
 	 */
 	void removeAllEspecies();
+	
+	/**
+	 * Guarda una instancia de {@link Tupla} de ( {@link Especie} , {@link Coeficiente} ) en la base de datos
+	 */
+	void guardarTupla(Tupla tupla);
+	
 }

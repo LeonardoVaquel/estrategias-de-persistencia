@@ -37,14 +37,12 @@ public class Guarderia  extends Ubicacion{
 	
 	public Bicho adoptarBichoAbandonado(){
 		Integer index = this.numeroRandom();
-		
 		Bicho bicho = this.getBichos().get(index);
-		this.bichos.remove(bicho);
 		return bicho;
 	}
 	
 	public Integer numeroRandom(){
-		return random.nextInt(this.cantidadDeBichosAbandonados());
+		return new Random().nextInt(this.cantidadDeBichosAbandonados()-1);
 	}
 	
 	public Bicho buscar(Entrenador entrenador) {
@@ -52,7 +50,7 @@ public class Guarderia  extends Ubicacion{
 		try {
 			if (entrenador.puedeBuscar()) {
 				Bicho bicho = adoptarBichoAbandonado();
-				entrenador.obtenerBicho(bicho);
+				this.bichos.remove(bicho);
 				return bicho;
 			}
 			else {

@@ -28,6 +28,12 @@ public class BichoSessionService {
 		});
 	}
 	
+	public Bicho buscar(String nombreEntrenador) {
+		return Runner.runInSession(() -> {
+			return bichoDAO.buscar(nombreEntrenador);
+		});
+	}
+	
 	public void guardarBicho(Bicho bicho) {
 		Runner.runInSession(() -> {
 			bichoDAO.guardarBicho(bicho);

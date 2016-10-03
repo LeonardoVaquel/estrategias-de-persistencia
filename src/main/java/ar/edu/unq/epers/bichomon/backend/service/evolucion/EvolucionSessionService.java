@@ -26,12 +26,6 @@ public class EvolucionSessionService {
 		this.evolucionDAO = evolucionDAO;
 	}
 
-	/**
-	 * TODO
-	 * Dado un nombre de una especie, se obtiene una instancia de Especie del nombre dado
-	 * durante una sesión en una base de datos.
-	 * @param nombreEspecie
-	 */
 	public void getEvolucion(String nombreEvolucion) {
 		Runner.runInSession(() -> {
 			evolucionDAO.getEvolucion(nombreEvolucion);
