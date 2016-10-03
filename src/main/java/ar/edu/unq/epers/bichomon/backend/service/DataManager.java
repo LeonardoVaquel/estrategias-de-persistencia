@@ -273,6 +273,7 @@ public class DataManager implements DataService {
 		//Experiencia Configuration
 		TablaDeExperiencia combateExpTable = new TablaDeExperiencia("Combatir", 10);
 		TablaDeExperiencia capturaExpTable = new TablaDeExperiencia("Capturar", 10);
+		TablaDeExperiencia evolucionExpTable = new TablaDeExperiencia("Evolucionar", 5);
 		
 		List<Level> levelList = new ArrayList<>();
 		levelList.add(new Level(1, 0.1));
@@ -348,6 +349,7 @@ public class DataManager implements DataService {
 		
 		DATAExpEvents.put("CombateExpTable", combateExpTable);
 		DATAExpEvents.put("CapturaExpTable", capturaExpTable);
+		DATAExpEvents.put("EvolucionExpTable", evolucionExpTable);
 		
 		DATAExpConfigs.put("v1.0.0", expConfig);
 		
@@ -395,6 +397,7 @@ public class DataManager implements DataService {
 		
 		experienciaDAO.guardarTablaDeExperiencia(DATAExpEvents.get("CombateExpTable"));
 		experienciaDAO.guardarTablaDeExperiencia(DATAExpEvents.get("CapturaExpTable"));
+		experienciaDAO.guardarTablaDeExperiencia(DATAExpEvents.get("EvolucionExpTable"));
 		experienciaDAO.guardarExperienciaConfig(DATAExpConfigs.get("v1.0.0"));
 		
 		historialDAO.guardarCampeon(DATACampeones.get("Quilmes-Dojo2"));

@@ -90,8 +90,17 @@ public class HibernateBichoDAO implements BichoDAO {
 	public Bicho evolucionar(String nombreEntrenador, int idBicho) {
 		Session session = Runner.getCurrentSession();
 		
+		// Aclaración: no es necesario utilizar el Entrenador, ya que es posible
+		// mandarle mensajes a éste mediante el owner del bicho
+		Entrenador entrenador = session.get(Entrenador.class, nombreEntrenador);
 		Bicho bicho = session.get(Bicho.class, idBicho);
-		return bicho.evolucionar();
+		TablaDeExperiencia expTable = session.get(TablaDeExperiencia.class, "Evolucionar"); 
+		Experiencia expCfg = session.get(Experiencia.class, "v1.0.0");
+		double experienciaPorCombate = expTable.getValor();
+		
+		entrenador.evolucionar(bicho);
+		entrenador.gainsExp(experienciaPorCombate, expCfg);
+		return bicho;
 	}
 
 	@Override

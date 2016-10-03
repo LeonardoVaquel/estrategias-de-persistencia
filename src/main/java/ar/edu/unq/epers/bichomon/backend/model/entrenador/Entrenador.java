@@ -151,6 +151,14 @@ public class Entrenador {
 	}
 	
 	/**
+	 * Dado un {@link Bicho} se pide que evolucione.
+	 * @param bicho - una instancia de {@link Bicho}
+	 */
+	public void evolucionar(Bicho bicho) {
+		bicho.evolucionar();
+	}
+	
+	/**
 	 * Consulta si una colección de Bicho tiene espacio para almacenar bichos 
 	 * @return boolean indicando si puede buscar o no.
 	 */
@@ -191,6 +199,11 @@ public class Entrenador {
 		bicho.setOwner(null);
 	}
 
+	/**
+	 * Dado un {@link Bicho} se espera poder realizar un duelo en la {@link Ubicacion} ubicación actual
+	 * @param bicho - una instancia de {@link Bicho}
+	 * @return una instancia de {@link ResultadoCombate}
+	 */
 	public ResultadoCombate duelo(Bicho bicho) {
 		return this.ubicacion.duelo(this, bicho);
 	}

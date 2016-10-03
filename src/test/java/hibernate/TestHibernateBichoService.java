@@ -53,7 +53,7 @@ public class TestHibernateBichoService {
 	}
 	@After
 	public void deleteAll() {
-		this.dataService.eliminarDatos();
+		//this.dataService.eliminarDatos();
 		// solamente se eliminan las especies
 //		Runner.runInSession( () -> {
 //
@@ -102,10 +102,14 @@ public class TestHibernateBichoService {
 			Assert.assertEquals(bicho.getId(), 8);
 			Assert.assertEquals(bicho.getEspecie().getNombre(), "Leomon");
 
-			// El entrenador no es necesario
-			Bicho nuevoBicho = this.service.evolucionar(null, bicho.getId());
+			// Se testea utilizando un entrenador, sin embargo no es necesario.
+			// Desde el modelo, en HibernateBichoServicio es posible refactirozar 
+			// la lógica para realizar ésta acción utlizando la referencia de 
+			// Entrenador que existe en el bicho a evolucionar.
+			Bicho nuevoBicho = this.service.evolucionar("Santiago", bicho.getId());
 			
 			Assert.assertEquals(nuevoBicho.getEspecie().getNombre(), especieAEvolucionar.getNombre());
+			Assert.assertEquals(nuevoBicho.getOwner().getCurrentExp(), 5d, 0);
 			
 			return null;
 		});
