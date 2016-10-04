@@ -24,6 +24,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateUbicacionDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.Historial;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
@@ -218,7 +219,7 @@ public class DataManager implements DataService {
 
 		Bicho bichoGisemonEvolucion = new Bicho(giseMonEvolucion);
 		bichoGisemonEvolucion.setVictorias(100);
-		bichoGisemonEvolucion.setEnergia(200);
+		bichoGisemonEvolucion.setEnergia(600);
 
 		Bicho bichoBottimon = new Bicho(bottiMon);
 		Bicho bichoBottimon2 = new Bicho(bottiMon);
@@ -240,11 +241,11 @@ public class DataManager implements DataService {
 
 		// Creacion de lista de Especie
 
-		Tupla tupla1 = new Tupla(leoMon, 0.3f);
-		Tupla tupla2 = new Tupla(giseMon, 0.6f);
-		Tupla tupla3 = new Tupla(leoMonEvolucion, 0.9f);
-		Tupla tupla4 = new Tupla(giseMonEvolucion, 1.6f);
-		Tupla tupla5 = new Tupla(frutiMon, 2.6f);
+		Tupla tupla1 = new Tupla(leoMon, 0.1f);
+		Tupla tupla2 = new Tupla(giseMon, 0.1f);
+		Tupla tupla3 = new Tupla(leoMonEvolucion, 0.1f);
+		Tupla tupla4 = new Tupla(giseMonEvolucion, 0.1f);
+		Tupla tupla5 = new Tupla(frutiMon, 0.6f);
 
 		List<Tupla> listDeEspeciesNeverland = new ArrayList<>();
 		listDeEspeciesNeverland.add(tupla1);
@@ -333,6 +334,15 @@ public class DataManager implements DataService {
 		campeon04.setDojo(quilmesDojo);
 		campeon04.setEntrenador(jacksonTrainer);
 
+		List<Campeon> historialCampeones = new ArrayList<>();
+		historialCampeones.add(campeon01);
+		historialCampeones.add(campeon02);
+		historialCampeones.add(campeon03);
+		historialCampeones.add(campeon04);
+		Historial historial = new Historial();
+		historial.setCampeones(historialCampeones);
+		torreKarinDojo.setHistorial(historial);
+		
 		// Hashmap assignation
 		DATAEspecies.put(leoMon.getNombre(), leoMon);
 		DATAEspecies.put(leoMonEvolucion.getNombre(), leoMonEvolucion);

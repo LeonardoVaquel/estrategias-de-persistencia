@@ -62,8 +62,8 @@ public class Buscador {
 	 * @return La {@link Especie} que salio "Random".
 	 */
 	private Especie encontrarEspecie(List<Tupla> ls, Integer n){
-		Especie result = new Especie();
-		for( Tupla tupla : ls ){
+		Especie result = null;
+		for(Tupla tupla : ls){
 			if(this.contieneValor(tupla, n)){
 				result = tupla.getKey();
 				break;
@@ -78,7 +78,6 @@ public class Buscador {
 	
 	public List<Tupla> buscarAux(){
 		lsResult = this.tuplasPorCoeficiente(listDB);
-		
 		return this.listaFinal(lsResult);
 		
 	}
@@ -133,7 +132,7 @@ public class Buscador {
 			result = result + tupla.getLsValue().size();
 		}
 		
-		//result = lsTupla.stream().sum(map(t -> t.getLsValue()));
+//		result = lsTupla.stream().map(t -> t.getLsValue().size());
 		
 		return new Random().nextInt(result);
 	}

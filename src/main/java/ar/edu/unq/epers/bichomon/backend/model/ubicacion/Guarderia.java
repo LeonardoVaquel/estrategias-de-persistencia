@@ -27,7 +27,6 @@ public class Guarderia extends Ubicacion {
 		if(entrenador.puedeAbandonar()) {
 			this.getBichos().add(bicho);
 			entrenador.abandonarBicho(bicho);
-			System.out.println(bicho.getId());
 		}
 	}
 	

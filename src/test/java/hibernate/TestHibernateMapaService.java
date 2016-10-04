@@ -46,7 +46,7 @@ public class TestHibernateMapaService {
 	
 	@After
 	public void deleteAll() {
-
+//		this.dataService.eliminarTablas();
 	}
 	
 	@Test
@@ -94,9 +94,9 @@ public class TestHibernateMapaService {
 			Bicho bicho = this.service.campeon("Torre Karin");
 			Dojo dojo = this.testService.recuperarEntidad(Dojo.class, "Torre Karin");
 			
-			Assert.assertEquals(bicho.getId(), 18);
+			Assert.assertEquals(bicho.getId(), 9);
 			Assert.assertEquals(dojo.getCampeon().getId(), bicho.getId());
-			Assert.assertEquals(dojo.getCampeon().getId(), 18);
+			Assert.assertEquals(dojo.getCampeon().getId(), 9);
 			
 			return null;
 		});

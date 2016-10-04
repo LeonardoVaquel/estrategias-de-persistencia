@@ -92,6 +92,7 @@ public class HibernateBichoDAO implements BichoDAO {
 		
 		double experienciaPorCombate = expTable.getValor();
 		
+		System.out.println(resultadoCombate);
 		resultadoCombate.getBichoPerdedor().getOwner().gainsExp(experienciaPorCombate, expCfg);
 		entrenador.gainsExp(experienciaPorCombate, expCfg);
 		

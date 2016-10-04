@@ -52,20 +52,19 @@ public class TestHibernateBichoService {
 	}
 	@After
 	public void deleteAll() {
-//		this.dataService.eliminarDatos();
-		// solamente se eliminan las especies
-
+		this.dataService.eliminarTablas();
 	}
 	
 	@Test
 	public void dado_un_bicho_este_puede_evolucionar() {
 		
 		// Bicho = Leomon
-		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 2);
+		int bichoId = 2;
+		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, bichoId);
 		
 		Runner.runInSession(() -> {
 			
-			Assert.assertEquals(bicho.getId(), 2);
+			Assert.assertEquals(bicho.getId(), bichoId);
 			Assert.assertEquals(bicho.getEnergia(), 250);
 
 			// El entrenador no es necesario
@@ -81,13 +80,14 @@ public class TestHibernateBichoService {
 	@Test
 	public void dado_un_bicho_evoluciona_en_otra_especie() {
 		
-		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 2);
+		int bichoId = 2;
+		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, bichoId);
 		
 		Especie especieAEvolucionar = this.testService.recuperarEntidad(Especie.class, bicho.getEspecie().getEvolucion().getNombre());
 		
 		Runner.runInSession(() -> {
 			
-			Assert.assertEquals(bicho.getId(), 1);
+			Assert.assertEquals(bicho.getId(), bichoId);
 			Assert.assertEquals(bicho.getEspecie().getNombre(), "Leomon");
 
 			// Se testea utilizando un entrenador, sin embargo no es necesario.
@@ -106,14 +106,14 @@ public class TestHibernateBichoService {
 	@Test
 	public void un_entrenador_abandona_un_bicho_en_una_guarderia() {
 		
-		// Bicho.especie = Gisemon
-		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 6);
-		
 		Runner.runInSession(() -> {
 
-			this.service.abandonar("Jackson", 6);
+			// 7 -> Bicho.especie = Gisemon
+			int bichoId = 7;
+			this.service.abandonar("Jackson", bichoId);
 			
 			Guarderia guarderia = this.testService.recuperarEntidad(Guarderia.class, "Guarderia las 24 horas!");
+			Bicho bicho = this.testService.recuperarEntidad(Bicho.class, bichoId);
 			
 			Assert.assertEquals(guarderia.getBichos().contains(bicho), true);
 			Assert.assertEquals(bicho.getOwner(), null);
@@ -191,24 +191,28 @@ public class TestHibernateBichoService {
 		
 		Runner.runInSession(() -> {
 			
-			ResultadoCombate resultadoCombate = this.service.duelo("Vegetal", 17);
+			Dojo dojo = this.testService.recuperarEntidad(Dojo.class, "Torre Karin");
+			
+			int bichoRetadorId = 8; // GisemonEvolucion
+			int bichoRetadoId = 9; // Frutimon
+			ResultadoCombate resultadoCombate = this.service.duelo("Vegetal", bichoRetadorId);
 			
 			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getNombre(), "Vegetal");
-			Assert.assertEquals(resultadoCombate.getBichoGanador().getId(), 17);
+			Assert.assertEquals(resultadoCombate.getBichoGanador().getId(), bichoRetadorId);
 			Assert.assertEquals(resultadoCombate.getBichoGanador().getVictorias(), 101, 0);
-			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getId(), 18);
+			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getId(), bichoRetadoId);
 			
-			Dojo dojo = this.testService.recuperarEntidad(Dojo.class, "Torre Karin");
+			
 			
 			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getCurrentExp(), 10d, 0);
 			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getOwner().getCurrentExp(), 10d, 0);
 			
 			List<Turno> turnos = resultadoCombate.getTurnos();
 			
-			Assert.assertEquals(turnos.iterator().next().getRetado().getId(), 13);
-			Assert.assertEquals(turnos.iterator().next().getRetador().getId(), 12);
+			Assert.assertEquals(turnos.iterator().next().getRetado().getId(), bichoRetadoId);
+			Assert.assertEquals(turnos.iterator().next().getRetador().getId(), bichoRetadorId);
 			
-			Assert.assertEquals(dojo.getCampeon().getId(), 12);
+			Assert.assertEquals(dojo.getCampeon().getId(), bichoRetadorId);
 			
 			return null;
 		});

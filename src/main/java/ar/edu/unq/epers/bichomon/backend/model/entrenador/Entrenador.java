@@ -199,9 +199,6 @@ public class Entrenador {
 		this.setBichoCollection(new BichoCollection(this.getNivel(), 3));
 	
 		this.bichoCollection.remove(bicho, this.bichos);
-		System.out.println(this.bichos.contains(bicho));
-		bicho.setOwner(null);
-		System.out.println(bicho.getOwner());
 	}
 
 	/**

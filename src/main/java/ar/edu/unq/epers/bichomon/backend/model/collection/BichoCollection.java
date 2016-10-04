@@ -110,6 +110,7 @@ public class BichoCollection {
 			throw new BichoCollectionCantBeEmpty();
 		}
 		else {
+			bicho.setOwner(null);
 			bichos.remove(bicho);
 		}
 	}
