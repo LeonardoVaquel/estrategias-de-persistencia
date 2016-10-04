@@ -37,4 +37,13 @@ public class DataSessionService implements DataService {
 		});
 		
 	}
+
+	@Override
+	public void eliminarTablas() {
+		Runner.runInSession(() -> {
+			dataService.eliminarTablas();
+			return null;
+		});
+		
+	}
 }

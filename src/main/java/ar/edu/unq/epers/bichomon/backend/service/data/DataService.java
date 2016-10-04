@@ -21,4 +21,6 @@ public interface DataService {
 	 */
 	void crearSetDatosIniciales();
 
+	void eliminarTablas();
+	
 }

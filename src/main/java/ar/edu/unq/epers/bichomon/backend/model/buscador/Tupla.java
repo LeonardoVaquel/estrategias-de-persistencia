@@ -15,7 +15,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 @Entity
 public class Tupla{
 	
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	@OneToOne(cascade=CascadeType.ALL)
 	private Especie key;

@@ -24,7 +24,7 @@ import ar.edu.unq.epers.bichomon.backend.model.evolucion.EvolutionHandler;
 @Entity
 public class Bicho {
 	
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	@OneToOne(cascade=CascadeType.ALL)

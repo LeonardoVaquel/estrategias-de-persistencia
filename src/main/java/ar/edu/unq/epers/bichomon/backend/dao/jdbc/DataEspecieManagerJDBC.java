@@ -1,11 +1,15 @@
 package ar.edu.unq.epers.bichomon.backend.dao.jdbc;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.hibernate.Session;
 
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
+import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
  * Esta clase mantiene un repositorio con dummyData Especie 
@@ -58,6 +62,23 @@ public class DataEspecieManagerJDBC implements DataService {
 		dao.crearEspecie(DATAEspecies.get("Leomon"));
 		dao.crearEspecie(DATAEspecies.get("Gisemon"));
 		dao.crearEspecie(DATAEspecies.get("Bottimon"));		
+	}
+
+	@Override
+	public void eliminarTablas() {
+		Runner.runInSession( () -> {
+
+
+			Session session = Runner.getCurrentSession();
+			List<String> nombreDeTablas = session.createNativeQuery("show tables").getResultList();
+			session.createNativeQuery("SET FOREIGN_KEY_CHECKS=0;").executeUpdate();
+			nombreDeTablas.forEach(tabla -> {
+				session.createNativeQuery("truncate table " + tabla).executeUpdate();
+			});
+			session.createNativeQuery("SET FOREIGN_KEY_CHECKS=1").executeUpdate();
+			return null;
+		});
+		
 	}
 	
 }

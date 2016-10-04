@@ -21,7 +21,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 @Entity
 public abstract class CriterioEvolucion {
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
 	

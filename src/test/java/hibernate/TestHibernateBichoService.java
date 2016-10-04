@@ -10,7 +10,6 @@ import org.junit.Test;
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollectionReachedMaximumSize;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Turno;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -53,30 +52,20 @@ public class TestHibernateBichoService {
 	}
 	@After
 	public void deleteAll() {
-		//this.dataService.eliminarDatos();
+//		this.dataService.eliminarDatos();
 		// solamente se eliminan las especies
-//		Runner.runInSession( () -> {
-//
-//
-//			Session session = Runner.getCurrentSession();
-//			List<String> nombreDeTablas = session.createNativeQuery("show tables").getResultList();
-//			session.createNativeQuery("SET FOREIGN_KEY_CHECKS=0;").executeUpdate();
-//			nombreDeTablas.forEach(tabla -> {
-//				session.createNativeQuery("truncate table " + tabla).executeUpdate();
-//			});
-//			session.createNativeQuery("SET FOREIGN_KEY_CHECKS=1").executeUpdate();
-//			return null;
-//		});
+
 	}
 	
 	@Test
 	public void dado_un_bicho_este_puede_evolucionar() {
 		
-		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 8);
+		// Bicho = Leomon
+		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 2);
 		
 		Runner.runInSession(() -> {
 			
-			Assert.assertEquals(bicho.getId(), 8);
+			Assert.assertEquals(bicho.getId(), 2);
 			Assert.assertEquals(bicho.getEnergia(), 250);
 
 			// El entrenador no es necesario
@@ -92,14 +81,13 @@ public class TestHibernateBichoService {
 	@Test
 	public void dado_un_bicho_evoluciona_en_otra_especie() {
 		
-		// Todavía es un misterio la asignación de id 8 ! ...
-		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 8);
+		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 2);
 		
-		Especie especieAEvolucionar = this.testService.recuperarEntidad(Especie.class, "LeomonEvolucion");
+		Especie especieAEvolucionar = this.testService.recuperarEntidad(Especie.class, bicho.getEspecie().getEvolucion().getNombre());
 		
 		Runner.runInSession(() -> {
 			
-			Assert.assertEquals(bicho.getId(), 8);
+			Assert.assertEquals(bicho.getId(), 1);
 			Assert.assertEquals(bicho.getEspecie().getNombre(), "Leomon");
 
 			// Se testea utilizando un entrenador, sin embargo no es necesario.
@@ -118,11 +106,12 @@ public class TestHibernateBichoService {
 	@Test
 	public void un_entrenador_abandona_un_bicho_en_una_guarderia() {
 		
-		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 11);
+		// Bicho.especie = Gisemon
+		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 6);
 		
 		Runner.runInSession(() -> {
 
-			this.service.abandonar("Jackson", 10);
+			this.service.abandonar("Jackson", 6);
 			
 			Guarderia guarderia = this.testService.recuperarEntidad(Guarderia.class, "Guarderia las 24 horas!");
 			
