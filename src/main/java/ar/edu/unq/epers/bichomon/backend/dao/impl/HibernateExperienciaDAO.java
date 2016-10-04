@@ -16,9 +16,13 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  * Una implementacion de {@link ExperienciaDAO} que persiste
  * en una base de datos relacional utilizando JDBC
  * 
+ * @author santiago
  */
 public class HibernateExperienciaDAO implements ExperienciaDAO {
 
+	/**
+	 * Se retorna una lista con todas las instancias existentes de {@link Level}
+	 */
 	@Override
 	public List<Level> getAllLevels() {
 		Session session = Runner.getCurrentSession();
@@ -30,6 +34,9 @@ public class HibernateExperienciaDAO implements ExperienciaDAO {
 		return query.getResultList();
 	}
 	
+	/**
+	 * Dada una instancia de {@link Level} se guarda en un ambiente persistente
+	 */
 	@Override
 	public void guardarLevel(Level level) {
 		Session session = Runner.getCurrentSession();

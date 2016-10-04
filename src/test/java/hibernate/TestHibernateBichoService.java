@@ -118,7 +118,7 @@ public class TestHibernateBichoService {
 	@Test
 	public void un_entrenador_abandona_un_bicho_en_una_guarderia() {
 		
-		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 10);
+		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, 11);
 		
 		Runner.runInSession(() -> {
 
@@ -126,7 +126,8 @@ public class TestHibernateBichoService {
 			
 			Guarderia guarderia = this.testService.recuperarEntidad(Guarderia.class, "Guarderia las 24 horas!");
 			
-			Assert.assertEquals(guarderia.getBichos().iterator().next().getId(), bicho.getId());
+			Assert.assertEquals(guarderia.getBichos().contains(bicho), true);
+			Assert.assertEquals(bicho.getOwner(), null);
 
 			return null;
 		});
@@ -162,19 +163,6 @@ public class TestHibernateBichoService {
 		
 	}
 	
-	@Test(expected=BichoCollectionReachedMaximumSize.class)
-	public void un_entrenador_no_puede_realizar_una_busqueda_en_un_pueblo() {
-		
-		Runner.runInSession(() -> {
-
-			Bicho bicho = this.service.buscar("Explorador1");
-
-			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Explorador1");
-			
-			return null;
-		});
-		
-	}
 	
 	@Test
 	public void test_un_entrenador_realiza_una_busqueda_exitosa_en_un_dojo() {
@@ -214,12 +202,12 @@ public class TestHibernateBichoService {
 		
 		Runner.runInSession(() -> {
 			
-			ResultadoCombate resultadoCombate = this.service.duelo("Vegetal", 12);
+			ResultadoCombate resultadoCombate = this.service.duelo("Vegetal", 17);
 			
 			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getNombre(), "Vegetal");
-			Assert.assertEquals(resultadoCombate.getBichoGanador().getId(), 12);
+			Assert.assertEquals(resultadoCombate.getBichoGanador().getId(), 17);
 			Assert.assertEquals(resultadoCombate.getBichoGanador().getVictorias(), 101, 0);
-			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getId(), 13);
+			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getId(), 18);
 			
 			Dojo dojo = this.testService.recuperarEntidad(Dojo.class, "Torre Karin");
 			

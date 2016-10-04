@@ -10,7 +10,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 
 @Entity
-public class Guarderia  extends Ubicacion{
+public class Guarderia extends Ubicacion {
 	
 	public Guarderia(String nombreGuarderia,Random random){
 		super(nombreGuarderia, random);
@@ -27,6 +27,7 @@ public class Guarderia  extends Ubicacion{
 		if(entrenador.puedeAbandonar()) {
 			this.getBichos().add(bicho);
 			entrenador.abandonarBicho(bicho);
+			System.out.println(bicho.getId());
 		}
 	}
 	
@@ -66,7 +67,7 @@ public class Guarderia  extends Ubicacion{
 
 	@Override
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
-		throw new NoSePuedeRealizarDueloEnUbicacion(this.getNombre());
+		throw new NoSePuedeRealizarDueloEnUbicacionException(this.getNombre());
 	}
 	
 }

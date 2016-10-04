@@ -66,7 +66,7 @@ public class Pueblo extends Ubicacion{
 
 	@Override
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
-		throw new NoSePuedeRealizarDueloEnUbicacion(this.getNombre());
+		throw new NoSePuedeRealizarDueloEnUbicacionException(this.getNombre());
 	}
 
 

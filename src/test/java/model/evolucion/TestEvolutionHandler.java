@@ -29,8 +29,6 @@ public class TestEvolutionHandler {
 	private @Mock Especie especie;
 	private @Mock Entrenador entrenador;
 	private @Mock Bicho bicho;
-	private @Mock BichoManager bichoManager;
-	//private @Mock Evolucion evolucion;
 	private @Mock Especie especieEvolucion;
 	
 	private List<CriterioEvolucion> criterios = new ArrayList<>();
@@ -59,7 +57,6 @@ public class TestEvolutionHandler {
 		criterios.add(criterioPorNivel);
 
 		
-		handler.setBichoManager(bichoManager);
 		handler.setBicho(bicho);
 		handler.setEntrenador(entrenador);
 		handler.setEspecie(especie);
@@ -70,7 +67,6 @@ public class TestEvolutionHandler {
 		when(especie.getNombre()).thenReturn("testNombre");
 		
 		when(especie.getEvolucion()).thenReturn(especieEvolucion);
-		//when(evolutionManager.getEvolucion("testNombre")).thenReturn(evolucion);
 	}
 	
 	@After

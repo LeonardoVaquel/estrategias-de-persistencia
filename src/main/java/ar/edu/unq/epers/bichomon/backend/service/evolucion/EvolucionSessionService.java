@@ -26,13 +26,6 @@ public class EvolucionSessionService {
 		this.evolucionDAO = evolucionDAO;
 	}
 
-	public void getEvolucion(String nombreEvolucion) {
-		Runner.runInSession(() -> {
-			evolucionDAO.getEvolucion(nombreEvolucion);
-			
-			return null;
-		});
-	}
 
 }
 

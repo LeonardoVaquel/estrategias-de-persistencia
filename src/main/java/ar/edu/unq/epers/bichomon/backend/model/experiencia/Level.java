@@ -7,9 +7,11 @@ import javax.persistence.ManyToOne;
 
 /**
  * La clase Level representa un elemento de la Experciencia dentro del juego.
- * Un Level consta de un número y un coeficiente. 
+ * Un Level consta de un número y un coeficiente, donde el número es un nivel y el coeficiente
+ * un valor que se utilizará para realizar cálculos sobre la experiencia que un {@link Entrenador} debería
+ * recibir.
+ * 
  * @author santiago
- *
  */
 @Entity
 public class Level {

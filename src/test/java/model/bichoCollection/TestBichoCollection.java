@@ -64,17 +64,17 @@ public class TestBichoCollection {
 	@Test
 	public void cuando_se_crea_una_nueva_collecion_con_un_coeficiente_dado_se_setea_sus_valores_iniciales() {
 		
-		collection.setCoeficiente(8);
+		collection.setCoeficiente(3);
 		
-		Assert.assertEquals(8, collection.getCoeficiente(), 0);
+		Assert.assertEquals(3, collection.getCoeficiente(), 0);
 		Assert.assertEquals(1, collection.getNivel(), 0);
-		Assert.assertEquals(8, collection.getMaxSize(), 0);
+		Assert.assertEquals(3, collection.getMaxSize(), 0);
 	}
 	
 	@Test
 	public void se_agregan_elementos_a_una_lists_de_tamaño_maximo_3_para_obtener_una_coleccion_llena() {
 		
-		when(entrenador.getNivel()).thenReturn(3);
+		when(entrenador.getNivel()).thenReturn(1);
 		collection = new BichoCollection(entrenador.getNivel());
 		
 		collection.setCoeficiente(1);
@@ -93,15 +93,14 @@ public class TestBichoCollection {
 		
 		when(entrenador.getNivel()).thenReturn(1);
 		
-		collection.setCoeficiente(4);
 		
 		Integer initial_size  = collection.getMaxSize();
-		when(entrenador.getNivel()).thenReturn(2);
+		when(entrenador.getNivel()).thenReturn(3);
 		collection.setNivel(entrenador.getNivel());
 		Integer expected_size = collection.getMaxSize();
 		
-		Assert.assertEquals(4, initial_size, 0);
-		Assert.assertEquals(8, expected_size, 0);
+		Assert.assertEquals(3, initial_size, 0);
+		Assert.assertEquals(9, expected_size, 0);
 		
 	}
 	

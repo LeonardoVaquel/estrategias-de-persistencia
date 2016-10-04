@@ -8,7 +8,7 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 /**
- * {@link Buscador} es la encargada de dar un {@link Bicho} aleatoreamente dependiendo
+ * {@link Buscador} es la clase encargada de retornar un {@link Bicho} aleatoreamente dependiendo
  * la probabilidad que tenga cada {@link Bicho} en salir.
  * 
  * @author Leonardo

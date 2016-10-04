@@ -1,27 +1,22 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.EvolutionHandler;
 
 /**
  * Un {@link Bicho} existente en el sistema. 
- * Constade una {@link Especie}, que puede variar, puntos de energia y se
+ * Consta de una {@link Especie}, que puede variar, puntos de energia y se
  * considera que un Bicho pertenece a un {@link Entrenador} al ser capturado.
  * 
  * @author santiago
@@ -116,6 +111,9 @@ public class Bicho {
 		return victorias;
 	}
 	
+	/**
+	 * Se suma una victoria a las victorias totales
+	 */
 	public void nuevaVictoria() {
 		this.setVictorias(victorias + 1);
 	}
@@ -138,6 +136,11 @@ public class Bicho {
 		return handler.evolucionar();
 	}
 	
+	/**
+	 * Una instancia de {@link EvolutionHandler} determina si un {@link Bicho} está en condiciones de
+	 * evolucionar
+	 * @return boolean - el valor que denota la capacidad de una instancia {@link Bicho} de evolucionar 
+	 */
 	public boolean puedeEvolucionar() {
 		handler = new EvolutionHandler();
 		handler.setBicho(this);
@@ -153,8 +156,37 @@ public class Bicho {
 		this.setEspecie(especie);
 	}
 
+	/**
+	 * Se aumenta la energia de un {@link Bicho} en 1
+	 * @param n - un entero
+	 */
 	public void aumentarEnergiaEn(int n) {
 		energia = energia + n;		
 	}
+	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (this.getClass() != obj.getClass())
+			return false;
+		Bicho other = (Bicho) obj;
+		if (!(this.id == (other.id))) {
+			return false;
+		} else
+		return true;
+	}
+	
 
 }

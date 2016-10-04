@@ -33,6 +33,11 @@ public class CriterioEvolucionVictorias extends CriterioEvolucion {
 	
 	public CriterioEvolucionVictorias() {}
 
+	/**
+	 * Dada una instancia de {@link Bicho} y una instancia de {@link Entrenador}
+	 * se evalúa la cantidad de victorias del bicho especificado.
+	 * Se espera devolver true si el bicho posee al menos una determinada cantidad de victorias
+	 */
 	@Override
 	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		Boolean condicion = bicho.getVictorias() > this.getValor(); 

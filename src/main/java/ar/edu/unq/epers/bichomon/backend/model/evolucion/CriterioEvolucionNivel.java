@@ -34,6 +34,11 @@ public class CriterioEvolucionNivel extends CriterioEvolucion {
 	
 	public CriterioEvolucionNivel() {}
 
+	/**
+	 * Dada una instancia de {@link Bicho} y una instancia de {@link Entrenador}
+	 * se evalúa el nivel del entrenador especificado.
+	 * Se espera devolver true si el entrenador es de al menos un nivel determinado.
+	 */
 	@Override
 	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		

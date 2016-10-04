@@ -12,9 +12,9 @@ import javax.persistence.Transient;
 /**
  * Experiencia es una clase que representa una estructura compuesta por una base de experiencia
  * que es un número, y una lista de nieveles, sobre la cual obtendran acceso otros componentes.
- * Generalmente será utilizada por ExpHandler.
+ * Será utilizada por una instancia de {@link ExpHandler}.
+ * 
  * @author santiago
- *
  */
 @Entity
 public class Experiencia {
@@ -78,11 +78,22 @@ public class Experiencia {
 		this.capLevel = levels.size();
 	}
 	
+	/**
+	 * Dado un número que denota un nivel se espera obtener un valor de un HashMap multiplicado
+	 * por un coeficiente que representa la experiencia base, que no varía mientras la 
+	 * instancia {@link Experiencia} viva. 
+	 * @param lvl - un Integer
+	 * @return el valor de un level multiplicado por la experiencia base
+	 */
 	public Double getExpByLvl(Integer lvl) {
 		this.listToMap();
 		return this.levels.get(lvl) * this.baseExp;
 	}
 	
+	/**
+	 * Convierte la los valores del las instancias de {@link Level} de una lista en un HashMap, donde
+	 * el nivel de un {@link Level} es clave y el coeficiente un valor. 
+	 */
 	public void listToMap() {
 		this.levels = new HashMap<>();
 		for(Level level:levelList) {

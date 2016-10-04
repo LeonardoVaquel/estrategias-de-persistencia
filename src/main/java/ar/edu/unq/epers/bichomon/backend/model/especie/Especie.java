@@ -14,9 +14,12 @@ import javax.persistence.OneToOne;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 
 /**
- * Representa una {@link Especie} de bicho.
+ * Representa una {@link Especie} de bicho que consta de un nombre, una {@link Especie} raíz,
+ * una {@link Especie} evolución, una lista de {@link CriterioEvolucion}, una altura, peso, un
+ * tipo {@link TipoBicho}, una cantidad de energía inicial, un String que representa una url de foto
+ * y una cantidad de bichos de la {@link Especie} actual. 
  * 
- * @author Charly Backend
+ * @author santiago
  */
 @Entity
 public class Especie {
@@ -30,7 +33,7 @@ public class Especie {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Especie evolucion;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="especie", cascade = CascadeType.ALL)
 	private List<CriterioEvolucion> criteriosDeEvolucion;
 	
 	private int altura;
@@ -95,10 +98,10 @@ public class Especie {
 	}
 	
 	/**
-	 * @return - la especie raíz
+	 * @return - la {@link Especie} raíz para todos los bichos de ésta especie
 	 */
 	public Especie getRaiz() {
-		return this.raiz;
+		return raiz;
 	}
 	
 	public void setRaiz(Especie raiz) {
@@ -106,7 +109,7 @@ public class Especie {
 	}
 	
 	/**
-	 * @return - la especie que representa la evolución
+	 * @return - la {@link Especie} evolución para todos los bichos de ésta especie
 	 */
 	public Especie getEvolucion() {
 		return this.evolucion;
@@ -117,7 +120,7 @@ public class Especie {
 	}
 	
 	/**
-	 * @return - la lista de criterios para evolucionar
+	 * @return - los criterios de evolucion para todos los bichos de ésta especie
 	 */
 	public List<CriterioEvolucion> getCriteriosDeEvolucion() {
 		return this.criteriosDeEvolucion;
@@ -190,6 +193,9 @@ public class Especie {
 		this.cantidadBichos = i;
 	}
 	
+	/**
+	 * Se incrementa la cantidad de bichos en 1
+	 */
 	public void incrementarCantidad() {
 		this.setCantidadBichos(this.cantidadBichos + 1);
 	}

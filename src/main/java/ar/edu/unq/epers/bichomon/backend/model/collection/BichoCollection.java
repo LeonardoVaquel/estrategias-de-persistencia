@@ -2,27 +2,20 @@ package ar.edu.unq.epers.bichomon.backend.model.collection;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 /**
  * {@link BichoCollection} es una clase que representa una colección de {@link Bicho}, para un 
- * {@link Entrenador}. Una instancia de BichoCollection consta de un nivel, una lista de Bicho,
+ * {@link Entrenador}. Una instancia de BichoCollection consta de un nivel,
  * un tamaño máximo que depende del nivel del entrenador y un coeficiente que calcula dicho tamaño.
+ * Se encarga de interceptar mensajes como add y remove por parte de un {@link Entrenador} a su 
+ * lista de {@link Bicho} permitiendo establecer restricciones.
+ * 
  * @author santiago
  *
  */
-
 public class BichoCollection {
-
-	private int id;
 	
 	private Integer maxSize;
 	private Integer nivel;
@@ -35,7 +28,7 @@ public class BichoCollection {
 	 * @param trainerLevel
 	 */
 	public BichoCollection(Integer trainerLevel) {
-		this.coeficiente = 3;
+		this.coeficiente = 3; // se utiliza un coheficiente fijo
 		this.setNivel(trainerLevel);
 	}
 	
@@ -59,6 +52,9 @@ public class BichoCollection {
 		return this.maxSize;
 	}
 	
+	/**
+	 * Se actualiza la capacidad máxima de almacenamiento
+	 */
 	public void updateSize() {
 		this.setMaxSize(this.nivel * this.coeficiente);
 	}

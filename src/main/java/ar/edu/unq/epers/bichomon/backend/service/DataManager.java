@@ -46,7 +46,7 @@ import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
  */
 public class DataManager implements DataService {
 
-	private EspecieDAO especieDao 		  = new HibernateEspecieDAO();
+	private EspecieDAO especieDAO 		  = new HibernateEspecieDAO();
 	private BichoDAO bichoDAO 			  = new HibernateBichoDAO();
 	private EntrenadorDAO entrenadorDAO   = new HibernateEntrenadorDAO();
 	private ExperienciaDAO experienciaDAO = new HibernateExperienciaDAO();
@@ -171,6 +171,7 @@ public class DataManager implements DataService {
 		jacksonTrainer.setUbicacion(guarderiaLas24hrs);
 		
 		Entrenador majinTrainer = new Entrenador("Majin");
+		
 		
 		Entrenador vegetalTrainer = new Entrenador("Vegetal");
 		
@@ -369,17 +370,18 @@ public class DataManager implements DataService {
 	
 	@Override
 	public void eliminarDatos() {
-		especieDao.removeAllEspecies();
+		especieDAO.removeAllEspecies();
+		bichoDAO.removeAllBichos();
 	}
 
 	@Override
 	public void crearSetDatosIniciales() {
 
-		especieDao.crearEspecie(DATAEspecies.get("Leomon"));
-		especieDao.crearEspecie(DATAEspecies.get("LeomonEvolucion"));
-		especieDao.crearEspecie(DATAEspecies.get("Gisemon"));
-		especieDao.crearEspecie(DATAEspecies.get("GisemonEvolucion"));
-		especieDao.crearEspecie(DATAEspecies.get("Bottimon"));
+		especieDAO.crearEspecie(DATAEspecies.get("Leomon"));
+		especieDAO.crearEspecie(DATAEspecies.get("LeomonEvolucion"));
+		especieDAO.crearEspecie(DATAEspecies.get("Gisemon"));
+		especieDAO.crearEspecie(DATAEspecies.get("GisemonEvolucion"));
+		especieDAO.crearEspecie(DATAEspecies.get("Bottimon"));
 		
 		bichoDAO.guardarBicho(DATABichos.get("BichoLeomon"));
 		bichoDAO.guardarBicho(DATABichos.get("BichoGisemon"));
@@ -405,11 +407,11 @@ public class DataManager implements DataService {
 		historialDAO.guardarCampeon(DATACampeones.get("Bernal-Dojo"));
 		historialDAO.guardarCampeon(DATACampeones.get("Varela-Dojo"));
 		
-		especieDao.guardarTupla(DATAEspeciesTupla.get("Tupla1"));
-		especieDao.guardarTupla(DATAEspeciesTupla.get("Tupla2"));
-		especieDao.guardarTupla(DATAEspeciesTupla.get("Tupla3"));
-		especieDao.guardarTupla(DATAEspeciesTupla.get("Tupla4"));
-		especieDao.guardarTupla(DATAEspeciesTupla.get("Tupla5"));
+		especieDAO.guardarTupla(DATAEspeciesTupla.get("Tupla1"));
+		especieDAO.guardarTupla(DATAEspeciesTupla.get("Tupla2"));
+		especieDAO.guardarTupla(DATAEspeciesTupla.get("Tupla3"));
+		especieDAO.guardarTupla(DATAEspeciesTupla.get("Tupla4"));
+		especieDAO.guardarTupla(DATAEspeciesTupla.get("Tupla5"));
 		
 		ubicacionDAO.guardarGuarderia(DATAUbicacionesTupla.get("GuarderiaLas24Hrs"));
 	}

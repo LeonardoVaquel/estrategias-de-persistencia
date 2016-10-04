@@ -34,6 +34,11 @@ public class CriterioEvolucionEnergia extends CriterioEvolucion {
 
 	public CriterioEvolucionEnergia() {}
 	
+	/**
+	 * Dada una instancia de {@link Bicho} y una instancia de {@link Entrenador}
+	 * se evalúa la energía actual del bicho especificado.
+	 * Se espera devolver true si el bicho posee al menos una determinada cantidad de energía
+	 */
 	@Override
 	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		Boolean condicion = bicho.getEnergia() > this.getValor(); 

@@ -24,6 +24,12 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  */
 public class HibernateLeaderboardDAO implements LeaderboardService {
 
+	/**
+	 * Se retorna una lista de {@link Entrenador} que contiene a todos aquellos entrenadores
+	 * que poseen un {@link Bicho} que es actualmente campeón en un {@link Dojo}
+	 * El orden de la lista reflejará primero aquellos entrenadores que hayan salido
+	 * victoriosos desde hace mas tiempo. 
+	 */
 	@Override
 	public List<Entrenador> campeones() {
 		Session session = Runner.getCurrentSession();
@@ -37,12 +43,18 @@ public class HibernateLeaderboardDAO implements LeaderboardService {
 		return query.getResultList().stream().filter(c -> c.getDerrocado() == null).map(c -> c.getEntrenador()).collect(Collectors.toList());		
 	}
 
+	/**
+	 * TODO
+	 */
 	@Override
 	public Especie especieLider() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * TODO
+	 */
 	@Override
 	public List<Entrenador> lideres() {
 		// TODO Auto-generated method stub

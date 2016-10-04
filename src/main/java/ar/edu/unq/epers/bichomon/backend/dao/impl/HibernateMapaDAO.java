@@ -19,6 +19,12 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  */
 public class HibernateMapaDAO implements MapaService {
 
+	/**
+	 * Dado un nombre de {@link Entrenador} y un nombre de {@link Ubicacion} se mueve al entrenador
+	 * a la ubicación especificada.
+	 * Se espera que la {@link Ubicacion} de un entrenador se modifique por la del nombre pasado
+	 * como parámetro
+	 */
 	@Override
 	public void mover(String nombreEntrenador, String nombreUbicacion) {
 		Session session = Runner.getCurrentSession();
@@ -27,6 +33,10 @@ public class HibernateMapaDAO implements MapaService {
 		entrenador.mover(ubicacion);
 	}
 
+	/**
+	 * Dado un nombre de {@link Ubicacion} se obtiene la cantidad de entrenadores
+	 * que se encuentran actualmente en la ubicación especificada
+	 */
 	@Override
 	public int cantidadEntrenadores(String nombreUbicacion) {
 		Session session = Runner.getCurrentSession();
@@ -40,6 +50,10 @@ public class HibernateMapaDAO implements MapaService {
 		return query.getResultList().size(); 
 	}
 
+	/**
+	 * Dada una instancia de {@link Dojo} se obtiene una instancia de {@link Bicho}
+	 * que representa al actual campeón de dicha {@link Ubicación}.
+	 */
 	@Override
 	public Bicho campeon(String dojo) {
 		Session session = Runner.getCurrentSession();
@@ -47,6 +61,9 @@ public class HibernateMapaDAO implements MapaService {
 		return ubicacion.getCampeon();
 	}
 
+	/**
+	 * TODO
+	 */
 	@Override
 	public Bicho campeonHistorico(String dojo) {
 		Session session = Runner.getCurrentSession();

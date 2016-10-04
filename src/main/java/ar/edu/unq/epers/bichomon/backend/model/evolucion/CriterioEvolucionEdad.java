@@ -36,6 +36,12 @@ public class CriterioEvolucionEdad extends CriterioEvolucion {
 
 	public CriterioEvolucionEdad() {}
 	
+	/**
+	 * Dada una instancia de {@link Bicho} y una instancia de {@link Entrenador}
+	 * se evalúa la fecha de captura del bicho especificado.
+	 * Se espera devolver true si se cumplió una determinada cantidad de días
+	 * desde su fecha de captura hasta el día de hoy.
+	 */
 	@Override
 	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		DateTime today = new DateTime();

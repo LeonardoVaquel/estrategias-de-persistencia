@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -41,7 +39,7 @@ public class Entrenador {
 	@Transient
 	protected ExpHandler expHandler;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="owner", cascade=CascadeType.ALL)
 	private List<Bicho> bichos;
 	
 	private int nivel;
@@ -174,6 +172,11 @@ public class Entrenador {
 		bicho.setOwner(this);
 	}
 	
+	/**
+	 * Se consulta a una instancia de {@link BichoCollection} para evaluar la capacidad
+	 * de abandonar un bicho de una lista de {@link Bicho}
+	 * @return
+	 */
 	public boolean puedeAbandonar() {
 		this.bichoCollection = new BichoCollection(this.getNivel(), 3);
 		return !this.bichoCollection.isSingleton(bichos);
@@ -193,10 +196,12 @@ public class Entrenador {
 	 * @param bicho - el bicho a ser abandonado
 	 */
 	public void abandonarBicho(Bicho bicho) {
-		this.setBichoCollection(new BichoCollection(this.getNivel()));
+		this.setBichoCollection(new BichoCollection(this.getNivel(), 3));
 	
 		this.bichoCollection.remove(bicho, this.bichos);
+		System.out.println(this.bichos.contains(bicho));
 		bicho.setOwner(null);
+		System.out.println(bicho.getOwner());
 	}
 
 	/**
@@ -208,12 +213,19 @@ public class Entrenador {
 		return this.ubicacion.duelo(this, bicho);
 	}
 	
+	/**
+	 * Se delega en una {@link Ubicacion}, que es la actual, para modificar la ubicación actual.
+	 * @param ubicacion - una instancia de {@link Ubicacion}
+	 */
 	public void mover(Ubicacion ubicacion) {
 		this.setUbicacion(ubicacion);
 	}
 	
-	public Bicho buscar() {
-		
+	/**
+	 * Se delega la responsabilidad de buscar a la ubicación actual
+	 * @return - una instancia {@link Bicho}
+	 */
+	public Bicho buscar() {	
 		return this.ubicacion.buscar(this);
 	}
 	

@@ -64,4 +64,6 @@ public interface BichoDAO {
 	 */
 	public Bicho evolucionar(String entrenador, int bicho);
 	
+	
+	public void removeAllBichos();
 }

@@ -20,6 +20,9 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  */
 public class HibernateHistorialDAO implements HistorialDAO {
 
+	/**
+	 * Dada una instancia de {@link Campeon} se guarda en un ambiente persistente
+	 */
 	@Override
 	public void guardarCampeon(Campeon campeon) {
 		Session session = Runner.getCurrentSession();

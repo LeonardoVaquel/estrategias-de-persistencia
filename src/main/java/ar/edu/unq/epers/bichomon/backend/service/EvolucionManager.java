@@ -4,7 +4,6 @@ import java.util.List;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EvolucionDAO;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
-import ar.edu.unq.epers.bichomon.backend.model.evolucion.Evolucion;
 import ar.edu.unq.epers.bichomon.backend.service.evolucion.EvolucionService;
 
 /**
@@ -20,11 +19,6 @@ public class EvolucionManager implements EvolucionService {
 	public EvolucionManager(EvolucionDAO evolucionDAO) {
 		
 		this.evolucionDAO = evolucionDAO;
-	}
-
-	@Override
-	public Evolucion getEvolucion(String nombreEspecie) {
-		return evolucionDAO.getEvolucion(nombreEspecie);
 	}
 
 	@Override
