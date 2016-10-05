@@ -82,8 +82,6 @@ public class TestEvolutionHandler {
 	@Test
 	public void dados_un_bicho_no_apto_para_evolucionar_y_un_entrenador_se_atrapa_una_excepcion_de_energia_insuficiente(){
 		
-		// TODO por alguna razón no puedo catchear la excepción, "puedeEvolucionar" retorna false.
-		
 		when(bicho.getEnergia()).thenReturn(201);
 		when(bicho.getVictorias()).thenReturn(99);
 		when(bicho.getFechaCaptura()).thenReturn(new DateTime(2016, 9, 20, 0, 0));

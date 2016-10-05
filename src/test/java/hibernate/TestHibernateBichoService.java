@@ -135,6 +135,7 @@ public class TestHibernateBichoService {
 		
 	}
 	
+	//Alcance: no se logró que sea determinístico
 	@Test
 	public void un_entrenador_realiza_una_busqueda_exitosa_en_un_pueblo_y_se_devuelve_un_bicho() {
 		

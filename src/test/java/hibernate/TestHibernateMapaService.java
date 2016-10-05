@@ -46,7 +46,7 @@ public class TestHibernateMapaService {
 	
 	@After
 	public void deleteAll() {
-//		this.dataService.eliminarTablas();
+		this.dataService.eliminarTablas();
 	}
 	
 	@Test
