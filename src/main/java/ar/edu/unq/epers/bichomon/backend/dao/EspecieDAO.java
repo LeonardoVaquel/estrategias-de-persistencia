@@ -62,4 +62,5 @@ public interface EspecieDAO {
 	 */
 	void guardarTupla(Tupla tupla);
 	
+	List<Especie> populares();
 }

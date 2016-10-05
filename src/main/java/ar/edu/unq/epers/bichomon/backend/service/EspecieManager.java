@@ -45,4 +45,10 @@ public class EspecieManager implements EspecieService {
 	public void removeAllEspecies() {
 		especieDAO.removeAllEspecies();
 	}
+	
+	public List<Especie> populares() {
+		return especieDAO.populares();
+	}
+
+
 }
