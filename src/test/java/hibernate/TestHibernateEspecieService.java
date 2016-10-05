@@ -30,7 +30,7 @@ public class TestHibernateEspecieService {
 	private BichomonFactory bichoFactory;
 	private EspecieDAO especieDAO;
 	
-	private Especie nuevaEspecie;
+	private Especie nuevaEspecie,nuevaEspecie2;
 	
 	@Before
 	public void prepare() {
@@ -53,6 +53,21 @@ public class TestHibernateEspecieService {
 		nuevaEspecie.setRaiz(nuevaEspecie);
 		this.service.crearEspecie(nuevaEspecie);
 		
+		nuevaEspecie2 = this.bichoFactory.crearEspecie( "Bottimon",
+				null,
+				null,
+				null,
+				180,
+				90,
+				"FUEGO",
+				100,
+				"url",
+				0);
+
+		nuevaEspecie2.setRaiz(nuevaEspecie2);
+		this.service.crearEspecie(nuevaEspecie2);
+
+
 	}
 	
 	@After
@@ -101,7 +116,7 @@ public class TestHibernateEspecieService {
 			
 			List<Especie> especies = this.especieDAO.getAllEspecies();
 			
-			Especie expectedEspecie = especies.get(0);
+			Especie expectedEspecie = especies.get(1);
 			
 			Assert.assertEquals(expectedEspecie.getNombre(), "Fortmon");
 			
@@ -109,5 +124,28 @@ public class TestHibernateEspecieService {
 		});
 		
 	}
+	@Test 
+	public void  retorna_las_especies_mas_populares(){
+		this.service.getAllEspecies();
+		
+		Runner.runInSession(() -> {
+			List<Especie> especiesMasPopulares = this.especieDAO.populares();	
+			Assert.assertEquals(especiesMasPopulares.size(),2);
+		return null;
+		});
+	}
 	
+	@Test
+	public void test_busco_la_especie_mas_popular_(){
+		Runner.runInSession(() ->{
+			List<Especie> especies = this.especieDAO.populares();
+			Especie expected = especies.get(1);
+			
+			Assert.assertEquals(expected.getTipo(), TipoBicho.FUEGO);
+		return null;		
+		});
+	}
+
+
+
 }

@@ -82,4 +82,17 @@ public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
 		session.save(tupla);
 	}
 
+	@Override
+	public List<Especie> populares(){
+		Session session = Runner.getCurrentSession();
+		
+		String hql = "from Especie e "+
+					 "order by e.cantidadBichos desc";
+		
+		Query<Especie> query = session.createQuery(hql, Especie.class);
+		
+		return query.getResultList();
+	}
+
+
 }
