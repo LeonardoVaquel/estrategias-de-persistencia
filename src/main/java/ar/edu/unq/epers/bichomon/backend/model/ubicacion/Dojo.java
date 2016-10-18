@@ -80,12 +80,20 @@ public class Dojo extends Ubicacion {
 	
 	@Override
 	public Bicho buscar(Entrenador entrenador) {
-		if (entrenador.puedeBuscar()){
-
-			return new Bicho(this.campeon.getEspecie().getRaiz()); 
+		if (busquedaEnUbicacion(entrenador)) {
+			return new Bicho(this.obtenerEspecieRaizActual());
+		}		
+		else {
+			return null;
 		}
-
-		return null;
+	}
+	
+	/**
+	 * Retorna la {@link Especie} raíz del {@link Bicho} que es campeón actualmente
+	 * @return
+	 */
+	public Especie obtenerEspecieRaizActual() {
+		return this.campeon.getEspecie().getRaiz();
 	}
 
 	@Override

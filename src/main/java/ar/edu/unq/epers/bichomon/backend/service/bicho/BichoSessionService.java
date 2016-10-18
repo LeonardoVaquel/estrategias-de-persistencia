@@ -41,9 +41,10 @@ public class BichoSessionService {
 		});
 	}
 	
-	public boolean puedeEvolucionar(String entrenador, int bicho) {
+	public boolean puedeEvolucionar(String nombreEntrenador, int idBicho) {
 		return Runner.runInSession(() -> {
-			return bichoDAO.puedeEvolucionar(entrenador, bicho);
+			
+			return bichoDAO.getBicho(idBicho).puedeEvolucionar();
 		});
 	}
 	

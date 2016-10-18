@@ -89,9 +89,9 @@ public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
 		String hql = "from Especie e "+
 					 "order by e.cantidadBichos desc";
 		
-		Query<Especie> query = session.createQuery(hql, Especie.class);
+//		Query<Especie> query = session.createQuery(hql, Especie.class);
 		
-		return query.getResultList();
+		return session.createQuery(hql, Especie.class).getResultList();
 	}
 
 

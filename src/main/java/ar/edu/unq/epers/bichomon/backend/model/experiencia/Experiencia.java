@@ -23,8 +23,6 @@ public class Experiencia {
 	private String version; 
 	
 	private Double baseExp;
-	@Transient
-	private HashMap<Integer,Double> levels;
 	
 	private Integer capLevel;
 	
@@ -35,8 +33,6 @@ public class Experiencia {
 		
 		this.setBaseExp(baseExp);
 		this.levelList = levelList;
-		this.levels = new HashMap<>();
-		this.setCapLevel();
 		this.listToMap();
 	}
 	
@@ -62,20 +58,8 @@ public class Experiencia {
 		this.levelList = levelList;
 	}
 	
-	public HashMap<Integer, Double> getLevels() {
-		return levels;
-	}
-
-	public void setLevels(HashMap<Integer, Double> levels) {
-		this.levels = levels;
-	}
-	
 	public Integer getCapLevel() {
 		return this.capLevel;
-	}
-	
-	public void setCapLevel() {
-		this.capLevel = levels.size();
 	}
 	
 	/**
@@ -86,19 +70,19 @@ public class Experiencia {
 	 * @return el valor de un level multiplicado por la experiencia base
 	 */
 	public Double getExpByLvl(Integer lvl) {
-		this.listToMap();
-		return this.levels.get(lvl) * this.baseExp;
+		return this.listToMap().get(lvl) * this.baseExp;
 	}
 	
 	/**
 	 * Convierte la los valores del las instancias de {@link Level} de una lista en un HashMap, donde
 	 * el nivel de un {@link Level} es clave y el coeficiente un valor. 
 	 */
-	public void listToMap() {
-		this.levels = new HashMap<>();
+	public HashMap<Integer,Double> listToMap() {
+		HashMap<Integer,Double> levels = new HashMap<>();
 		for(Level level:levelList) {
-			this.levels.put(level.getNivel(), level.getCoeficiente());
+			levels.put(level.getNivel(), level.getCoeficiente());
 		}
+		return levels;
 	}
 	
 }

@@ -36,9 +36,6 @@ public class Entrenador {
 	
 	private Double totalExp;
 	
-	@Transient
-	protected ExpHandler expHandler;
-	
 	@OneToMany(mappedBy="owner", cascade=CascadeType.ALL)
 	private List<Bicho> bichos;
 	
@@ -46,7 +43,7 @@ public class Entrenador {
 	
 	@Transient
 	private BichoCollection bichoCollection = new BichoCollection(this.getNivel(), 3);
-	//@ManyToOne
+
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Ubicacion ubicacion;
 	
@@ -144,8 +141,7 @@ public class Entrenador {
 	 * @param exp una cantidad de experiencia
 	 */
 	public void gainsExp(Double exp, Experiencia expCfg) {
-		expHandler = new ExpHandler(expCfg);
-		expHandler.evaluateGainedExp(exp, this);
+		new ExpHandler(expCfg).evaluateGainedExp(exp, this);
 	}
 	
 	/**
@@ -223,7 +219,12 @@ public class Entrenador {
 	 * @return - una instancia {@link Bicho}
 	 */
 	public Bicho buscar() {	
-		return this.ubicacion.buscar(this);
+		if(this.puedeBuscar()) {
+			return this.ubicacion.buscar(this);
+		}
+		else {
+			return null;
+		}
 	}
 	
 }

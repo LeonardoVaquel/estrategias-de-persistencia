@@ -29,9 +29,9 @@ public class HibernateExperienciaDAO implements ExperienciaDAO {
 		
 		String hql = "from Level l";
 		
-		Query<Level> query = session.createQuery(hql, Level.class);
+//		Query<Level> query = session.createQuery(hql, Level.class);
 		
-		return query.getResultList();
+		return session.createQuery(hql, Level.class).getResultList();
 	}
 	
 	/**

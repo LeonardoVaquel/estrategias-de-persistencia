@@ -1,6 +1,5 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -52,10 +51,9 @@ public class Pueblo extends Ubicacion{
 	public Bicho buscar(Entrenador entrenador) {
 		this.buscador = new Buscador(this.listaDeEspecies, 100);
 		
-		if (busquedaEnUbicacion(entrenador, this)) {
+		if (busquedaEnUbicacion(entrenador)) {
 			return this.buscador.buscar();
 		}
-		System.out.println("NO");
 		return null;
 	}
 
