@@ -51,36 +51,10 @@ public class Dojo extends Ubicacion {
 	public void setHistorial(Historial historial) {
 		this.historial = historial;
 	}
-
-	public List<Bicho> mismaEspecieQueElCampeon(){
-		Especie especieCampeon= this.campeon.getEspecie().getRaiz();
-		List<Bicho> bichosDeIgualEspecie= new ArrayList<>();
-		for (Bicho bicho: this.getBichos()){
-			if(bicho.getEspecie()== especieCampeon){
-				bichosDeIgualEspecie.add(bicho);
-			}
-		}
-		return  bichosDeIgualEspecie;
-	}
-	
-	public Integer cantidadDeBichosEnDojo(){
-		return this.getBichos().size();
-	}
-	
-	public Bicho asignarBicho(){
-		Integer index = this.numeroRandom();
-		
-		return this.getBichos().get(index);
-		
-	}
-	public Integer numeroRandom(){
-		Integer valor = random.nextInt(this.cantidadDeBichosEnDojo());
-		return valor;
-	}
 	
 	@Override
 	public Bicho buscar(Entrenador entrenador) {
-		if (busquedaEnUbicacion(entrenador)) {
+		if (esBusquedaExitosa(entrenador)) {
 			return new Bicho(this.obtenerEspecieRaizActual());
 		}		
 		else {
@@ -96,10 +70,12 @@ public class Dojo extends Ubicacion {
 		return this.campeon.getEspecie().getRaiz();
 	}
 
+	/**
+	 * Se arroja una excepcion. No se pueden abandonar bichos en un Dojo
+	 */
 	@Override
 	public void abandonar(Entrenador entrenador, Bicho bicho) {
 		throw new NoSePuedeAbandonarEnUbicacionException();
-		
 	}
 
 	@Override

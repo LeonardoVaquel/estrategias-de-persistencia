@@ -59,7 +59,7 @@ public abstract class Ubicacion implements BusquedaEnUbicacion {
 	
 	public abstract ResultadoCombate duelo(Entrenador entrenador, Bicho bicho);
 	
-	public boolean busquedaEnUbicacion(Entrenador entrenador) {
+	public boolean esBusquedaExitosa(Entrenador entrenador) {
 		
 		return true;
 	}

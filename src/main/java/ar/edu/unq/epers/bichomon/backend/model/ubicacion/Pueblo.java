@@ -51,7 +51,7 @@ public class Pueblo extends Ubicacion{
 	public Bicho buscar(Entrenador entrenador) {
 		this.buscador = new Buscador(this.listaDeEspecies, 100);
 		
-		if (busquedaEnUbicacion(entrenador)) {
+		if (esBusquedaExitosa(entrenador)) {
 			return this.buscador.buscar();
 		}
 		return null;
@@ -66,6 +66,7 @@ public class Pueblo extends Ubicacion{
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
 		throw new NoSePuedeRealizarDueloEnUbicacionException(this.getNombre());
 	}
+
 
 
 }

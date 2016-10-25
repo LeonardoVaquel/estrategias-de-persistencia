@@ -9,5 +9,5 @@ public interface BusquedaEnUbicacion {
 	 * @param entrenador
 	 * @return boolean indicando si la búsqueda fue exitosa
 	 */
-	public boolean busquedaEnUbicacion(Entrenador entrenador);
+	public boolean esBusquedaExitosa(Entrenador entrenador);
 }
