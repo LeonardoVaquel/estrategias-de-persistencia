@@ -26,8 +26,8 @@ public class HibernateEvolucionDAO implements EvolucionDAO {
 		
 		Session session = Runner.getCurrentSession();
 		
-		String hql = "from CriterioEvolucion c "
-				+ "where c.especie == :unaEspecie";
+		String hql =  "from CriterioEvolucion c "
+					+ "where c.especie == :unaEspecie";
 		
 		Query<CriterioEvolucion> query = session.createQuery(hql,  CriterioEvolucion.class);
 		query.setParameter("unaEspecie", nombreEspecie);

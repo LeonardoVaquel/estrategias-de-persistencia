@@ -2,13 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.dao.impl;
 
 import org.hibernate.Session;
 
-import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.UbicacionDAO;
-import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.experiencia.Experiencia;
-import ar.edu.unq.epers.bichomon.backend.model.experiencia.TablaDeExperiencia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
@@ -20,6 +14,9 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  */
 public class HibernateUbicacionDAO implements UbicacionDAO {
 
+	
+	// POSIBLEMENTE SE BORRE ESTA CLASE
+	
 	/**
 	 * Dada una instancia de {@link Guarderia} se guarda en un ambiente persistente
 	 */

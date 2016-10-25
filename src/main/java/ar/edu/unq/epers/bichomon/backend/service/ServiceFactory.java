@@ -22,15 +22,6 @@ public class ServiceFactory {
 	public EspecieService getEspecieService() {
 		return new EspecieManager(new HibernateEspecieDAO());
 	}
-
-	/**
-	 * @return un objeto que implementa {@link BichoService}
-	 */
-	public BichoService getBichoService() {
-		return new BichoManager(new HibernateBichoDAO());
-	}
-	
-	
 	
 	/**
 	 * @return un objeto que implementa {@link DataService}

@@ -11,7 +11,7 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  * objetos de forma genreica. Usado principalmente
  * en tests
  */
-public class TestService {
+public class GenericService {
 	
 	public void crearEntidad(Object object) {
 		Runner.runInSession(() -> {

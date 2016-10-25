@@ -14,7 +14,7 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.service.DataManager;
-import ar.edu.unq.epers.bichomon.backend.service.TestService;
+import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoService;
 import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
@@ -35,7 +35,7 @@ public class TestHibernateLeaderboardService {
 	private LeaderboardSessionService service;
 	private LeaderboardService hibernateLeaderboardDAO;
 	private DataService dataService;
-	private TestService testService;
+	private GenericService testService;
 	private BichoSessionService bichoService;
 	private BichoDAO hibernateBichoDAO;
 
@@ -45,7 +45,7 @@ public class TestHibernateLeaderboardService {
 		this.hibernateLeaderboardDAO = new HibernateLeaderboardDAO();
 		this.service = new LeaderboardSessionService(hibernateLeaderboardDAO);
 		this.dataService = new DataSessionService(new DataManager());
-		this.testService = new TestService();
+		this.testService = new GenericService();
 
 		this.hibernateBichoDAO = new HibernateBichoDAO();
 		this.bichoService = new BichoSessionService(hibernateBichoDAO);

@@ -19,7 +19,7 @@ import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoSePuedeAbandonarEnUbicacionException;
 import ar.edu.unq.epers.bichomon.backend.service.BichoManager;
 import ar.edu.unq.epers.bichomon.backend.service.DataManager;
-import ar.edu.unq.epers.bichomon.backend.service.TestService;
+import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoService;
 import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
@@ -38,7 +38,7 @@ public class TestHibernateBichoService {
 	private BichoSessionService service;
 	private BichoDAO hibernateBichoDAO;
 	private DataService dataService;
-	private TestService testService;
+	private GenericService testService;
 
 	
 	@Before
@@ -47,7 +47,7 @@ public class TestHibernateBichoService {
 		this.hibernateBichoDAO = new HibernateBichoDAO();
 		this.service = new BichoSessionService(hibernateBichoDAO);
 		this.dataService = new DataSessionService(new DataManager());
-		this.testService = new TestService();
+		this.testService = new GenericService();
 		
 		dataService.crearSetDatosIniciales();
 		

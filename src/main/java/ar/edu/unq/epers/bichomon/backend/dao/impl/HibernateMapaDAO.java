@@ -3,8 +3,8 @@ package ar.edu.unq.epers.bichomon.backend.dao.impl;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -17,21 +17,7 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  * 
  * @author santiago
  */
-public class HibernateMapaDAO implements MapaService {
-
-	/**
-	 * Dado un nombre de {@link Entrenador} y un nombre de {@link Ubicacion} se mueve al entrenador
-	 * a la ubicación especificada.
-	 * Se espera que la {@link Ubicacion} de un entrenador se modifique por la del nombre pasado
-	 * como parámetro
-	 */
-	@Override
-	public void mover(String nombreEntrenador, String nombreUbicacion) {
-		Session session = Runner.getCurrentSession();
-		Entrenador entrenador = session.get(Entrenador.class, nombreEntrenador);
-		Ubicacion ubicacion = session.get(Ubicacion.class, nombreUbicacion);
-		entrenador.mover(ubicacion);
-	}
+public class HibernateMapaDAO implements MapaDAO {
 
 	/**
 	 * Dado un nombre de {@link Ubicacion} se obtiene la cantidad de entrenadores

@@ -19,7 +19,7 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  * 
  * @author santiago
  */
-public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
+public class HibernateEspecieDAO implements EspecieDAO {
 
 	/**
 	 * Dada una instancia de {@link Especie} se guarda en un ambiente persistente
@@ -88,8 +88,6 @@ public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
 		
 		String hql = "from Especie e "+
 					 "order by e.cantidadBichos desc";
-		
-//		Query<Especie> query = session.createQuery(hql, Especie.class);
 		
 		return session.createQuery(hql, Especie.class).getResultList();
 	}

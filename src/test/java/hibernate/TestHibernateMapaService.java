@@ -10,7 +10,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.service.DataManager;
-import ar.edu.unq.epers.bichomon.backend.service.TestService;
+import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.MapaService;
@@ -30,7 +30,7 @@ public class TestHibernateMapaService {
 	private MapaSessionService service;
 	private MapaService hibernateMapaDAO;
 	private DataService dataService;
-	private TestService testService;	
+	private GenericService testService;	
 	
 	@Before
 	public void prepare() {
@@ -38,7 +38,7 @@ public class TestHibernateMapaService {
 		this.hibernateMapaDAO = new HibernateMapaDAO();
 		this.service = new MapaSessionService(hibernateMapaDAO);
 		this.dataService = new DataSessionService(new DataManager());
-		this.testService = new TestService();
+		this.testService = new GenericService();
 		
 		dataService.crearSetDatosIniciales();
 	}

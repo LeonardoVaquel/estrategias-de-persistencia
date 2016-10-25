@@ -13,7 +13,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.especie.BichomonFactory;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
-import ar.edu.unq.epers.bichomon.backend.service.TestService;
+import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
@@ -26,7 +26,7 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 public class TestHibernateEspecieService {
 	
 	private EspecieSessionService service;
-	private TestService testService;
+	private GenericService testService;
 	private BichomonFactory bichoFactory;
 	private EspecieDAO especieDAO;
 	
@@ -37,7 +37,7 @@ public class TestHibernateEspecieService {
 		this.especieDAO = new HibernateEspecieDAO();
 		this.bichoFactory = new BichomonFactory();
 		this.service = new EspecieSessionService(especieDAO);
-		this.testService = new TestService();
+		this.testService = new GenericService();
 		
 		
 		nuevaEspecie = this.bichoFactory.crearEspecie( "Fortmon",
