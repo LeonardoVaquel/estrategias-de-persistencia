@@ -1,5 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,9 +44,6 @@ public class Bicho {
 	//@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime fechaCaptura;
 	
-	@Transient
-	private EvolutionHandler handler;
-	
 	public Bicho(Especie especie, String nombre) {
 
 	}
@@ -54,7 +53,6 @@ public class Bicho {
 		this.energia      = especie.getEnergiaInicial();
 		this.victorias    = 0;
 		this.setFechaCaptura();
-		this.setHandler(new EvolutionHandler());
 	}
 
 	
@@ -118,9 +116,6 @@ public class Bicho {
 		this.setVictorias(victorias + 1);
 	}
 	
-	public void setHandler(EvolutionHandler handler) {
-		this.handler = handler;
-	}
 	
 	/**
 	 * Un objeto {@link EvolutionHandler} determina si un bicho está en condiciones de evolucionar.
@@ -130,7 +125,7 @@ public class Bicho {
 	 * 
 	 */
 	public Bicho evolucionar() {
-		handler = new EvolutionHandler();
+		EvolutionHandler handler = new EvolutionHandler();
 		handler.setBicho(this);
 		handler.setEntrenador(this.owner);
 		return handler.evolucionar();
@@ -142,7 +137,7 @@ public class Bicho {
 	 * @return boolean - el valor que denota la capacidad de una instancia {@link Bicho} de evolucionar 
 	 */
 	public boolean puedeEvolucionar() {
-		handler = new EvolutionHandler();
+		EvolutionHandler handler  = new EvolutionHandler();
 		handler.setBicho(this);
 		handler.setEntrenador(this.owner);
 		return handler.puedeEvolucionar();

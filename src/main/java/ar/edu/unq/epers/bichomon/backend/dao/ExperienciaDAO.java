@@ -30,11 +30,11 @@ public interface ExperienciaDAO {
 	
 	/**
 	 * Dado un Evento, por ejemplo, Combatir, Evolucionar, Buscar, se retorna
-	 * una cantidad de puntos experiencia.
+	 * una tabla de experiencia para el evento especificado
 	 * @param tipoDeEvento - un nombre de evento 
-	 * @return - una cantidad de experiencia
+	 * @return - una isntancia de {@link TablaDeExperiencia}
 	 */
-	public int getExperiencieByEvent(String tipoDeEvento);
+	public TablaDeExperiencia getExperiencieByEvent(String tipoDeEvento);
 	
 	/**
 	 * Dado un string se espera retornar un objeto que representa la configuración de la 

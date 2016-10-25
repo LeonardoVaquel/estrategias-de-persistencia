@@ -38,7 +38,7 @@ public class ExperienciaManager implements ExperienciaDAO {
 	}
 	
 	@Override
-	public int getExperiencieByEvent(String event) {
+	public TablaDeExperiencia getExperiencieByEvent(String event) {
 		return experienciaDAO.getExperiencieByEvent(event);
 	}
 

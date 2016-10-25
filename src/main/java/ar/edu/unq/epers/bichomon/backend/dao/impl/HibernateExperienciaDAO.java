@@ -29,9 +29,9 @@ public class HibernateExperienciaDAO implements ExperienciaDAO {
 		
 		String hql = "from Level l";
 		
-//		Query<Level> query = session.createQuery(hql, Level.class);
+		Query<Level> query = session.createQuery(hql, Level.class);
 		
-		return session.createQuery(hql, Level.class).getResultList();
+		return query.getResultList();
 	}
 	
 	/**
@@ -50,9 +50,9 @@ public class HibernateExperienciaDAO implements ExperienciaDAO {
 	}
 	
 	@Override
-	public int getExperiencieByEvent(String tipoDeEvento) {
+	public TablaDeExperiencia getExperiencieByEvent(String tipoDeEvento) {
 		Session session = Runner.getCurrentSession();
-		return session.get(TablaDeExperiencia.class, tipoDeEvento).getValor();
+		return session.get(TablaDeExperiencia.class, tipoDeEvento);
 	}
 
 	@Override
