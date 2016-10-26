@@ -1,9 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.service;
 
-import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.jdbc.DataEspecieManagerJDBC;
-import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 

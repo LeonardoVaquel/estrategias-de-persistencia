@@ -139,8 +139,8 @@ public class BichoSessionService implements BichoService {
 			
 			double experienciaPorCombate = expTable.getValor();
 			
+			resultadoCombate.getBichoGanador().getOwner().gainsExp(experienciaPorCombate, expCfg);
 			resultadoCombate.getBichoPerdedor().getOwner().gainsExp(experienciaPorCombate, expCfg);
-			entrenador.gainsExp(experienciaPorCombate, expCfg);
 			
 			return resultadoCombate;
 		});

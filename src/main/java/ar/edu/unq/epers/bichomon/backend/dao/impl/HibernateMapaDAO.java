@@ -5,7 +5,6 @@ import org.hibernate.query.Query;
 
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.MapaService;
@@ -27,13 +26,22 @@ public class HibernateMapaDAO implements MapaDAO {
 	public int cantidadEntrenadores(String nombreUbicacion) {
 		Session session = Runner.getCurrentSession();
 		
-		String hql = "from Entrenador e "
-				+ "where e.ubicacion.nombre = :unaUbicacion";
-		
-		Query<Entrenador> query = session.createQuery(hql, Entrenador.class);
-		query.setParameter("unaUbicacion", nombreUbicacion);
+//		String hql = "from Entrenador e "
+//				+ "where e.ubicacion.nombre = :unaUbicacion";
+//		
+//		Query<Entrenador> query = session.createQuery(hql, Entrenador.class);
+//		query.setParameter("unaUbicacion", nombreUbicacion);
 
-		return query.getResultList().size(); 
+//		Ubicacion ubicacion = session.get(Ubicacion.class, nombreUbicacion);		
+//		return ubicacion.getEntrenadores().size(); 
+		
+		String hql = "select count(elements(u.entrenadores)) from Ubicacion u "
+				+ "where u.nombre = :unaUbicacion";
+		
+		Query<Long> query = session.createQuery(hql, Long.class);
+		query.setParameter("unaUbicacion", nombreUbicacion);
+		return query.getSingleResult().intValue();
+		
 	}
 
 	/**
