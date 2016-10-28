@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.OneToOne;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.EvolutionHandler;
 
 /**
@@ -103,6 +105,14 @@ public class Bicho {
 		return victorias;
 	}
 	
+	public List<CriterioEvolucion> getCriteriosDeEvolucion() {
+		return this.especie.getCriteriosDeEvolucion();
+	}
+	
+	public Especie getEvolucion() {
+		return this.especie.getEvolucion();
+	}
+	
 	/**
 	 * Se suma una victoria a las victorias totales
 	 */
@@ -121,7 +131,6 @@ public class Bicho {
 	public Bicho evolucionar() {
 		EvolutionHandler handler = new EvolutionHandler();
 		handler.setBicho(this);
-		handler.setEntrenador(this.owner);
 		return handler.evolucionar();
 	}
 	
@@ -133,7 +142,6 @@ public class Bicho {
 	public boolean puedeEvolucionar() {
 		EvolutionHandler handler  = new EvolutionHandler();
 		handler.setBicho(this);
-		handler.setEntrenador(this.owner);
 		return handler.puedeEvolucionar();
 	}
 	

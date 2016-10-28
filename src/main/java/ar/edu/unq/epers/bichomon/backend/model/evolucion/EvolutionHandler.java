@@ -19,9 +19,6 @@ import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.EvolutionExc
 public class EvolutionHandler {
 
 	private Bicho bicho;
-	private Entrenador entrenador;
-	private Especie especie;
-	private List<CriterioEvolucion> criterios;
 	
 	public EvolutionHandler() {
 		
@@ -33,49 +30,21 @@ public class EvolutionHandler {
 
 	public void setBicho(Bicho bicho) {
 		this.bicho = bicho;
-		this.setEspecie(this.bicho.getEspecie());
-	}
-
-	public Entrenador getEntrenador() {
-		return entrenador;
-	}
-
-	public void setEntrenador(Entrenador entrenador) {
-		this.entrenador = entrenador;
-	}
-
-	public Especie getEspecie() {
-		return especie;
-	}
-
-	public void setEspecie(Especie especie) {
-		this.especie = especie;
-	}
-	
-	public void setCriterios(List<CriterioEvolucion> criterios) {
-		this.criterios = criterios;
 	}
 	
 	/**
 	 * Se recorre una lista de {@link CriterioEvolucion} evaluando si un {@link Bicho} está apto
-	 * para evolucionar. En caso de evaluarse negativamente se levantará la exception del primer
-	 * criterio que no cumpla la condición. 
+	 * para evolucionar.
 	 * @return - boolean indicando que un {@link Bicho} está en condiciones de evolucionar.
 	 */
 	public boolean puedeEvolucionar() {
 		
-		criterios = this.especie.getCriteriosDeEvolucion();
 		Boolean result = true;
-		try {
-			for (CriterioEvolucion criterio : criterios) {
-				result = result && criterio.seCumple(bicho, entrenador);
-			}
-			return result;
+		for (CriterioEvolucion criterio : this.bicho.getCriteriosDeEvolucion()) {
+				System.out.println("Entro aqui");
+				result = result && criterio.seCumple(bicho, this.bicho.getOwner());
 		}
-		catch(EvolutionException e) {
-			System.out.println(e.getMessage());
-			return false;
-		}
+		return result;
 	}
 	
 	/**
@@ -85,7 +54,7 @@ public class EvolutionHandler {
 	 */
 	public Bicho evolucionar() {
 		if (this.puedeEvolucionar()) {
-			this.bicho.evolucionar(especie.getEvolucion());
+			this.bicho.evolucionar(this.bicho.getEvolucion());
 		}
 		return bicho;
 	}

@@ -8,10 +8,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.joda.time.DateTime;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -22,14 +21,15 @@ import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionEnergi
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionNivel;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucionVictorias;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.EvolutionHandler;
-import ar.edu.unq.epers.bichomon.backend.service.BichoManager;
 
+/**
+ * @author santiago
+ */
 public class TestEvolutionHandler {
 	
-	private @Mock Especie especie;
-	private @Mock Entrenador entrenador;
-	private @Mock Bicho bicho;
-	private @Mock Especie especieEvolucion;
+	private @Mock Especie dummyEspecieEvolucion;
+	private @Mock Entrenador dummyEntrenador;
+	private @Mock Bicho dummyBicho;
 	
 	private List<CriterioEvolucion> criterios = new ArrayList<>();
 	private CriterioEvolucion criterioPorEnergia;
@@ -42,31 +42,26 @@ public class TestEvolutionHandler {
 	@Before
 	public void setUp() {
 		
-		handler = new EvolutionHandler();
-		
 		MockitoAnnotations.initMocks(this);
 		
-		criterioPorEnergia   = new CriterioEvolucionEnergia(especie, 200);
-		criterioPorVictorias = new CriterioEvolucionVictorias(especie, 100);
-		criterioPorEdad      = new CriterioEvolucionEdad(especie, 100);
-		criterioPorNivel     = new CriterioEvolucionNivel(especie, 50);
+		handler = new EvolutionHandler();
+		handler.setBicho(dummyBicho);
+		
+		
+		criterioPorEnergia   = new CriterioEvolucionEnergia(200);
+		criterioPorVictorias = new CriterioEvolucionVictorias(100);
+		criterioPorEdad      = new CriterioEvolucionEdad(20);
+		criterioPorNivel     = new CriterioEvolucionNivel(50);
 		
 		criterios.add(criterioPorEnergia);
 		criterios.add(criterioPorVictorias);
 		criterios.add(criterioPorEdad);
 		criterios.add(criterioPorNivel);
 
+		when(dummyBicho.getCriteriosDeEvolucion()).thenReturn(criterios);
+		when(dummyBicho.getEvolucion()).thenReturn(dummyEspecieEvolucion);
+		when(dummyBicho.getOwner()).thenReturn(dummyEntrenador);
 		
-		handler.setBicho(bicho);
-		handler.setEntrenador(entrenador);
-		handler.setEspecie(especie);
-		
-		when(bicho.getEspecie()).thenReturn(especie);
-		
-		when(especie.getCriteriosDeEvolucion()).thenReturn(criterios);
-		when(especie.getNombre()).thenReturn("testNombre");
-		
-		when(especie.getEvolucion()).thenReturn(especieEvolucion);
 	}
 	
 	@After
@@ -80,38 +75,41 @@ public class TestEvolutionHandler {
 	}
 	
 	@Test
-	public void dados_un_bicho_no_apto_para_evolucionar_y_un_entrenador_se_atrapa_una_excepcion_de_energia_insuficiente(){
-		
-		when(bicho.getEnergia()).thenReturn(201);
-		when(bicho.getVictorias()).thenReturn(99);
-		when(bicho.getFechaCaptura()).thenReturn(new DateTime(2016, 9, 20, 0, 0));
-		when(entrenador.getNivel()).thenReturn(40);
+	public void un_handler_devuelve_false_en_handler_puede_evolucionar() {
+
+		LocalDateTime fechaDeCaptura = LocalDateTime.now().minusDays(50);		
+		when(dummyBicho.getEnergia()).thenReturn(100);
+		when(dummyBicho.getVictorias()).thenReturn(50);
+		when(dummyBicho.getFechaCaptura()).thenReturn(fechaDeCaptura);				
+		when(dummyEntrenador.getNumeroNivel()).thenReturn(20);
 		
 		Assert.assertFalse(handler.puedeEvolucionar());
 	}
-
-	@Test
-	public void dados_un_bicho_y_un_entrenador_un_handler_dispone_es_posible_evolucionarlo() {
-		
-		when(bicho.getEnergia()).thenReturn(201);
-		when(bicho.getVictorias()).thenReturn(101);
-		when(bicho.getFechaCaptura()).thenReturn(new DateTime(2016, 1, 20, 0, 0));
-		when(entrenador.getNivel()).thenReturn(51);
-		
-		Assert.assertEquals(4, especie.getCriteriosDeEvolucion().size());
-		Assert.assertTrue(handler.puedeEvolucionar());
-	}
 	
 	@Test
+	public void un_handler_devuelve_true_en_handler_puede_evolucionar() {
+
+		LocalDateTime fechaDeCaptura = LocalDateTime.now().minusDays(50);		
+		when(dummyBicho.getEnergia()).thenReturn(201);
+		when(dummyBicho.getVictorias()).thenReturn(101);
+		when(dummyBicho.getFechaCaptura()).thenReturn(fechaDeCaptura);				
+		when(dummyEntrenador.getNumeroNivel()).thenReturn(50);
+		
+		Assert.assertTrue(handler.puedeEvolucionar());
+	}
+
+	@Test
 	public void un_handler_evoluciona_un_bicho_apto_para_evolucionar() {
-		when(bicho.getEnergia()).thenReturn(201);
-		when(bicho.getVictorias()).thenReturn(101);
-		when(bicho.getFechaCaptura()).thenReturn(new DateTime(2016, 1, 20, 0, 0));
-		when(entrenador.getNivel()).thenReturn(51);
+		LocalDateTime fechaDeCaptura = LocalDateTime.now().minusDays(50);		
+		when(dummyBicho.getEnergia()).thenReturn(201);
+		when(dummyBicho.getVictorias()).thenReturn(101);
+		when(dummyBicho.getFechaCaptura()).thenReturn(fechaDeCaptura);				
+		when(dummyEntrenador.getNumeroNivel()).thenReturn(50);
 		
 		handler.evolucionar();
 		
-		verify(bicho, times(1)).evolucionar(especieEvolucion);
+		verify(dummyBicho, times(1)).getEvolucion();
+		verify(dummyBicho, times(1)).evolucionar(dummyEspecieEvolucion);
 	}
 	
 }

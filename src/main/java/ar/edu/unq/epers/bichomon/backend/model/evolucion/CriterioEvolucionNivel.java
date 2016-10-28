@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.NotEnoughLevelToEvolve;
 
 /**
  * {@link CriterioEvolucionNivel} es una clase que representa un {@link CriterioEvolucion} teniendo
@@ -42,13 +41,7 @@ public class CriterioEvolucionNivel extends CriterioEvolucion {
 	@Override
 	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		
-		Boolean condicion = entrenador.getNumeroNivel() >= this.getValor(); 
-		if (!condicion) {
-			throw new NotEnoughLevelToEvolve(this.getValor());
-		}
-		else {
-			return condicion;
-		}
+		return entrenador.getNumeroNivel() >= this.getValor();
 	}
 
 }

@@ -101,7 +101,7 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 	}
 	
 	private void ataqueRetado(){
-		danioRetado = danioRetado + retado.getEnergia() * 1;	// El 1 también debe ser un rando(0.5,1)
+		danioRetado = danioRetado + retado.getEnergia() * 1;	// El 1 también debe ser un random(0.5,1)
 	}
 
 	private void verSiHayGanador(){
