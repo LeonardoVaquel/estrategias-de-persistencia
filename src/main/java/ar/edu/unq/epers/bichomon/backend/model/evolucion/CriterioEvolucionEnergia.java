@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.NotEnoughEnergyToEvolve;
 
 /**
  * {@link CriterioEvolucionEnergia} es una clase que representa un {@link CriterioEvolucion}
@@ -41,13 +40,7 @@ public class CriterioEvolucionEnergia extends CriterioEvolucion {
 	 */
 	@Override
 	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
-		Boolean condicion = bicho.getEnergia() > this.getValor(); 
-		if (!condicion) {
-			throw new NotEnoughEnergyToEvolve(this.getValor());
-		}
-		else {
-			return condicion;
-		}
+		return bicho.getEnergia() > this.getValor(); 
 	}
 
 }

@@ -1,14 +1,12 @@
 package ar.edu.unq.epers.bichomon.backend.model.evolucion;
 
-import javax.persistence.Entity;
+import java.time.LocalDateTime;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
+import javax.persistence.Entity;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.NotEnoughAgeToEvolve;
 
 /**
  * {@link CriterioEvolucionEdad} es una clase que representa un {@link CriterioEvolucion} teniendo
@@ -39,19 +37,15 @@ public class CriterioEvolucionEdad extends CriterioEvolucion {
 	/**
 	 * Dada una instancia de {@link Bicho} y una instancia de {@link Entrenador}
 	 * se evalúa la fecha de captura del bicho especificado.
-	 * Se espera devolver true si se cumplió una determinada cantidad de días
-	 * desde su fecha de captura hasta el día de hoy.
+	 * Se espera devolver true si la fecha de captura es anterior a una fecha resultante.
 	 */
 	@Override
 	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
-		DateTime today = new DateTime();
-		Boolean condicion = Days.daysBetween(bicho.getFechaCaptura(), today).getDays() > this.getValor(); 
-		if (!condicion) {
-			throw new NotEnoughAgeToEvolve(this.getValor());
-		}
-		else {
-			return condicion;
-		}		
+
+		LocalDateTime fechaDeCaptura  = bicho.getFechaCaptura();
+		LocalDateTime fechaResultante = LocalDateTime.now().minusDays(this.getValor());
+		
+		return fechaResultante.isAfter(fechaDeCaptura);
 	}
 
 }

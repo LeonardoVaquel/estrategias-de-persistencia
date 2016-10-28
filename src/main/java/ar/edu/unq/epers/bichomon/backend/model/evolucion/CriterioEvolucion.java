@@ -12,7 +12,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 /**
  * {@link CriterioEvolucion} es una clase que modela un criterio que se debe
- * cumplir para que una {@link >Especie} pueda evolucionar.
+ * cumplir para que una {@link Especie} pueda evolucionar.
  * Existen distintos tipos de criterios que se resuelven con un valor dado, de tipo Integer que 
  * son representados por subclasificación de ésta clase.
  * @author santiago
@@ -26,12 +26,10 @@ public abstract class CriterioEvolucion {
 
 	
 	@ManyToOne
-	private Especie especie;
 	private String tipo;
 	private Integer valor;
 	
 	public CriterioEvolucion(Especie especie, Integer valor) {
-		this.setEspecie(especie);
 		this.setValor(valor);
 	}
 	
@@ -41,13 +39,6 @@ public abstract class CriterioEvolucion {
 	
 	public CriterioEvolucion() {}
 	
-	public Especie getEspecie() {
-		return especie;
-	}
-
-	public void setEspecie(Especie especie) {
-		this.especie = especie;
-	}
 
 	public Integer getValor() {
 		return valor;

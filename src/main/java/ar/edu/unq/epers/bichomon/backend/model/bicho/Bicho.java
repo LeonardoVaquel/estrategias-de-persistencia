@@ -8,9 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-
-import org.joda.time.DateTime;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
@@ -38,10 +35,7 @@ public class Bicho {
 	private Entrenador owner;
 	
 	private Integer victorias;
-	
-	@Transient
-	//@Column
-	//@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+
 	private LocalDateTime fechaCaptura;
 	
 	public Bicho(Especie especie, String nombre) {

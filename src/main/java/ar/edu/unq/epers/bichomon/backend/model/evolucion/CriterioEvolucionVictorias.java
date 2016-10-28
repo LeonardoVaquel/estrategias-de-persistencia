@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.NotEnoughVictoriesToEvolve;
 
 /**
  * {@link CriterioEvolucionVictorias} es una clase que representa un {@link CriterioEvolucion} teniendo
@@ -40,14 +39,7 @@ public class CriterioEvolucionVictorias extends CriterioEvolucion {
 	 */
 	@Override
 	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
-		Boolean condicion = bicho.getVictorias() > this.getValor(); 
-		if (!condicion) {
-			throw new NotEnoughVictoriesToEvolve(this.getValor());
-		}
-		else {
-			return condicion;
-		}
-		
+		return bicho.getVictorias() > this.getValor(); 
 	}
 
 }
