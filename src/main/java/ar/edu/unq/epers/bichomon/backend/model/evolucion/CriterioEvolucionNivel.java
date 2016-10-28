@@ -42,7 +42,7 @@ public class CriterioEvolucionNivel extends CriterioEvolucion {
 	@Override
 	public boolean seCumple(Bicho bicho, Entrenador entrenador) {
 		
-		Boolean condicion = entrenador.getNivel() >= this.getValor(); 
+		Boolean condicion = entrenador.getNumeroNivel() >= this.getValor(); 
 		if (!condicion) {
 			throw new NotEnoughLevelToEvolve(this.getValor());
 		}

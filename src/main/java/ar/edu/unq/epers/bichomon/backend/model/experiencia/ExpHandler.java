@@ -45,7 +45,7 @@ public class ExpHandler {
 		entrenador.setTotalExp(entrenador.getTotalExp() + exp);
 		Double currentExp = entrenador.getCurrentExp();
 		entrenador.setCurrentExp(currentExp + exp);
-		Integer currentLvl = entrenador.getNivel();
+		Integer currentLvl = entrenador.getNumeroNivel();
 		this.evaluateLevelUp(currentExp, currentLvl, entrenador);
 		
 	}
@@ -65,7 +65,7 @@ public class ExpHandler {
 			Double updatedExp  = currentExp - nextLvlExp;
 			Integer updatedLvl = lvl + 1;
 			entrenador.setCurrentExp(updatedExp);
-			entrenador.setNivel(updatedLvl);
+			entrenador.setNivel(cfg.getLevelByNumber(updatedLvl));
 			this.evaluateLevelUp(updatedExp, updatedLvl, entrenador);
 		}
 	}

@@ -42,10 +42,10 @@ public class Bicho {
 	@Transient
 	//@Column
 	//@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
-	private DateTime fechaCaptura;
+	private LocalDateTime fechaCaptura;
 	
 	public Bicho(Especie especie, String nombre) {
-
+		this.especie = especie;
 	}
 	
 	public Bicho(Especie especie) {
@@ -93,12 +93,12 @@ public class Bicho {
 		this.owner = owner;
 	}
 
-	public DateTime getFechaCaptura() {
+	public LocalDateTime getFechaCaptura() {
 		return fechaCaptura;
 	}
 
 	public void setFechaCaptura() {
-		this.fechaCaptura = new DateTime();
+		this.fechaCaptura = LocalDateTime.now();
 	}
 
 	public void setVictorias(Integer victorias) {

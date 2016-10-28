@@ -8,21 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.ExpHandler;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.Experiencia;
+import ar.edu.unq.epers.bichomon.backend.model.experiencia.Level;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 /**
  * {@link Entrenador} es una clase que representa un jugador del sistema.
- * Consta de un nombre, puntos de experiencia, nivel, una {@link Ubicación} que varía
- * y una {@link BichoCollection}.
+ * Consta de un nombre, puntos de experiencia, {@link Level} y una {@link Ubicación}
+ * 
  * @author santiago
- *
  */
 @Entity
 public class Entrenador {
@@ -30,19 +29,14 @@ public class Entrenador {
 	@Id
 	private String nombre;
 	
-	
 	private Double currentExp;
-	
 	
 	private Double totalExp;
 	
 	@OneToMany(mappedBy="owner", cascade=CascadeType.ALL)
 	private List<Bicho> bichos;
 	
-	private int nivel;
-	
-	@Transient
-	private BichoCollection bichoCollection = new BichoCollection(this.getNivel(), 3);
+	private Level nivel;
 
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Ubicacion ubicacion;
@@ -52,16 +46,12 @@ public class Entrenador {
 	 * una ubicación por default pasada por parámetro.
 	 * 
 	 * @param nombre El nombre de un entrendaor
-	 * @param exphandler Instancia de {@link ExpHandler} que maneja puntos de experiencia
 	 * @param ubicacion Instancia de {@link Ubicacion} por default
-	 * @param bichoCollection Una instancia de {@link BichoCollection}
 	 */
-	public Entrenador(String nombre, ExpHandler exphandler, Ubicacion ubicacion) {
+	public Entrenador(String nombre, Ubicacion ubicacion) {
 		this.nombre = nombre;
 		this.setCurrentExp(0d);
 		this.setTotalExp(0d);
-		this.bichoCollection = new BichoCollection(1);
-		this.setNivel(1);
 		this.setUbicacion(ubicacion);
 		this.bichos = new ArrayList<>();
 	}
@@ -70,8 +60,6 @@ public class Entrenador {
 		this.nombre = nombre;
 		this.setCurrentExp(0d);
 		this.setTotalExp(0d);
-		this.bichoCollection = new BichoCollection(1);
-		this.setNivel(1);
 		this.setUbicacion(null);
 		this.bichos = new ArrayList<>();
 	}
@@ -102,14 +90,16 @@ public class Entrenador {
 		this.totalExp = exp;
 	}
 	
-	public int getNivel() {
+	public Level getNivel() {
 		return this.nivel;
 	}
 	
-	public void setNivel(Integer nivel) {
+	public Integer getNumeroNivel() {
+		return this.nivel.getNivel();
+	}
+	
+	public void setNivel(Level nivel) {
 		this.nivel = nivel;
-		this.bichoCollection = new BichoCollection(nivel, 3);
-		this.bichoCollection.setNivel(nivel);
 	}
 	
 	public Ubicacion getUbicacion() {
@@ -126,14 +116,6 @@ public class Entrenador {
 	
 	public void setBichos(List<Bicho> bichos) {
 		this.bichos = bichos;
-	}
-
-	public BichoCollection getBichoCollection() {
-		return bichoCollection;
-	}
-
-	public void setBichoCollection(BichoCollection coleccion) {
-		this.bichoCollection = coleccion;
 	}
 	
 	/**
@@ -157,15 +139,15 @@ public class Entrenador {
 	 * @return boolean indicando si puede buscar o no.
 	 */
 	public Boolean puedeBuscar() {
-		this.bichoCollection = new BichoCollection(this.getNivel(), 3);
-		return !this.bichoCollection.isFull(this.bichos);
+		return !(new BichoCollection().isFull(this.bichos, this.getNivel()));
 	}
 	
+	/** 
+	 * Delega en una isntancia de {@link BichoCollection} para agregar un bicho a su colección
+	 * @param bicho - una instancia de {@link Bicho}
+	 */
 	public void obtenerBicho(Bicho bicho) {
-		this.bichoCollection = new BichoCollection(this.getNivel(), 3);
-		
-		this.bichoCollection.add(bicho, this.bichos);
-		bicho.setOwner(this);
+		new BichoCollection().add(bicho, this);
 	}
 	
 	/**
@@ -174,8 +156,7 @@ public class Entrenador {
 	 * @return
 	 */
 	public boolean puedeAbandonar() {
-		this.bichoCollection = new BichoCollection(this.getNivel(), 3);
-		return !this.bichoCollection.isSingleton(bichos);
+		return !(new BichoCollection().isSingleton(bichos));
 	}
 	
 	/**
@@ -192,9 +173,7 @@ public class Entrenador {
 	 * @param bicho - el bicho a ser abandonado
 	 */
 	public void abandonarBicho(Bicho bicho) {
-		this.setBichoCollection(new BichoCollection(this.getNivel(), 3));
-	
-		this.bichoCollection.remove(bicho, this.bichos);
+		new BichoCollection().remove(bicho, this.bichos);
 	}
 
 	/**

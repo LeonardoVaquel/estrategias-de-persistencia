@@ -7,7 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 /**
  * Experiencia es una clase que representa una estructura compuesta por una base de experiencia
@@ -23,8 +22,6 @@ public class Experiencia {
 	private String version; 
 	
 	private Double baseExp;
-	
-	private Integer capLevel;
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Level> levelList;
@@ -58,10 +55,6 @@ public class Experiencia {
 		this.levelList = levelList;
 	}
 	
-	public Integer getCapLevel() {
-		return this.capLevel;
-	}
-	
 	/**
 	 * Dado un número que denota un nivel se espera obtener un valor de un HashMap multiplicado
 	 * por un coeficiente que representa la experiencia base, que no varía mientras la 
@@ -73,6 +66,10 @@ public class Experiencia {
 		return this.listToMap().get(lvl) * this.baseExp;
 	}
 	
+	public Level getLevelByNumber(Integer n) {
+		return this.levelList.get(n-1);
+	}
+	
 	/**
 	 * Convierte la los valores del las instancias de {@link Level} de una lista en un HashMap, donde
 	 * el nivel de un {@link Level} es clave y el coeficiente un valor. 
@@ -80,7 +77,7 @@ public class Experiencia {
 	public HashMap<Integer,Double> listToMap() {
 		HashMap<Integer,Double> levels = new HashMap<>();
 		for(Level level:levelList) {
-			levels.put(level.getNivel(), level.getCoeficiente());
+			levels.put(level.getNivel(), level.getCoeficienteExp());
 		}
 		return levels;
 	}

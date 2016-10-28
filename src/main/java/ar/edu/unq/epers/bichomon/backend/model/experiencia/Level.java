@@ -18,14 +18,15 @@ public class Level {
 
 	@Id
 	Integer nivel;
-	Double coeficiente;
+	Double coeficienteExp;
+	Integer coeficienteBichos;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	Experiencia configuracion;
 	
 	public Level(Integer nivel, Double coeficiente) {
 		this.nivel       = nivel;
-		this.coeficiente = coeficiente;
+		this.coeficienteExp = coeficiente;
 	}
 
 	public Level() {}
@@ -38,12 +39,20 @@ public class Level {
 		this.nivel = nivel;
 	}
 
-	public Double getCoeficiente() {
-		return coeficiente;
+	public Double getCoeficienteExp() {
+		return coeficienteExp;
 	}
 
-	public void setCoeficiente(Double coeficiente) {
-		this.coeficiente = coeficiente;
+	public void setCoeficienteExp(Double coeficiente) {
+		this.coeficienteExp = coeficiente;
+	}
+
+	public Integer getCoeficienteBichos() {
+		return coeficienteBichos;
+	}
+
+	public void setCoeficienteBichos(Integer coeficienteCaptura) {
+		this.coeficienteBichos = coeficienteCaptura;
 	}
 	
 }

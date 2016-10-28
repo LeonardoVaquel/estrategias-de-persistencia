@@ -6,20 +6,16 @@ import java.util.Random;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.buscador.Buscador;
+import ar.edu.unq.epers.bichomon.backend.model.buscador.BuscadorEspecie;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 
 @Entity
 public class Pueblo extends Ubicacion{
-	
-	@Transient
-	private Buscador buscador;
-	
+		
 	public List<Tupla> getListaDeEspecies() {
 		return listaDeEspecies;
 	}
@@ -49,10 +45,9 @@ public class Pueblo extends Ubicacion{
 	
 	@Override
 	public Bicho buscar(Entrenador entrenador) {
-		this.buscador = new Buscador(this.listaDeEspecies, 100);
 		
 		if (esBusquedaExitosa(entrenador)) {
-			return this.buscador.buscar();
+			return new BuscadorEspecie(this.listaDeEspecies).buscar();
 		}
 		return null;
 	}

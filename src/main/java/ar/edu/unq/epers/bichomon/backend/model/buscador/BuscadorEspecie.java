@@ -8,13 +8,13 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 /**
- * {@link Buscador} es la clase encargada de retornar un {@link Bicho} aleatoreamente dependiendo
+ * {@link BuscadorEspecie} es la clase encargada de retornar un {@link Bicho} aleatoreamente dependiendo
  * la probabilidad que tenga cada {@link Bicho} en salir.
  * 
  * @author Leonardo
  *
  */
-public class Buscador {
+public class BuscadorEspecie {
 
 	private Bicho bichoEncontrado;
 	private Integer indice;
@@ -22,11 +22,11 @@ public class Buscador {
 	private List<Tupla> lsResult;
 	private Integer coeficiente;
 	
-	public Buscador(List<Tupla> lsDB, Integer coef){
+	public BuscadorEspecie(List<Tupla> lsDB){
 		this.indice 		= 1;
 		this.listDB 		= lsDB;
 		this.lsResult 		= new ArrayList<>();
-		this.coeficiente	= coef;
+		this.coeficiente	= 100;
 	};
 	
 	// listDB es una lista de tuplas [ ( Especie => probalididad ) ]
