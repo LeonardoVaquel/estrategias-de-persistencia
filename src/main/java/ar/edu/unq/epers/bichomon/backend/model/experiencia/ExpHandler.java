@@ -43,10 +43,8 @@ public class ExpHandler {
 	 */
 	public void evaluateGainedExp(Double exp, Entrenador entrenador) {
 		entrenador.setTotalExp(entrenador.getTotalExp() + exp);
-		Double currentExp = entrenador.getCurrentExp();
-		entrenador.setCurrentExp(currentExp + exp);
-		Integer currentLvl = entrenador.getNumeroNivel();
-		this.evaluateLevelUp(currentExp, currentLvl, entrenador);
+		entrenador.setCurrentExp(entrenador.getCurrentExp() + exp);
+		this.evaluateLevelUp(entrenador.getCurrentExp(), entrenador);
 		
 	}
 	
@@ -58,15 +56,21 @@ public class ExpHandler {
 	 * @param lvl
 	 * @param entrenador
 	 */
-	public void evaluateLevelUp(Double currentExp, Integer lvl, Entrenador entrenador) {
+	public void evaluateLevelUp(Double currentExp, Entrenador entrenador) {
+		Level trainerLevel = entrenador.getNivel();
+		Double expToLvlUp = this.cfg.getExpByLvl(trainerLevel.getNivel());
 		
-		if(isLevelUp(currentExp, lvl)) {
-			Double nextLvlExp  = this.cfg.getExpByLvl(lvl);
-			Double updatedExp  = currentExp - nextLvlExp;
-			Integer updatedLvl = lvl + 1;
-			entrenador.setCurrentExp(updatedExp);
-			entrenador.setNivel(cfg.getLevelByNumber(updatedLvl));
-			this.evaluateLevelUp(updatedExp, updatedLvl, entrenador);
+		if(currentExp >= expToLvlUp) {
+			
+			currentExp  = currentExp - expToLvlUp;
+			entrenador.setCurrentExp(currentExp);
+			
+			Integer updatedLvl = trainerLevel.getNivel() + 1;
+			Level newLevel = cfg.getLevelByNumber(updatedLvl);
+			
+			entrenador.setNivel(newLevel);
+			
+			this.evaluateLevelUp(currentExp, entrenador);
 		}
 	}
 
@@ -80,7 +84,5 @@ public class ExpHandler {
 	private boolean isLevelUp(Double exp, Integer lvl) {
 		return exp >= cfg.getExpByLvl(lvl);
 	}
-	
-	
 	
 }
