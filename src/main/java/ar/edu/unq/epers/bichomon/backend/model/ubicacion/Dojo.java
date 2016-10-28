@@ -17,14 +17,18 @@ import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
+/**
+ * Dojo es una {@link Ubicacion} donde un {@link Entrenador} puede buscar y participar en duelos.
+ * @author santiago
+ *
+ */
 @Entity
 public class Dojo extends Ubicacion {
 	
 	@OneToOne
 	private Bicho campeon;
 	
-	@Transient
-	private Historial historial;
+	private List<Campeon> historial;
 		
 	public Dojo(String nombreDojo,Random random) {
 		super(nombreDojo,random);
@@ -36,6 +40,7 @@ public class Dojo extends Ubicacion {
 
 	public Dojo() {}
 	
+	
 	public Bicho getCampeon() {
 		return campeon;
 	}
@@ -44,17 +49,21 @@ public class Dojo extends Ubicacion {
 		this.campeon = campeon;
 	}
 	
-	public Historial getHistorial() {
+	public List<Campeon> getHistorial() {
 		return historial;
 	}
 
-	public void setHistorial(Historial historial) {
+	public void setHistorial(List<Campeon> historial) {
 		this.historial = historial;
 	}
 	
+	/**
+	 * Dado un {@link Entrenador}, si se produce una búsqueda exitosa se retorna una instancia de
+	 * {@link Bicho} cuya {@link Especie} es la raíz del actual campeón de la ubicación actual.
+	 */
 	@Override
 	public Bicho buscar(Entrenador entrenador) {
-		if (esBusquedaExitosa(entrenador)) {
+		if (this.esBusquedaExitosa(entrenador)) {
 			return new Bicho(this.obtenerEspecieRaizActual());
 		}		
 		else {
@@ -67,6 +76,7 @@ public class Dojo extends Ubicacion {
 	 * @return
 	 */
 	public Especie obtenerEspecieRaizActual() {
+		// TODO caso borde cuando no hay campeón
 		return this.campeon.getEspecie().getRaiz();
 	}
 
@@ -78,15 +88,25 @@ public class Dojo extends Ubicacion {
 		throw new NoSePuedeAbandonarEnUbicacionException();
 	}
 
+	/**
+	 * Dado un {@link Entrenador} y un {@link Bicho} se crea un {@link Duelo}
+	 * Se espera que devolver un {@link ResultadoCombate} con un {@link Bicho} ganador.
+	 * A su vez se deja registro del ganador mencionado en una lista de {@link Campeon}
+	 */
 	@Override
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
 		ResultadoCombate duelo = new Duelo(bicho, campeon).iniciarDuelo();
 		campeon = duelo.getBichoGanador();
+		this.agregarAlHistorial(campeon);
 		return duelo;
 	}
 	
-	private void agregarAlHistorial(Bicho bichoCampeon, LocalDateTime fecha, Bicho derrocado){
-		new Campeon(bichoCampeon, fecha, bichoCampeon.getOwner(), this);
+	/**
+	 * Dado un {@link Bicho} campeón se agrega un nuevo {@link Campeon} al historial de un {@link Dojo}
+	 * @param bichoCampeon - una instancia de {@link Bicho}
+	 */
+	private void agregarAlHistorial(Bicho bichoCampeon){
+		this.historial.add(new Campeon(bichoCampeon, LocalDateTime.now(), bichoCampeon.getOwner(), this));
 	}
 
 }

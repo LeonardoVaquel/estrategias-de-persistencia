@@ -1,17 +1,15 @@
 package model.bichoCollection;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -20,30 +18,23 @@ import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
 import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollectionCantBeEmpty;
 import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollectionReachedMaximumSize;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.experiencia.Level;
 
 public class TestBichoCollection {
 
 	private BichoCollection collection;
-	private @Mock Entrenador entrenador;
-	private @Mock Bicho bicho;
 	
-	private List<Bicho> listaDeBichos;
-	
-	@Rule    
-	public ExpectedException fullCollection;
+	private @Mock Level dummyLevel;
+	private @Mock Entrenador dummyEntrenador;
+	private @Mock Bicho dummyBicho;
+	private @Mock List<Bicho> dummyBichoList;
 	
 	@Before
 	public void setUp() {
 		
 		MockitoAnnotations.initMocks(this);
-		
-		when(entrenador.getNivel()).thenReturn(1);
 
-		collection = new BichoCollection(entrenador.getNivel());
-	
-		listaDeBichos = new ArrayList<>();
-		
-		fullCollection = ExpectedException.none();
+		collection = new BichoCollection();
 	}
 	
 	@After
@@ -54,70 +45,65 @@ public class TestBichoCollection {
 	}
 	
 	@Test
-	public void cuando_se_crea_una_nueva_coleccion_para_un_entrenador_se_setean_sus_valores_iniciales() {
+	public void una_bicho_collection_determina_que_una_lista_de_bichos_esta_llena() {
+			
+		when(dummyBichoList.size()).thenReturn(3);
+		when(dummyLevel.getCoeficienteBichos()).thenReturn(2);
 		
-		Assert.assertEquals(3, collection.getCoeficiente(), 0);
-		Assert.assertEquals(1, collection.getNivel(), 0);
-		Assert.assertEquals(3, collection.getMaxSize(), 0);
+		Assert.assertTrue(collection.isFull(dummyBichoList, dummyLevel));
+	}
+
+	@Test
+	public void una_bicho_collection_determina_que_tiene_un_solo_elemento() {
+			
+		when(dummyBichoList.size()).thenReturn(1);
+		
+		Assert.assertTrue(collection.isSingleton(dummyBichoList));
+	}
+	
+	
+	@Test
+	public void se_agrega_un_bicho_para_un_entrenador_y_cambia_el_owner_del_bicho_en_collection_add() {
+		
+		when(dummyBichoList.size()).thenReturn(1);
+		when(dummyLevel.getCoeficienteBichos()).thenReturn(3);
+		when(dummyEntrenador.getNivel()).thenReturn(dummyLevel);
+		when(dummyEntrenador.getBichos()).thenReturn(dummyBichoList);
+		
+		collection.add(dummyBicho, dummyEntrenador);
+		
+		verify(dummyBichoList, times(1)).add(dummyBicho);
+		verify(dummyBicho, times(1)).setOwner(dummyEntrenador);
 	}
 	
 	@Test
-	public void cuando_se_crea_una_nueva_collecion_con_un_coeficiente_dado_se_setea_sus_valores_iniciales() {
+	public void se_borra_un_bicho_para_un_entrenador_y_cambia_el_owner_del_bicho_en_collection_remove() {
 		
-		collection.setCoeficiente(3);
+		when(dummyBichoList.size()).thenReturn(2);
+		when(dummyLevel.getCoeficienteBichos()).thenReturn(3);
 		
-		Assert.assertEquals(3, collection.getCoeficiente(), 0);
-		Assert.assertEquals(1, collection.getNivel(), 0);
-		Assert.assertEquals(3, collection.getMaxSize(), 0);
-	}
-	
-	@Test
-	public void se_agregan_elementos_a_una_lists_de_tamaño_maximo_3_para_obtener_una_coleccion_llena() {
+		collection.remove(dummyBicho, dummyBichoList);
 		
-		when(entrenador.getNivel()).thenReturn(1);
-		collection = new BichoCollection(entrenador.getNivel());
-		
-		collection.setCoeficiente(1);
-		
-		collection.add(bicho, listaDeBichos);
-		collection.add(bicho, listaDeBichos);
-		collection.add(bicho, listaDeBichos);
-		
-		Assert.assertEquals(3, collection.getMaxSize(), 0);
-		Assert.assertEquals(true, collection.isFull(listaDeBichos));
-		
-	}
-	
-	@Test
-	public void el_tamaño_maximo_de_una_coleccion_varia_con_el_nivel_del_entrenador() {
-		
-		when(entrenador.getNivel()).thenReturn(1);
-		
-		
-		Integer initial_size  = collection.getMaxSize();
-		when(entrenador.getNivel()).thenReturn(3);
-		collection.setNivel(entrenador.getNivel());
-		Integer expected_size = collection.getMaxSize();
-		
-		Assert.assertEquals(3, initial_size, 0);
-		Assert.assertEquals(9, expected_size, 0);
-		
-	}
+		verify(dummyBichoList, times(1)).remove(dummyBicho);
+		verify(dummyBicho, times(1)).setOwner(null);
+	}	
 	
 	@Test(expected=BichoCollectionCantBeEmpty.class)
 	public void cuando_intento_remover_el_unico_bicho_de_una_coleccion_obtengo_una_excepcion() {
 		
-		collection.add(bicho, listaDeBichos);
-		collection.remove(bicho, listaDeBichos);
+		when(dummyBichoList.size()).thenReturn(1);
+		
+		collection.remove(dummyBicho, dummyBichoList);
 	}
 	
 	@Test(expected=BichoCollectionReachedMaximumSize.class)
 	public void cuando_intento_agregar_un_bicho_a_una_lista_llena_obtengo_una_excepcion() {
 		
-		collection.add(bicho, listaDeBichos);
-		collection.add(bicho, listaDeBichos);
-		collection.add(bicho, listaDeBichos);
-		collection.add(bicho, listaDeBichos);
+		when(dummyBichoList.size()).thenReturn(8);
+		when(dummyLevel.getCoeficienteBichos()).thenReturn(8);
+		when(dummyEntrenador.getNivel()).thenReturn(dummyLevel);
+		when(dummyEntrenador.getBichos()).thenReturn(dummyBichoList);
 		
+		collection.add(dummyBicho, dummyEntrenador);
 	}
 }

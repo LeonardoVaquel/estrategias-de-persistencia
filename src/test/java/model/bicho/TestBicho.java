@@ -1,5 +1,6 @@
 package model.bicho;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -26,24 +27,21 @@ public class TestBicho {
 		
 		bicho = new Bicho(dummyEspecie);
 		bicho.setOwner(dummyEntrenador);
-		bicho.setHandler(dummyHandler);
 		
 		when(dummyEspecie.getEnergiaInicial()).thenReturn(100);
 	}
 	
-	// Al momento de persistir el modelo un handler ya no se instanciaba
-	// en la construcción de de Bicho, por lo tanto éste test ya no es válido TODO ...
+	@Test
+	public void cuando_un_bicho_evoluciona_cambia_su_especie() {
+		
+		bicho.evolucionar(dummyEspecie);
+		Assert.assertEquals(bicho.getEspecie(), dummyEspecie);
+	}
 	
-//	@Test
-//	public void cuando_un_bicho_desea_evolucionar_un_handler_interviene() {
-//		
-//		bicho.evolucionar();
-//		verify(dummyHandler, times(1)).evolucionar();
-//	}
-//	
-//	@Test
-//	public void un_bicho_consulta_si_puede_evolucionar() {
-//		bicho.puedeEvolucionar();
-//		verify(dummyHandler, times(1)).puedeEvolucionar();
-//	}
+	@Test
+	public void un_bicho_suma_sus_victorias_en_uno() {
+		Integer victoriasActuales = bicho.getVictorias();
+		bicho.nuevaVictoria();
+		Assert.assertEquals(victoriasActuales+1, bicho.getVictorias(), 0);
+	}
 }
