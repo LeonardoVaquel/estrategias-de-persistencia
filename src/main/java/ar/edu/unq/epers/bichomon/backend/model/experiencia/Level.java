@@ -17,16 +17,17 @@ import javax.persistence.ManyToOne;
 public class Level {
 
 	@Id
-	Integer nivel;
-	Double coeficienteExp;
-	Integer coeficienteBichos;
+	private Integer nivel;
+	private Double coeficienteExp;
+	private Integer coeficienteBichos;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
-	Experiencia configuracion;
+	private Experiencia configuracion;
 	
-	public Level(Integer nivel, Double coeficiente) {
-		this.nivel       = nivel;
-		this.coeficienteExp = coeficiente;
+	public Level(Integer nivel, Double coeficienteExp, Integer coeficienteBichos) {
+		this.nivel       	   = nivel;
+		this.coeficienteExp    = coeficienteExp;
+		this.coeficienteBichos = coeficienteBichos;
 	}
 
 	public Level() {}

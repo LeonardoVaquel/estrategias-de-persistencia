@@ -2,9 +2,10 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Random;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -25,6 +26,7 @@ public class Dojo extends Ubicacion {
 	@OneToOne
 	private Bicho campeon;
 	
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Campeon> historial;
 		
 	public Dojo(String nombreDojo, BichomonRandom random) {

@@ -51,16 +51,14 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  */
 public class DataManager implements DataService {
 
-	private EspecieDAO especieDAO = new HibernateEspecieDAO();
-	private BichoDAO bichoDAO = new HibernateBichoDAO();
-	private EntrenadorDAO entrenadorDAO = new HibernateEntrenadorDAO();
-	private ExperienciaDAO experienciaDAO = new HibernateExperienciaDAO();
-	private HistorialDAO historialDAO = new HibernateHistorialDAO();
-	private UbicacionDAO ubicacionDAO = new HibernateUbicacionDAO();
+	private EspecieDAO 		especieDAO 		= new HibernateEspecieDAO();
+	private BichoDAO 		bichoDAO 		= new HibernateBichoDAO();
+	private EntrenadorDAO 	entrenadorDAO 	= new HibernateEntrenadorDAO();
+	private ExperienciaDAO 	experienciaDAO 	= new HibernateExperienciaDAO();
+	private HistorialDAO 	historialDAO 	= new HibernateHistorialDAO();
+	private UbicacionDAO 	ubicacionDAO 	= new HibernateUbicacionDAO();
 
-	// TODO
-	private ServiceFactory services = new ServiceFactory();
-
+	
 	public Map<String, Especie> DATAEspecies;
 	public Map<String, Bicho> DATABichos;
 	public Map<String, Entrenador> DATAEntrenadores;
@@ -80,6 +78,32 @@ public class DataManager implements DataService {
 		DATAEspeciesTupla = new HashMap<>();
 		DATAUbicacionesTupla = new HashMap<>();
 
+		
+		// Experiencia Configuration
+		TablaDeExperiencia combateExpTable = new TablaDeExperiencia("Combatir", 10);
+		TablaDeExperiencia capturaExpTable = new TablaDeExperiencia("Capturar", 10);
+		TablaDeExperiencia evolucionExpTable = new TablaDeExperiencia("Evolucionar", 5);
+
+		
+		// Level
+		List<Level> levelList = new ArrayList<>();
+		levelList.add(new Level(1, 0.1, 3));
+		levelList.add(new Level(2, 0.3, 6));
+		levelList.add(new Level(3, 0.6, 9));
+		levelList.add(new Level(4, 1.0, 12));
+		levelList.add(new Level(5, 1.0,15));
+		levelList.add(new Level(6, 1.0,18));
+		levelList.add(new Level(7, 1.0,21));
+		levelList.add(new Level(8, 1.0,24));
+		levelList.add(new Level(9, 1.0,27));
+		levelList.add(new Level(10,1.0,30));
+
+		Experiencia expConfig = new Experiencia();
+		expConfig.setVersion("v1.0.0");
+		expConfig.setLevelList(levelList);
+		expConfig.setBaseExp(1000d);
+		
+		
 		Especie leoMon = new Especie("Leomon", TipoBicho.CHOCOLATE);
 		Especie leoMonEvolucion = new Especie("LeomonEvolucion", TipoBicho.CHOCOLATE);
 
@@ -177,19 +201,23 @@ public class DataManager implements DataService {
 
 		// Creación de Entrenador
 		Entrenador santiagoTrainer = new Entrenador("Santiago");
-
+		santiagoTrainer.setNivel(levelList.get(0));
+		
 		Entrenador jacksonTrainer = new Entrenador("Jackson");
-		jacksonTrainer.setNivel(2);
+		jacksonTrainer.setNivel(levelList.get(1));
 
 		jacksonTrainer.setUbicacion(guarderiaLas24hrs);
 
 		Entrenador majinTrainer = new Entrenador("Majin");
-
+		majinTrainer.setNivel(levelList.get(0));
+		
 		Entrenador vegetalTrainer = new Entrenador("Vegetal");
-
+		vegetalTrainer.setNivel(levelList.get(3));
+		
 		Entrenador explorer01 = new Entrenador("Explorador1");
+		
 		Entrenador explorer02 = new Entrenador("Explorador2");
-		explorer02.setNivel(4);
+		explorer02.setNivel(levelList.get(5));
 		Entrenador explorer03 = new Entrenador("Explorador3");
 		Entrenador explorer04 = new Entrenador("Explorador4");
 		Entrenador explorer05 = new Entrenador("Explorador5");
@@ -249,10 +277,10 @@ public class DataManager implements DataService {
 
 		List<Tupla> listDeEspeciesNeverland = new ArrayList<>();
 		listDeEspeciesNeverland.add(tupla1);
-		listDeEspeciesNeverland.add(tupla2);
-		listDeEspeciesNeverland.add(tupla3);
-		listDeEspeciesNeverland.add(tupla4);
-		listDeEspeciesNeverland.add(tupla5);
+//		listDeEspeciesNeverland.add(tupla2);
+//		listDeEspeciesNeverland.add(tupla3);
+//		listDeEspeciesNeverland.add(tupla4);
+//		listDeEspeciesNeverland.add(tupla5);
 
 		// Creación de Ubicacion
 
@@ -281,28 +309,6 @@ public class DataManager implements DataService {
 		explorer06.setUbicacion(torreKarinDojo);
 
 		vegetalTrainer.setUbicacion(torreKarinDojo);
-
-		// Experiencia Configuration
-		TablaDeExperiencia combateExpTable = new TablaDeExperiencia("Combatir", 10);
-		TablaDeExperiencia capturaExpTable = new TablaDeExperiencia("Capturar", 10);
-		TablaDeExperiencia evolucionExpTable = new TablaDeExperiencia("Evolucionar", 5);
-
-		List<Level> levelList = new ArrayList<>();
-		levelList.add(new Level(1, 0.1));
-		levelList.add(new Level(2, 0.3));
-		levelList.add(new Level(3, 0.6));
-		levelList.add(new Level(4, 1.0));
-		levelList.add(new Level(5, 1.0));
-		levelList.add(new Level(6, 1.0));
-		levelList.add(new Level(7, 1.0));
-		levelList.add(new Level(8, 1.0));
-		levelList.add(new Level(9, 1.0));
-		levelList.add(new Level(10, 1.0));
-
-		Experiencia expConfig = new Experiencia();
-		expConfig.setVersion("v1.0.0");
-		expConfig.setLevelList(levelList);
-		expConfig.setBaseExp(1000d);
 
 		// Campeones
 
@@ -339,9 +345,7 @@ public class DataManager implements DataService {
 		historialCampeones.add(campeon02);
 		historialCampeones.add(campeon03);
 		historialCampeones.add(campeon04);
-		Historial historial = new Historial();
-		historial.setCampeones(historialCampeones);
-		torreKarinDojo.setHistorial(historial);
+		torreKarinDojo.setHistorial(historialCampeones);
 		
 		// Hashmap assignation
 		DATAEspecies.put(leoMon.getNombre(), leoMon);

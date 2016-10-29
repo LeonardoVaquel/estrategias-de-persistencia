@@ -32,7 +32,9 @@ public class Guarderia extends Ubicacion {
 		super(nombre, new BichomonRandom());
 	}
 	
-	public Guarderia() {}
+	public Guarderia() {
+		this.random = new BichomonRandom();
+	}
 
 	public List<Bicho> getBichos() {
 		return bichos;

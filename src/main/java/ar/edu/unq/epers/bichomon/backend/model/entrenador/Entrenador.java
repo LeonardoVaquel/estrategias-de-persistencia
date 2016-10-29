@@ -36,6 +36,7 @@ public class Entrenador {
 	@OneToMany(mappedBy="owner", cascade=CascadeType.ALL)
 	private List<Bicho> bichos;
 	
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Level nivel;
 
 	@ManyToOne(cascade=CascadeType.ALL)

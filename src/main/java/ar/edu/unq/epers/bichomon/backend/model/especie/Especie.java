@@ -34,7 +34,7 @@ public class Especie {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Especie evolucion;
 	
-	@OneToMany(mappedBy="especie", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<CriterioEvolucion> criteriosDeEvolucion;
 	
 	private int altura;

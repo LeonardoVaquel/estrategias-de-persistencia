@@ -7,20 +7,29 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.mockito.Mockito.*;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.when;
+
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.ExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Turno;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoSePuedeAbandonarEnUbicacionException;
-import ar.edu.unq.epers.bichomon.backend.service.BichoManager;
+import ar.edu.unq.epers.bichomon.backend.model.utils.BichomonRandom;
 import ar.edu.unq.epers.bichomon.backend.service.DataManager;
 import ar.edu.unq.epers.bichomon.backend.service.GenericService;
-import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoService;
 import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
@@ -36,16 +45,23 @@ public class TestHibernateBichoService {
 
 	
 	private BichoSessionService service;
-	private BichoDAO hibernateBichoDAO;
+	private BichoDAO bichoDAO;
+	private EntrenadorDAO entrenadorDAO;
+	private ExperienciaDAO experienciaDAO;
 	private DataService dataService;
 	private GenericService testService;
 
+	@Mock private BichomonRandom dummyRandom;
 	
 	@Before
 	public void prepare() {
 		
-		this.hibernateBichoDAO = new HibernateBichoDAO();
-		this.service = new BichoSessionService(hibernateBichoDAO);
+		MockitoAnnotations.initMocks(this);
+		
+		this.bichoDAO = new HibernateBichoDAO();
+		this.entrenadorDAO = new HibernateEntrenadorDAO();
+		this.experienciaDAO = new HibernateExperienciaDAO();
+		this.service = new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO);
 		this.dataService = new DataSessionService(new DataManager());
 		this.testService = new GenericService();
 		
@@ -54,7 +70,7 @@ public class TestHibernateBichoService {
 	}
 	@After
 	public void deleteAll() {
-		this.dataService.eliminarTablas();
+//		this.dataService.eliminarTablas();
 	}
 	
 	@Test
@@ -148,6 +164,8 @@ public class TestHibernateBichoService {
 			Bicho bicho = this.service.buscar("Explorador2");
 
 			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
+			Assert.assertEquals(bicho.getEspecie().getNombre(), "Leomon");
+			Assert.assertEquals(bicho.getEspecie().getTipo(), TipoBicho.CHOCOLATE);
 			Assert.assertTrue(entrenador.getBichos().contains(bicho));
 			
 			return null;
@@ -179,6 +197,9 @@ public class TestHibernateBichoService {
 			
 			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Jackson");
 			
+			when(dummyRandom.nextInt(anyInt())).thenReturn(1);
+			entrenador.getUbicacion().setRandom(dummyRandom);
+			
 			Bicho bicho = this.service.buscar("Jackson");
 
 			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
@@ -204,8 +225,6 @@ public class TestHibernateBichoService {
 			Assert.assertEquals(resultadoCombate.getBichoGanador().getId(), bichoRetadorId);
 			Assert.assertEquals(resultadoCombate.getBichoGanador().getVictorias(), 101, 0);
 			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getId(), bichoRetadoId);
-			
-			
 			
 			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getCurrentExp(), 10d, 0);
 			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getOwner().getCurrentExp(), 10d, 0);
