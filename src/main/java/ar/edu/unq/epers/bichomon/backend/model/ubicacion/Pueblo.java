@@ -1,7 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,10 +10,17 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.BuscadorEspecie;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.utils.BichomonRandom;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 
+/**
+ * Pueblo es una subclase de {@link Ubicacion} donde un {@link Entrenador} puede
+ * buscar instancias de {@link Bicho}. 
+ * @author santiago
+ *
+ */
 @Entity
-public class Pueblo extends Ubicacion{
+public class Pueblo extends Ubicacion {
 		
 	public List<Tupla> getListaDeEspecies() {
 		return listaDeEspecies;
@@ -26,19 +32,9 @@ public class Pueblo extends Ubicacion{
 
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Tupla> listaDeEspecies;
-	
-	public Pueblo(String nombrePueblo,Random random ){
-		super(nombrePueblo,random);
-		
-		// aca va una instancia de UbicacionManager,
-		// que utiliza un servicio de DAO que todavia no esta
-		// va a saber decir getListaDeBichos que devuelve
-		// una lista HashMap (especie, double)
-		// sobre la que trabajará el Buscador
-	}
-	
+
 	public Pueblo(String nombrePueblo) {
-		super(nombrePueblo);
+		super(nombrePueblo, new BichomonRandom());
 	}
 	
 	public Pueblo() {}
@@ -61,7 +57,5 @@ public class Pueblo extends Ubicacion{
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
 		throw new NoSePuedeRealizarDueloEnUbicacionException(this.getNombre());
 	}
-
-
 
 }

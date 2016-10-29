@@ -1,85 +1,86 @@
 package model.ubicacion;
 
-import java.util.Random;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.List;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.collection.BichoCollection;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.experiencia.ExpHandler;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoHayBichosEnGuarderia;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoSePuedeRealizarDueloEnUbicacionException;
+
+import ar.edu.unq.epers.bichomon.backend.model.utils.BichomonRandom;
 
 public class TestGuarderia {
-	private Guarderia guarderiaSut;
-	private Entrenador entrenador,entrenador2;
-	private @Mock ExpHandler handler; 
+	
+	private Guarderia guarderia;
+	
+	private @Mock Entrenador dummyEntrenador;
 	private @Mock Especie especie;
-	private @Mock Bicho bicho1, bicho2;
+	private @Mock Bicho dummyBicho;
 	private @Mock BichoCollection collection;
-	Ubicacion ubicacion;
+	private @Mock BichomonRandom dummyRandom;
+	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		this.entrenador= new Entrenador("Pedro",handler, guarderiaSut);
-		this.entrenador2= new Entrenador("Juan",handler, guarderiaSut);
-		Random myRandom = mock(Random.class);
-		when(myRandom.nextInt(3)).thenReturn(1);
-		this.guarderiaSut= new Guarderia("guarderia", myRandom);
 
+		this.guarderia = new Guarderia("unNombreDeGuarderia");
+		this.guarderia.setBichos(new ArrayList<Bicho>());
+		this.guarderia.setRandom(dummyRandom);
+	}
 	
-	}
-	@Test 
-	public void abandonarBicho(){
-		this.entrenador.obtenerBicho(bicho1);
-		this.entrenador.obtenerBicho(bicho2);
-		
-		guarderiaSut.abandonar(entrenador, bicho1);
-		
-		assertTrue(guarderiaSut.cantidadDeBichosAbandonados()==1);
-		
-	}
 	@Test
-	public void adoptarBicho(){
+	public void un_entrenador_abandona_un_bicho_en_una_guarderia() {
 		
-		this.guarderiaSut.buscar(entrenador2);
+		when(dummyEntrenador.puedeAbandonar()).thenReturn(true);
 		
-		Ubicacion ubicacionMock= mock(Ubicacion.class);
-		Bicho bichoSeleccionado = mock(Bicho.class);
-		Bicho bicho2=mock(Bicho.class);
+		this.guarderia.abandonar(dummyEntrenador, dummyBicho);
 		
-		when(bicho2.getOwner()).thenReturn(entrenador2);
-		when(bichoSeleccionado.getOwner()).thenReturn(entrenador);
-		
-		List<Bicho> miListaDeBichos= mock(List.class);
-		when (miListaDeBichos.get(0)).thenReturn(bicho2);
-		when(miListaDeBichos.get(1)).thenReturn(bichoSeleccionado);
-		when(miListaDeBichos.size()).thenReturn(3);
-		guarderiaSut.setBichos(miListaDeBichos);
-			
-		
-		Entrenador expected = this.entrenador;
-		//Verifica que el entrenador del bicho seleccionado sea el mismo que el
-		// del entrenador esperado 
-		assertSame(expected,bichoSeleccionado.getOwner());
-		//Verifica que se cargue correctamente en la posicion 1 el bicho
-		assertTrue(miListaDeBichos.get(1)== bichoSeleccionado);
-		//Verifica que el bicho fue adoptado correctamente 
-		assertSame(guarderiaSut.adoptarBichoAbandonado(),bichoSeleccionado);
-		
+		Assert.assertTrue(this.guarderia.getBichos().contains(dummyBicho));
+		verify(dummyEntrenador, times(1)).abandonarBicho(dummyBicho);
 	}
 	
+	@Test(expected = NoHayBichosEnGuarderia.class)
+	public void se_lanza_una_exepcion_en_guarderia_adoptar_bicho_abandonado() {
+		
+		this.guarderia.adoptarBichoAbandonado(dummyEntrenador);
+	}
+	
+	@Test
+	public void se_retorna_un_bicho_en_guarderia_adoptar_bicho_abandonado() {
+		
+		this.guarderia.getBichos().add(dummyBicho);
+		when(dummyRandom.nextInt(anyInt())).thenReturn(0);
+		Bicho bicho = this.guarderia.adoptarBichoAbandonado(dummyEntrenador);
+		
+		Assert.assertEquals(bicho, dummyBicho);
+	}
+	
+	@Test
+	public void se_retorna_un_bicho_en_guarderia_buscar() {
+		
+		this.guarderia.getBichos().add(dummyBicho);
+		when(dummyRandom.nextInt(anyInt())).thenReturn(0);
+		Bicho bicho = this.guarderia.buscar(dummyEntrenador);
+		
+		Assert.assertEquals(bicho, dummyBicho);
+		Assert.assertEquals(0, guarderia.getBichos().size());
+	}
+	
+	@Test(expected = NoSePuedeRealizarDueloEnUbicacionException.class)
+	public void se_levanta_una_exepcion_cuando_un_entrenador_intenta_realizar_un_duelo() {
+		
+		this.guarderia.duelo(dummyEntrenador, dummyBicho);
+	}
+
 }
 

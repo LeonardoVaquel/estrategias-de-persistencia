@@ -74,15 +74,15 @@ public class ExpHandler {
 		}
 	}
 
-	/**
-	 * Dada una cantidad de experiencia y un nivel, se evalúa si la cantidad supera
-	 * o iguala los requisitos de experiencia del nivel pasado como parámetro.
-	 * @param exp
-	 * @param lvl
-	 * @return
-	 */
-	private boolean isLevelUp(Double exp, Integer lvl) {
-		return exp >= cfg.getExpByLvl(lvl);
-	}
+//	/**
+//	 * Dada una cantidad de experiencia y un nivel, se evalúa si la cantidad supera
+//	 * o iguala los requisitos de experiencia del nivel pasado como parámetro.
+//	 * @param exp
+//	 * @param lvl
+//	 * @return
+//	 */
+//	private boolean isLevelUp(Double exp, Integer lvl) {
+//		return exp >= cfg.getExpByLvl(lvl);
+//	}
 	
 }

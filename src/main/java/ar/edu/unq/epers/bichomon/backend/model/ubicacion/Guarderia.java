@@ -1,33 +1,39 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.utils.BichomonRandom;
 
+/**
+ * Guarderia es una subclase de {@link Ubicacion} donde un {@link Entrenador} puede
+ * buscar instancias de {@link Bicho} que hayan sido abandonadas, así como también
+ * abandonar bichos que le sean propios.
+ * @author santiago
+ *
+ */
 @Entity
 public class Guarderia extends Ubicacion {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Bicho> bichos;
 	
-	
-	public Guarderia(String nombreGuarderia, Random random){
-		super(nombreGuarderia, random);
-	}
+	@Transient
+	private BichomonRandom random;
 	
 	public Guarderia(String nombre) {
-		super(nombre);
+		super(nombre, new BichomonRandom());
 	}
 	
 	public Guarderia() {}
-	
+
 	public List<Bicho> getBichos() {
 		return bichos;
 	}
@@ -36,16 +42,24 @@ public class Guarderia extends Ubicacion {
 		this.bichos = bichos;
 	}
 	
+	/**
+	 * Dado un {@link Entrenador} y un {@link Bicho} se intentará abandonar el bicho
+	 * en la ubicación actual
+	 */
 	public void abandonar(Entrenador entrenador, Bicho bicho){
-		
+
 		if(entrenador.puedeAbandonar()) {
 			this.getBichos().add(bicho);
 			entrenador.abandonarBicho(bicho);
 		}
 	}
 	
+	/**
+	 * La cantidad de instancias de {@link Bicho} en la lista
+	 * @return - un entero
+	 */
 	public Integer cantidadDeBichosAbandonados(){
-		return this.getBichos().size();
+		return this.bichos.size();
 	}
 	
 	/**
@@ -70,7 +84,7 @@ public class Guarderia extends Ubicacion {
 	}
 	
 	public Integer numeroRandom(){
-		return new Random().nextInt(this.cantidadDeBichosAbandonados()-1);
+		return this.random.nextInt(this.cantidadDeBichosAbandonados()-1);
 	}
 	
 	/**
@@ -81,9 +95,11 @@ public class Guarderia extends Ubicacion {
 		Bicho bicho = adoptarBichoAbandonado(entrenador);
 		this.bichos.remove(bicho);
 		return bicho;
-
 	}
 
+	/**
+	 * Se lanza una excepción indicando que no se pueden realizar duelos en la ubciación actual
+	 */
 	@Override
 	public ResultadoCombate duelo(Entrenador entrenador, Bicho bicho) {
 		throw new NoSePuedeRealizarDueloEnUbicacionException(this.getNombre());

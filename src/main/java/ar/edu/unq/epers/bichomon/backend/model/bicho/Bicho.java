@@ -61,6 +61,13 @@ public class Bicho {
 		return this.especie;
 	}
 	
+	public Especie getEspecieRaiz() {
+		if(this.getEspecie() != null) {
+			return this.especie.getRaiz();
+		}
+		else return null;
+	}
+	
 	public int getId() {
 		return this.id;
 	}

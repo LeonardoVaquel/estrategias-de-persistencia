@@ -1,26 +1,23 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.Historial;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.utils.BichomonRandom;
 
 /**
  * Dojo es una {@link Ubicacion} donde un {@link Entrenador} puede buscar y participar en duelos.
  * @author santiago
- *
  */
 @Entity
 public class Dojo extends Ubicacion {
@@ -30,8 +27,8 @@ public class Dojo extends Ubicacion {
 	
 	private List<Campeon> historial;
 		
-	public Dojo(String nombreDojo,Random random) {
-		super(nombreDojo,random);
+	public Dojo(String nombreDojo, BichomonRandom random) {
+		super(nombreDojo, random);
 	}
 	
 	public Dojo(String nombreDojo) {
@@ -77,7 +74,10 @@ public class Dojo extends Ubicacion {
 	 */
 	public Especie obtenerEspecieRaizActual() {
 		// TODO caso borde cuando no hay campeón
-		return this.campeon.getEspecie().getRaiz();
+		if(this.campeon != null) {
+			return this.campeon.getEspecieRaiz();
+		}
+		else return null;
 	}
 
 	/**

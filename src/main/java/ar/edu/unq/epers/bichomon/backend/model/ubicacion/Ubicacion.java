@@ -1,7 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import java.util.List;
-import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,6 +11,7 @@ import javax.persistence.Transient;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.BusquedaEnUbicacion;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.utils.BichomonRandom;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 
 @Entity
@@ -24,11 +24,11 @@ public abstract class Ubicacion implements BusquedaEnUbicacion {
 	protected List<Entrenador> entrenadores;
 	
 	@Transient
-	protected Random random;
+	protected BichomonRandom random;
 	
-	public Ubicacion (String nombre, Random random){
+	public Ubicacion (String nombre, BichomonRandom random){
 		this.setNombre(nombre);
-		this.random= random;
+		this.random = random;
 	}
 	
 	public Ubicacion(String nombre) {
@@ -51,6 +51,14 @@ public abstract class Ubicacion implements BusquedaEnUbicacion {
 
 	public void setEntrenadores(List<Entrenador> entrenadores) {
 		this.entrenadores = entrenadores;
+	}
+	
+	public BichomonRandom getRandom() {
+		return random;
+	}
+
+	public void setRandom(BichomonRandom random) {
+		this.random = random;
 	}
 	
 	public abstract Bicho buscar(Entrenador entrenador);
