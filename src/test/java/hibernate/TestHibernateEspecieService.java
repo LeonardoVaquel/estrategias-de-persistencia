@@ -8,7 +8,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.especie.BichomonFactory;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
@@ -30,7 +34,7 @@ public class TestHibernateEspecieService {
 	private BichomonFactory bichoFactory;
 	private EspecieDAO especieDAO;
 	
-	private Especie nuevaEspecie,nuevaEspecie2;
+	private Especie nuevaEspecie,nuevaEspecie2,nuevaEspecie3;
 	
 	@Before
 	public void prepare() {
@@ -38,6 +42,11 @@ public class TestHibernateEspecieService {
 		this.bichoFactory = new BichomonFactory();
 		this.service = new EspecieSessionService(especieDAO);
 		this.testService = new TestService();
+		
+		
+/****/
+		
+		
 		
 		
 		nuevaEspecie = this.bichoFactory.crearEspecie( "Fortmon",
@@ -49,7 +58,7 @@ public class TestHibernateEspecieService {
 						  										"CHOCOLATE",
 										  						100,
 										  						"url",
-										  						0);
+										  						1);
 		nuevaEspecie.setRaiz(nuevaEspecie);
 		this.service.crearEspecie(nuevaEspecie);
 		
@@ -62,11 +71,15 @@ public class TestHibernateEspecieService {
 				"FUEGO",
 				100,
 				"url",
-				0);
+				2);
 
 		nuevaEspecie2.setRaiz(nuevaEspecie2);
 		this.service.crearEspecie(nuevaEspecie2);
-
+		
+		
+		nuevaEspecie3 = this.bichoFactory.crearEspecie("Leomon", null, null, null, 160, 10, "AGUA", 100, "url", 4);
+		nuevaEspecie3.setRaiz(nuevaEspecie3);
+		this.service.crearEspecie(nuevaEspecie3);
 
 	}
 	
@@ -101,7 +114,7 @@ public class TestHibernateEspecieService {
 			Assert.assertEquals(TipoBicho.CHOCOLATE, especie.getTipo());
 			Assert.assertEquals(100, 		 		 especie.getEnergiaInicial());
 			Assert.assertEquals("url", 		 		 especie.getUrlFoto());
-			Assert.assertEquals(0, 			 		 especie.getCantidadBichos());
+			Assert.assertEquals(1, 			 		 especie.getCantidadBichos());
 			
 			return null;
 		});
@@ -124,24 +137,18 @@ public class TestHibernateEspecieService {
 		});
 		
 	}
-	@Test 
-	public void  retorna_las_especies_mas_populares(){
-		this.service.getAllEspecies();
-		
-		Runner.runInSession(() -> {
-			List<Especie> especiesMasPopulares = this.especieDAO.populares();	
-			Assert.assertEquals(especiesMasPopulares.size(),2);
-		return null;
-		});
-	}
 	
 	@Test
-	public void test_busco_la_especie_mas_popular_(){
+	public void test_Las_10_especies_mas_populares(){
 		Runner.runInSession(() ->{
 			List<Especie> especies = this.especieDAO.populares();
-			Especie expected = especies.get(1);
+//			System.out.println("#################"+ expected);
+			System.out.println("################# POPUS: "+especies);
+			Especie expected = especies.get(0);
 			
-			Assert.assertEquals(expected.getTipo(), TipoBicho.FUEGO);
+			Assert.assertEquals(expected.getNombre(), "Leomon");
+			Assert.assertEquals(expected.getTipo(), TipoBicho.AGUA);
+			Assert.assertEquals(expected.getCantidadBichos(), 4);
 		return null;		
 		});
 	}

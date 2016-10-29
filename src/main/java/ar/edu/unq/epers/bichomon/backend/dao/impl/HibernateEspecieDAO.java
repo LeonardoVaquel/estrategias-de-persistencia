@@ -86,8 +86,9 @@ public class HibernateEspecieDAO implements EspecieDAO, EspecieService {
 	public List<Especie> populares(){
 		Session session = Runner.getCurrentSession();
 		
-		String hql = "from Especie e "+
-					 "order by e.cantidadBichos desc";
+		String hql = "select b.especie from "+
+					"Bicho b";
+					//"where b in (select elements(e.bichos) from Entrenador e)";
 		
 		Query<Especie> query = session.createQuery(hql, Especie.class);
 		
