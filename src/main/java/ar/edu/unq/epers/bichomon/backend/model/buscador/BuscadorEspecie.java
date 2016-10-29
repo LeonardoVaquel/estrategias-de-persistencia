@@ -44,6 +44,8 @@ public class BuscadorEspecie {
 		
 		
 		Especie especie = encontrarEspecie(this.buscarAux(), n); // Se busca la especie segun el random.
+		System.out.println(especie);
+		System.out.println(especie.getNombre());
 		bichoEncontrado = new Bicho(especie); // Se crea el bicho que se encontro.
 		return bichoEncontrado;
 	}
@@ -54,7 +56,6 @@ public class BuscadorEspecie {
 		return this.buscar(this.generarRandom(this.buscarAux()));
 	}
 	
-	
 	/**
 	 * 
 	 * @param ls Una lista de tuplas ( Especie => [ probabilidad ] ).
@@ -62,7 +63,7 @@ public class BuscadorEspecie {
 	 * @return La {@link Especie} que salio "Random".
 	 */
 	private Especie encontrarEspecie(List<Tupla> ls, Integer n){
-		Especie result = null;
+		Especie result = ls.get(0).getKey();
 		for(Tupla tupla : ls){
 			if(this.contieneValor(tupla, n)){
 				result = tupla.getKey();

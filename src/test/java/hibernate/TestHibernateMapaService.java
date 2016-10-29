@@ -4,6 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -13,7 +16,6 @@ import ar.edu.unq.epers.bichomon.backend.service.DataManager;
 import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
-import ar.edu.unq.epers.bichomon.backend.service.mapa.MapaService;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.MapaSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 import org.junit.Assert;
@@ -28,19 +30,21 @@ public class TestHibernateMapaService {
 
 	
 	private MapaSessionService service;
-	private MapaService hibernateMapaDAO;
+	private MapaDAO mapaDAO;
+	private EntrenadorDAO entrenadorDAO;
 	private DataService dataService;
 	private GenericService testService;	
 	
 	@Before
 	public void prepare() {
 		
-		this.hibernateMapaDAO = new HibernateMapaDAO();
-		this.service = new MapaSessionService(hibernateMapaDAO);
-		this.dataService = new DataSessionService(new DataManager());
-		this.testService = new GenericService();
+		this.mapaDAO 	   = new HibernateMapaDAO();
+		this.entrenadorDAO = new HibernateEntrenadorDAO();
+		this.testService   = new GenericService();
+		this.service 	   = new MapaSessionService(this.mapaDAO, this.entrenadorDAO, this.testService);
+		this.dataService   = new DataSessionService(new DataManager());
 		
-		dataService.crearSetDatosIniciales();
+		this.dataService.crearSetDatosIniciales();
 	}
 	
 	
@@ -62,7 +66,6 @@ public class TestHibernateMapaService {
 			
 			return null;
 		});
-		
 	}
 	
 	@Test
@@ -83,7 +86,6 @@ public class TestHibernateMapaService {
 			
 			return null;
 		});
-		
 	}
 	
 	@Test
@@ -91,7 +93,7 @@ public class TestHibernateMapaService {
 		
 		Runner.runInSession(() -> {
 			
-			Bicho bicho = this.service.campeon("Torre Karin");
+			Bicho bicho = this.mapaDAO.campeon("Torre Karin");
 			Dojo dojo = this.testService.recuperarEntidad(Dojo.class, "Torre Karin");
 			
 			Assert.assertEquals(bicho.getId(), 9);
@@ -99,9 +101,6 @@ public class TestHibernateMapaService {
 			Assert.assertEquals(dojo.getCampeon().getId(), 9);
 			
 			return null;
-		});
-		
+		});	
 	}
-	
-	
 }

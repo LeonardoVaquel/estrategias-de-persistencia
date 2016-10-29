@@ -4,10 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import ar.edu.unq.epers.bichomon.backend.dao.jdbc.DataEspecieManagerJDBC;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;

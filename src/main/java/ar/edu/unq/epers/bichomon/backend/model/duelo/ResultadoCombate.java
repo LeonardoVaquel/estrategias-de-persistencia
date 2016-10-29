@@ -3,8 +3,6 @@ package ar.edu.unq.epers.bichomon.backend.model.duelo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 

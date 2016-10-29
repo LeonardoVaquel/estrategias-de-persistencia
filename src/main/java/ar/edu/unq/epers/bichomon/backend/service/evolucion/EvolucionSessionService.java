@@ -1,7 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.service.evolucion;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EvolucionDAO;
-import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
  * TODO

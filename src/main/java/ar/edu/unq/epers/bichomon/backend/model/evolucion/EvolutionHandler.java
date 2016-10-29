@@ -1,11 +1,8 @@
 package ar.edu.unq.epers.bichomon.backend.model.evolucion;
 
-import java.util.List;
-
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.evolucion.exceptions.EvolutionException;
 
 /**
  * {@link EvolutionHandler} es una clase que representa un objeto capaz de manejar un pedido de evolución
@@ -41,7 +38,6 @@ public class EvolutionHandler {
 		
 		Boolean result = true;
 		for (CriterioEvolucion criterio : this.bicho.getCriteriosDeEvolucion()) {
-				System.out.println("Entro aqui");
 				result = result && criterio.seCumple(bicho, this.bicho.getOwner());
 		}
 		return result;

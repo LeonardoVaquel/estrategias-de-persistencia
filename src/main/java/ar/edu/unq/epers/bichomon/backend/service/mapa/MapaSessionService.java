@@ -3,6 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.service.mapa;
 import org.hibernate.Session;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -19,14 +20,16 @@ public class MapaSessionService implements MapaService {
 	
 	private GenericService service;
 	private EntrenadorDAO entrenadorDAO;
+	private MapaDAO mapaDAO;
 	
 	/**
 	 * Crea una instancia de MapaSessionService que utilizará un dao,
 	 * a quien delegará los pedidos necesarios sobre una base de datos.
 	 * @param mapaDAO
 	 */
-	public MapaSessionService(EntrenadorDAO entrenadorDAO, GenericService service) {
+	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service) {
 		this.service 	   = service;
+		this.mapaDAO	   = mapaDAO;
 		this.entrenadorDAO = entrenadorDAO;
 	}
 	
@@ -45,6 +48,17 @@ public class MapaSessionService implements MapaService {
 		entrenador.mover(ubicacion);
 		return null;
 		});		
+	}
+	
+	/**
+	 * Dado un nombre de {@link Ubicacion} se obtiene la cantidad de entrenadores
+	 * que se encuentran actualmente en la ubicación especificada
+	 */
+	@Override
+	public int cantidadEntrenadores(String nombreUbicacion) {
+		return Runner.runInSession(() -> {
+			return this.mapaDAO.cantidadEntrenadores(nombreUbicacion);
+		});
 	}
 	
 	

@@ -24,7 +24,6 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateUbicacionDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.Historial;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;

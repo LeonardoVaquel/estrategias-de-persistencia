@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
@@ -24,9 +23,6 @@ public class Guarderia extends Ubicacion {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Bicho> bichos;
-	
-	@Transient
-	private BichomonRandom random;
 	
 	public Guarderia(String nombre) {
 		super(nombre, new BichomonRandom());
@@ -86,6 +82,7 @@ public class Guarderia extends Ubicacion {
 	}
 	
 	public Integer numeroRandom(){
+		System.out.println(this.random);
 		return this.random.nextInt(this.cantidadDeBichosAbandonados()-1);
 	}
 	

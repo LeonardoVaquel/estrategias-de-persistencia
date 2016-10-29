@@ -36,6 +36,7 @@ public class TestGuarderia {
 		this.guarderia = new Guarderia("unNombreDeGuarderia");
 		this.guarderia.setBichos(new ArrayList<Bicho>());
 		this.guarderia.setRandom(dummyRandom);
+		when(dummyRandom.nextInt(anyInt())).thenReturn(0);
 	}
 	
 	@Test
@@ -59,7 +60,6 @@ public class TestGuarderia {
 	public void se_retorna_un_bicho_en_guarderia_adoptar_bicho_abandonado() {
 		
 		this.guarderia.getBichos().add(dummyBicho);
-		when(dummyRandom.nextInt(anyInt())).thenReturn(0);
 		Bicho bicho = this.guarderia.adoptarBichoAbandonado(dummyEntrenador);
 		
 		Assert.assertEquals(bicho, dummyBicho);
@@ -69,7 +69,6 @@ public class TestGuarderia {
 	public void se_retorna_un_bicho_en_guarderia_buscar() {
 		
 		this.guarderia.getBichos().add(dummyBicho);
-		when(dummyRandom.nextInt(anyInt())).thenReturn(0);
 		Bicho bicho = this.guarderia.buscar(dummyEntrenador);
 		
 		Assert.assertEquals(bicho, dummyBicho);

@@ -1,14 +1,10 @@
 package ar.edu.unq.epers.bichomon.backend.model.duelo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionException;
 
 /**
  * El {@link Duelo} es una modalidad del juego que funciona
@@ -86,15 +82,7 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 		
 		return combatResult;
 	}
-		
-	private boolean estaEnDojo(Bicho bicho){
-		if(bicho.getOwner().getUbicacion().getNombre() == "Dojo"){
-			return true;
-		}else{
-			throw new UbicacionException("Solo se puede luchar en los Dojos");
-		}
-		
-	}
+
 	
 	private void ataqueRival() {
 		danioRetador = danioRetador + retador.getEnergia() * 1; // 1 debe ser un random(0.5,1)		
@@ -155,13 +143,4 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 		combatResult.agregarTurno(turno);
 	}
 	
-	private List<Integer> generarTurnos(Integer cantTurnos){
-		List<Integer> turnos = new ArrayList<Integer>();
-		Integer i = 0;
-		while(i < cantTurnos){
-			turnos.add(i);
-			i++;
-		}
-		return turnos;
-	}
 }

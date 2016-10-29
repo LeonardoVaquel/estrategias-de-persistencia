@@ -70,14 +70,14 @@ public class TestHibernateBichoService {
 	}
 	@After
 	public void deleteAll() {
-//		this.dataService.eliminarTablas();
+		this.dataService.eliminarTablas();
 	}
 	
 	@Test
 	public void dado_un_bicho_este_puede_evolucionar() {
 		
 		// Bicho = Leomon
-		int bichoId = 2;
+		int bichoId = 7;
 		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, bichoId);
 		
 		Runner.runInSession(() -> {
@@ -98,7 +98,7 @@ public class TestHibernateBichoService {
 	@Test
 	public void dado_un_bicho_evoluciona_en_otra_especie() {
 		
-		int bichoId = 2;
+		int bichoId = 7;
 		Bicho bicho = this.testService.recuperarEntidad(Bicho.class, bichoId);
 		
 		Especie especieAEvolucionar = this.testService.recuperarEntidad(Especie.class, bicho.getEspecie().getEvolucion().getNombre());
@@ -126,8 +126,8 @@ public class TestHibernateBichoService {
 		
 		Runner.runInSession(() -> {
 
-			// 7 -> Bicho.especie = Gisemon
-			int bichoId = 7;
+			// 5 -> Bicho.especie = Gisemon
+			int bichoId = 5;
 			this.service.abandonar("Jackson", bichoId);
 			
 			Guarderia guarderia = this.testService.recuperarEntidad(Guarderia.class, "Guarderia las 24 horas!");
@@ -153,7 +153,6 @@ public class TestHibernateBichoService {
 		
 	}
 	
-	//Alcance: no se logró que sea determinístico
 	@Test
 	public void un_entrenador_realiza_una_busqueda_exitosa_en_un_pueblo_y_se_devuelve_un_bicho() {
 		
@@ -170,7 +169,6 @@ public class TestHibernateBichoService {
 			
 			return null;
 		});
-		
 	}
 	
 	

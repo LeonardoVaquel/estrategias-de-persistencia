@@ -26,15 +26,6 @@ public class HibernateMapaDAO implements MapaDAO {
 	public int cantidadEntrenadores(String nombreUbicacion) {
 		Session session = Runner.getCurrentSession();
 		
-//		String hql = "from Entrenador e "
-//				+ "where e.ubicacion.nombre = :unaUbicacion";
-//		
-//		Query<Entrenador> query = session.createQuery(hql, Entrenador.class);
-//		query.setParameter("unaUbicacion", nombreUbicacion);
-
-//		Ubicacion ubicacion = session.get(Ubicacion.class, nombreUbicacion);		
-//		return ubicacion.getEntrenadores().size(); 
-		
 		String hql = "select count(elements(u.entrenadores)) from Ubicacion u "
 				+ "where u.nombre = :unaUbicacion";
 		

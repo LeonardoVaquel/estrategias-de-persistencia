@@ -2,14 +2,8 @@ package ar.edu.unq.epers.bichomon.backend.dao.impl;
 
 import org.hibernate.Session;
 
-import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.HistorialDAO;
-import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.experiencia.Experiencia;
-import ar.edu.unq.epers.bichomon.backend.model.experiencia.TablaDeExperiencia;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**

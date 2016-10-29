@@ -6,13 +6,10 @@ import java.util.stream.Collectors;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.service.leaderboard.LeaderboardService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
@@ -34,13 +31,11 @@ public class HibernateLeaderboardDAO implements LeaderboardService {
 	public List<Entrenador> campeones() {
 		Session session = Runner.getCurrentSession();
 		
-			
 		String hql = "from Campeon c "
-				+ "order by c.fechaCoronado asc";
+				+ "where c.fechaDerrocado = null order by c.fechaCoronado asc";
 		
 		Query<Campeon> query = session.createQuery(hql, Campeon.class);
-
-		return query.getResultList().stream().filter(c -> c.getDerrocado() == null).map(c -> c.getEntrenador()).collect(Collectors.toList());		
+		return query.getResultList().stream().map(c -> c.getEntrenador()).collect(Collectors.toList());		
 	}
 
 	/**

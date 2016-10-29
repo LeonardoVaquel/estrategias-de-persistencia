@@ -8,14 +8,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.ExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateLeaderboardDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.service.DataManager;
 import ar.edu.unq.epers.bichomon.backend.service.GenericService;
-import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoService;
 import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
@@ -37,18 +40,22 @@ public class TestHibernateLeaderboardService {
 	private DataService dataService;
 	private GenericService testService;
 	private BichoSessionService bichoService;
-	private BichoDAO hibernateBichoDAO;
+	private BichoDAO bichoDAO;
+	private EntrenadorDAO entrenadorDAO;
+	private ExperienciaDAO experienciaDAO;
 
 	@Before
 	public void prepare() {
 
 		this.hibernateLeaderboardDAO = new HibernateLeaderboardDAO();
-		this.service = new LeaderboardSessionService(hibernateLeaderboardDAO);
+		this.service 	 = new LeaderboardSessionService(hibernateLeaderboardDAO);
 		this.dataService = new DataSessionService(new DataManager());
 		this.testService = new GenericService();
 
-		this.hibernateBichoDAO = new HibernateBichoDAO();
-		this.bichoService = new BichoSessionService(hibernateBichoDAO);
+		this.bichoDAO 		= new HibernateBichoDAO();
+		this.entrenadorDAO 	= new HibernateEntrenadorDAO();
+		this.experienciaDAO = new HibernateExperienciaDAO();
+		this.bichoService 	= new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO);
 
 		dataService.crearSetDatosIniciales();
 	}
@@ -71,10 +78,11 @@ public class TestHibernateLeaderboardService {
 
 			List<Entrenador> entrenadores = this.service.campeones();
 
-			Assert.assertEquals(3, entrenadores.size());
+			Assert.assertEquals(4, entrenadores.size());
 			Assert.assertEquals(entrenadores.get(0).getNombre(), "Santiago");
 			Assert.assertEquals(entrenadores.get(1).getNombre(), "Jackson");
 			Assert.assertEquals(entrenadores.get(2).getNombre(), "Jackson");
+			Assert.assertEquals(entrenadores.get(3).getNombre(), "Vegetal");
 
 			return null;
 		});

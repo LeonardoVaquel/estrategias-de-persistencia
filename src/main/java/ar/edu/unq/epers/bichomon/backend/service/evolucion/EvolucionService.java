@@ -5,9 +5,6 @@ import java.util.Collection;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.evolucion.CriterioEvolucion;
 
-/**
- * @author Steve Frontend
- */
 public interface EvolucionService {
 	
 	/**

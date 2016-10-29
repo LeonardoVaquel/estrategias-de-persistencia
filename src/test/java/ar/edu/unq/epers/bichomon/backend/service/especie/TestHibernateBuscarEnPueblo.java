@@ -9,14 +9,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.buscador.Buscador;
+import ar.edu.unq.epers.bichomon.backend.model.buscador.BuscadorEspecie;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import junit.framework.TestCase;
 
 public class TestHibernateBuscarEnPueblo extends TestCase{
 
-	private Buscador buscador;
+	private BuscadorEspecie buscador;
 	private List<Tupla> lsDB;
 	private Tupla tupla1;
 	private Tupla tupla2;
@@ -38,7 +38,7 @@ public class TestHibernateBuscarEnPueblo extends TestCase{
 		this.lsDB.add(tupla2);
 		this.lsDB.add(tupla3);
 		
-		this.buscador	= new Buscador(lsDB, 100);
+		this.buscador	= new BuscadorEspecie(lsDB);
 	}
 
 	@Test

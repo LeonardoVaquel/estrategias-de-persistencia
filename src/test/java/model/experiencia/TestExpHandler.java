@@ -35,6 +35,7 @@ public class TestExpHandler {
 		when(dummyEntrenador.getTotalExp()).thenReturn(0d);
 		when(dummyEntrenador.getCurrentExp()).thenReturn(0d);
 		when(dummyEntrenador.getNivel()).thenReturn(dummyLevel1);
+		when(dummyEntrenador.getNumeroNivel()).thenReturn(1);
 		
 		when(dummyLevel1.getNivel()).thenReturn(1);
 		when(dummyLevel2.getNivel()).thenReturn(2);
@@ -73,7 +74,7 @@ public class TestExpHandler {
 		
 		expHandler.evaluateLevelUp(100d, dummyEntrenador);
 		
-		verify(dummyCfg, times(3)).getExpByLvl(dummyEntrenador.getNumeroNivel());
+		verify(dummyCfg, times(2)).getExpByLvl(dummyEntrenador.getNumeroNivel());
 		verify(dummyEntrenador).setCurrentExp(0d);
 	}
 	

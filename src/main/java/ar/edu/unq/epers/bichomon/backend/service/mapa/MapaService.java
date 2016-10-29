@@ -17,4 +17,12 @@ public interface MapaService {
 	 */
 	public void mover(String entrenador, String ubicacion);
 	
+	/**
+	 * Recibe por parámetro un nombre de {@link Ubicacion}
+	 * Se espera obtener la cantidad de objetos {@link Entrendor} en dicha ubicación.
+	 * @param ubicacion - el nombre de una {@link Ubicacion}
+	 * @return - un número que representa una cantidad de entrenadores.
+	 */
+	public int cantidadEntrenadores(String ubicacion);
+	
 }
