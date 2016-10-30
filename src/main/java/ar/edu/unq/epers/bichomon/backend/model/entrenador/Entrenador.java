@@ -29,6 +29,8 @@ public class Entrenador {
 	@Id
 	private String nombre;
 	
+	private Integer monedas;
+	
 	private Double currentExp;
 	
 	private Double totalExp;
@@ -73,6 +75,14 @@ public class Entrenador {
 	
 	public String getNombre() {
 		return this.nombre;
+	}
+	
+	public Integer getMonedas() {
+		return monedas;
+	}
+
+	public void setMonedas(Integer monedas) {
+		this.monedas = monedas;
 	}
 	
 	public Double getCurrentExp() {
