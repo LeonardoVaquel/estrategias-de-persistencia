@@ -15,7 +15,7 @@ public interface MapaService {
 	 * @param entrenador - el nombre de un {@link Entrenador}
 	 * @param ubicacion - el nombre de una {@link Ubicacion}
 	 */
-	public void mover(String entrenador, String ubicacion);
+	public void mover(String entrenador, String ubicacion) throws RuntimeException;
 	
 	/**
 	 * Recibe por parámetro un nombre de {@link Ubicacion}
