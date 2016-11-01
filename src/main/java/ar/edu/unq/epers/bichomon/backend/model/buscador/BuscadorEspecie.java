@@ -40,24 +40,21 @@ public class BuscadorEspecie {
 	 * @param n Es un entero que viene del Random.
 	 * @return Un {@link Bicho} de la especie que salio por el numero Random.
 	 */
-	public Bicho buscar(Integer n){
-		
-		
-		Especie especie = encontrarEspecie(this.buscarAux(), n); // Se busca la especie segun el random.
-		System.out.println(especie);
-		System.out.println(especie.getNombre());
-		bichoEncontrado = new Bicho(especie); // Se crea el bicho que se encontro.
-		return bichoEncontrado;
-	}
-	
-	
 	public Bicho buscar() {
 		
 		return this.buscar(this.generarRandom(this.buscarAux()));
 	}
 	
+	public Bicho buscar(Integer n){
+		
+		
+		Especie especie = encontrarEspecie(this.buscarAux(), n); // Se busca la especie segun el random.
+		bichoEncontrado = new Bicho(especie); // Se crea el bicho que se encontro.
+		return bichoEncontrado;
+	}	
+	
 	/**
-	 * 
+	 * Retorna si hay una especie que tenga la probabilidad <n>.
 	 * @param ls Una lista de tuplas ( Especie => [ probabilidad ] ).
 	 * @param n El numero random sorteado.
 	 * @return La {@link Especie} que salio "Random".
@@ -77,6 +74,10 @@ public class BuscadorEspecie {
 		return tupla.getLsValue().contains(n);
 	}
 	
+	/**
+	 * Convierte una Lista de Tupla(Especie -> probabilidad)
+	 * en una lista de Tupla(Especie -> List<Integer>)
+	 * **/
 	public List<Tupla> buscarAux(){
 		lsResult = this.tuplasPorCoeficiente(listDB);
 		return this.listaFinal(lsResult);
@@ -93,10 +94,21 @@ public class BuscadorEspecie {
 		return lsFinal;
 	}
 	
+	/**
+	 * Construye una Tupla.
+	 * @param k: es una {@link Especie}
+	 * @param v: es una List<Integer> que representa el rango donde 
+	 * saldria elegida dicha especie.
+	 * @return: Una {@link Tupla} (Especie -> List<Integer>)
+	 * **/
 	private Tupla mkTuplaWithList(Especie k, List<Integer> v){
 		return new Tupla(k,v);
 	}
 	
+	/**
+	 * Dada una lista de tuplas del tipo (Especie -> probabilidad (float))
+	 * @return: una lista de tuplas (Especie -> probabilidad (Integer))
+	 * **/
 	private List<Tupla> tuplasPorCoeficiente(List<Tupla> listDB){
 		List<Tupla> result = new ArrayList<>();
 		
@@ -106,10 +118,19 @@ public class BuscadorEspecie {
 		return result;
 	}
 	
+	/**
+	 * Construye una {@link Tupla} (Especie -> float(probabilidad)).
+	 * */
 	private Tupla mkTupla(Especie k, float v){
 		return new Tupla(k,v);
 	}
 	
+	/**
+	 * Crea una lista de enteros entre un inicio y un fin.
+	 * que representa el rango de probabilidad donde una Especie puede salir elegida.
+	 * @param: begin que indica de donde comienza el rango.
+	 * @param: end que indica el fin del rango.
+	 * */
 	private List<Integer> mkList(Integer begin, float end){
 		List<Integer> ls = new ArrayList<>();
 		while(begin <= end){
@@ -132,8 +153,6 @@ public class BuscadorEspecie {
 			
 			result = result + tupla.getLsValue().size();
 		}
-		
-//		result = lsTupla.stream().map(t -> t.getLsValue().size());
 		
 		return new Random().nextInt(result);
 	}

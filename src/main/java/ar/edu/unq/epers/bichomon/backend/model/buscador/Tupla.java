@@ -11,7 +11,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-
+/**
+ * Tupla es una clase que representa un HashMap y puede tomar dos values distintos.
+ * para representar la probabilidad que tiene una Especie en aparecer cuando un Entrenador
+ * busca un Bicho en algun lugar.
+ * */
 @Entity
 public class Tupla{
 	
