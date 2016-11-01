@@ -3,6 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.model.buscador;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
@@ -17,16 +18,16 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 public class Buscador {
 
 	private Bicho bichoEncontrado;
-	private Integer indice;
-	private List<Tupla> listDB;
-	private List<Tupla> lsResult;
+	private int randomNumber;
+	private List<TuplaEspecieProbabilidad> listDB;
+//	private List<TuplaEspecieLista> lsResult;
 	private Integer coeficiente;
 	
-	public Buscador(List<Tupla> lsDB, Integer coef){
-		this.indice 		= 1;
+	public Buscador(List<TuplaEspecieProbabilidad> lsDB){
+//		this.indice 		= 1;
 		this.listDB 		= lsDB;
-		this.lsResult 		= new ArrayList<>();
-		this.coeficiente	= coef;
+//		this.lsResult 		= new ArrayList<>();
+		this.coeficiente	= 100;
 	};
 	
 	// listDB es una lista de tuplas [ ( Especie => probalididad ) ]
@@ -41,19 +42,16 @@ public class Buscador {
 	 * @return Un {@link Bicho} de la especie que salio por el numero Random.
 	 */
 	public Bicho buscar(Integer n){
-		
-		
-		Especie especie = encontrarEspecie(this.buscarAux(), n); // Se busca la especie segun el random.
+		System.out.println("%%%%%%%%%%"+listDB);
+		List<TuplaEspecieLista> ls = this.convertList(listDB);
+		Especie especie = encontrarEspecie(ls, n); // Se busca la especie segun el random.
 		bichoEncontrado = new Bicho(especie); // Se crea el bicho que se encontro.
 		return bichoEncontrado;
 	}
 	
-	
 	public Bicho buscar() {
-		
-		return this.buscar(this.generarRandom(this.buscarAux()));
+		return this.buscar(getARandom());
 	}
-	
 	
 	/**
 	 * 
@@ -61,10 +59,10 @@ public class Buscador {
 	 * @param n El numero random sorteado.
 	 * @return La {@link Especie} que salio "Random".
 	 */
-	private Especie encontrarEspecie(List<Tupla> ls, Integer n){
+	private Especie encontrarEspecie(List<TuplaEspecieLista> ls, Integer n){
 		Especie result = null;
-		for(Tupla tupla : ls){
-			if(this.contieneValor(tupla, n)){
+		for(TuplaEspecieLista tupla : ls){
+			if(tupla.contieneValor(n)){
 				result = tupla.getKey();
 				break;
 			}
@@ -72,50 +70,72 @@ public class Buscador {
 		return result;
 	}
 	
-	private boolean contieneValor(Tupla tupla, Integer n){
-		return tupla.getLsValue().contains(n);
-	}
-	
-	public List<Tupla> buscarAux(){
-		lsResult = this.tuplasPorCoeficiente(listDB);
-		return this.listaFinal(lsResult);
+	public List<TuplaEspecieLista> convertList(List<TuplaEspecieProbabilidad> ls){
+		ls.get(0).print();
+		ls.get(1).print();
+		ls.get(2).print();
+		List<TuplaEspecieProbabilidad> listaPorCoef = 
+				ls.stream().map((TuplaEspecieProbabilidad t) -> t.convert(this.coeficiente)).collect(Collectors.toList());
+//		listaPorCoef.get(0).print();
+//		listaPorCoef.get(1).print();
+//		listaPorCoef.get(2).print();
 		
-	}
-	
-	private List<Tupla> listaFinal(List<Tupla> ls){
-		List<Tupla> lsFinal = new ArrayList<>();
-		for(Tupla tupla : ls){
-			lsFinal.add(mkTuplaWithList(tupla.getKey(), mkList(indice, tupla.getValue())));
-			indice++;
-		}
+//		System.out.println("########### lista coef "+listaPorCoef);
+//		System.out.println("########### "+listaPorCoef.size());
+		List<TuplaEspecieLista> listaFinal = listaPorCoef.stream().map((TuplaEspecieProbabilidad t) -> t.convertValueInList()).collect(Collectors.toList());
+//		listaFinal.get(0).print();
+//		listaFinal.get(1).print();
+//		listaFinal.get(2).print();
+		//		System.out.println("########### lista final "+listaFinal);
+//		System.out.println("########### "+listaFinal.size());
 		
-		return lsFinal;
+		return listaFinal;
 	}
-	
-	private Tupla mkTuplaWithList(Especie k, List<Integer> v){
-		return new Tupla(k,v);
-	}
-	
-	private List<Tupla> tuplasPorCoeficiente(List<Tupla> listDB){
-		List<Tupla> result = new ArrayList<>();
 		
-		for(Tupla tupla : this.listDB){
-			result.add(mkTupla(tupla.getKey(), tupla.getValue()*coeficiente));
-		}
-		return result;
-	}
+//	public List<Tupla> buscarAux(){
+//		lsResult = this.tuplasPorCoeficiente(listDB);
+//		return this.listaFinal(lsResult);
+//		
+//	}
+//	
+//	private List<Tupla> listaFinal(List<Tupla> ls){
+//		List<Tupla> lsFinal = new ArrayList<>();
+//		for(Tupla tupla : ls){
+//			lsFinal.add(mkTuplaWithList(tupla.getKey(), mkList(indice, tupla.getValue())));
+//			indice++;
+//		}
+//		
+//		return lsFinal;
+//	}
+//	
+//	private Tupla mkTuplaWithList(Especie k, List<Integer> v){
+//		return new Tupla(k,v);
+//	}
+//	
+//	private List<Tupla> tuplasPorCoeficiente(List<Tupla> listDB){
+//		List<Tupla> result = new ArrayList<>();
+//		
+//		for(Tupla tupla : this.listDB){
+//			result.add(mkTupla(tupla.getKey(), tupla.getValue()*coeficiente));
+//		}
+//		return result;
+//	}
+//	
+//	private Tupla mkTupla(Especie k, float v){
+//		return new Tupla(k,v);
+//	}
+//	
+//	private List<Integer> mkList(Integer begin, float end){
+//		List<Integer> ls = new ArrayList<>();
+//		while(begin <= end){
+//			ls.add((int) begin);
+//			begin++;
+//		}
+//		return ls;
+//	}
 	
-	private Tupla mkTupla(Especie k, float v){
-		return new Tupla(k,v);
-	}
-	
-	private List<Integer> mkList(Integer begin, float end){
-		List<Integer> ls = new ArrayList<>();
-		while(begin <= end){
-			ls.add((int) begin);
-			begin++;
-		}
-		return ls;
+	private int getARandom(){
+		return this.generarRandom(this.convertList(listDB));
 	}
 
 	/**
@@ -123,17 +143,18 @@ public class Buscador {
 	 * @param lsTupla - lista de {@link Tupla)} ({@link Especie}, List<Integer)
 	 * @return int - el size total de todas las listas sumadas
 	 */
-	private int generarRandom(List<Tupla> lsTupla){
+	private int generarRandom(List<TuplaEspecieLista> lsTupla){
 		
-		int result = 0;
+//		int result = 0;
 		
-		for(Tupla tupla:lsTupla) {
-			
-			result = result + tupla.getLsValue().size();
-		}
+//		for(TuplaEspecieLista tupla:lsTupla) {
+//			
+//			result = result + tupla.getValue().size();
+//		}
 		
-//		result = lsTupla.stream().map(t -> t.getLsValue().size());
-		
-		return new Random().nextInt(result);
+		lsTupla.stream().
+				map((TuplaEspecieLista t) -> randomNumber = randomNumber + t.getValue().size()).
+				collect(Collectors.toList()).get(0);
+		return new Random().nextInt(randomNumber);
 	}
 }

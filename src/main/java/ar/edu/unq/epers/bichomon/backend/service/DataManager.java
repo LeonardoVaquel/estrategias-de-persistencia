@@ -23,6 +23,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateHistorialDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateUbicacionDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
+import ar.edu.unq.epers.bichomon.backend.model.buscador.TuplaEspecieProbabilidad;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Historial;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -241,13 +242,13 @@ public class DataManager implements DataService {
 
 		// Creacion de lista de Especie
 
-		Tupla tupla1 = new Tupla(leoMon, 0.1f);
-		Tupla tupla2 = new Tupla(giseMon, 0.1f);
-		Tupla tupla3 = new Tupla(leoMonEvolucion, 0.1f);
-		Tupla tupla4 = new Tupla(giseMonEvolucion, 0.1f);
-		Tupla tupla5 = new Tupla(frutiMon, 0.6f);
+		TuplaEspecieProbabilidad tupla1 = new TuplaEspecieProbabilidad(leoMon, 0.1f);
+		TuplaEspecieProbabilidad tupla2 = new TuplaEspecieProbabilidad(giseMon, 0.1f);
+		TuplaEspecieProbabilidad tupla3 = new TuplaEspecieProbabilidad(leoMonEvolucion, 0.1f);
+		TuplaEspecieProbabilidad tupla4 = new TuplaEspecieProbabilidad(giseMonEvolucion, 0.1f);
+		TuplaEspecieProbabilidad tupla5 = new TuplaEspecieProbabilidad(frutiMon, 0.6f);
 
-		List<Tupla> listDeEspeciesNeverland = new ArrayList<>();
+		List<TuplaEspecieProbabilidad> listDeEspeciesNeverland = new ArrayList<>();
 		listDeEspeciesNeverland.add(tupla1);
 		listDeEspeciesNeverland.add(tupla2);
 		listDeEspeciesNeverland.add(tupla3);

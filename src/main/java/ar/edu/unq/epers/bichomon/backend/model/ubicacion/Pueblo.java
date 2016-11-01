@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Buscador;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
+import ar.edu.unq.epers.bichomon.backend.model.buscador.TuplaEspecieProbabilidad;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 
@@ -21,16 +22,16 @@ public class Pueblo extends Ubicacion{
 	@Transient
 	private Buscador buscador;
 	
-	public List<Tupla> getListaDeEspecies() {
+	public List<TuplaEspecieProbabilidad> getListaDeEspecies() {
 		return listaDeEspecies;
 	}
 
-	public void setListaDeEspecies(List<Tupla> listaDeEspecies) {
+	public void setListaDeEspecies(List<TuplaEspecieProbabilidad> listaDeEspecies) {
 		this.listaDeEspecies = listaDeEspecies;
 	}
 
 	@OneToMany(cascade=CascadeType.ALL)
-	private List<Tupla> listaDeEspecies;
+	private List<TuplaEspecieProbabilidad> listaDeEspecies;
 	
 	public Pueblo(String nombrePueblo,Random random ){
 		super(nombrePueblo,random);
@@ -50,7 +51,7 @@ public class Pueblo extends Ubicacion{
 	
 	@Override
 	public Bicho buscar(Entrenador entrenador) {
-		this.buscador = new Buscador(this.listaDeEspecies, 100);
+		this.buscador = new Buscador(this.listaDeEspecies);
 		
 		if (busquedaEnUbicacion(entrenador, this)) {
 			return this.buscador.buscar();
