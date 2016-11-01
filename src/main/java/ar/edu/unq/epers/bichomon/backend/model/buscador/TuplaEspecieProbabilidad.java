@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.buscador;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -53,13 +54,22 @@ public class TuplaEspecieProbabilidad extends Tupla<Float>{
 	
 	public TuplaEspecieProbabilidad convert(Integer coef){
 		Float newValue = this.getValue() *coef;
-//		this.setValue(newValue);
-		return new TuplaEspecieProbabilidad(key, newValue);
+		this.setValue(newValue);
+		return this;
 	}
 	
-	public TuplaEspecieLista convertValueInList(){
-		TuplaEspecieLista newValue = new TuplaEspecieLista();
+	public TuplaEspecieLista convertValueInList(Integer indice){
+		TuplaEspecieLista newValue = new TuplaEspecieLista(this.getKey(), this.mkList(indice, this.getValue()));
 		
 		return newValue;
+	}
+	
+	private List<Integer> mkList(Integer begin, Float end){
+		List<Integer> result = new ArrayList<>();
+		while(begin < end){
+			result.add(begin);
+			begin++;
+		}
+		return result;
 	}
 }
