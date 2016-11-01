@@ -52,6 +52,25 @@ public class HibernateEspecieDAO implements EspecieDAO {
 		
 		return query.getResultList();
 	}
+	
+	/**
+	 * Se espera retornar una lista de diez instancias {@link Especie} más bichos en 
+	 * poder de un {@link Entrenador}
+	 */
+	@Override
+	public List<Especie> populares(){
+		Session session = Runner.getCurrentSession();
+		
+		String hql = 	"SELECT b.especie " +
+						"FROM Bicho b WHERE b IN (SELECT elements(e.bichos) FROM Entrenador e)" +
+						"GROUP BY b.especie ORDER BY COUNT (1) DESC";
+		
+		return session.createQuery(hql, Especie.class)
+				.setMaxResults(10)
+				.getResultList();
+	}
+
+
 
 	/**
 	 * Deprecado al comenzar a utilizar hibernate (los bichos ya no tienen nombre)
@@ -81,16 +100,5 @@ public class HibernateEspecieDAO implements EspecieDAO {
 		
 		session.save(tupla);
 	}
-
-	@Override
-	public List<Especie> populares(){
-		Session session = Runner.getCurrentSession();
-		
-		String hql = "from Especie e "+
-					 "order by e.cantidadBichos desc";
-		
-		return session.createQuery(hql, Especie.class).getResultList();
-	}
-
 
 }

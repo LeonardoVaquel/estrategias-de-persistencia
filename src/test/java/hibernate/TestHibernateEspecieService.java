@@ -124,28 +124,5 @@ public class TestHibernateEspecieService {
 		});
 		
 	}
-	@Test 
-	public void  retorna_las_especies_mas_populares(){
-		this.service.getAllEspecies();
-		
-		Runner.runInSession(() -> {
-			List<Especie> especiesMasPopulares = this.especieDAO.populares();	
-			Assert.assertEquals(especiesMasPopulares.size(),2);
-		return null;
-		});
-	}
-	
-	@Test
-	public void test_busco_la_especie_mas_popular_(){
-		Runner.runInSession(() ->{
-			List<Especie> especies = this.especieDAO.populares();
-			Especie expected = especies.get(1);
-			
-			Assert.assertEquals(expected.getTipo(), TipoBicho.FUEGO);
-		return null;		
-		});
-	}
-
-
 
 }
