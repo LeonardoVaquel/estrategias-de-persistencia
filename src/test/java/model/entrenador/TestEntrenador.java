@@ -26,6 +26,7 @@ public class TestEntrenador {
 		MockitoAnnotations.initMocks(this);
 		
 		this.entrenador = new Entrenador();
+		this.entrenador.setMonedas(1000);
 	}
 	
 	@Test
@@ -53,7 +54,7 @@ public class TestEntrenador {
 	
 	@Test
 	public void un_entrenador_cambia_su_ubicacion_en_entrenador_mover() {
-		entrenador.mover(dummyUbicacion);
+		entrenador.mover(dummyUbicacion, 0);
 		Assert.assertEquals(entrenador.getUbicacion(), dummyUbicacion);
 	}
 

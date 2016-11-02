@@ -21,6 +21,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateHistorialDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateUbicacionDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.buscador.Tupla;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Campeon;
@@ -56,7 +57,7 @@ public class DataManager implements DataService {
 	private ExperienciaDAO 	experienciaDAO 	= new HibernateExperienciaDAO();
 	private HistorialDAO 	historialDAO 	= new HibernateHistorialDAO();
 	private UbicacionDAO 	ubicacionDAO 	= new HibernateUbicacionDAO();
-
+	private Neo4jMapaDAO    mapaDAO			= new Neo4jMapaDAO();
 	
 	public Map<String, Especie> DATAEspecies;
 	public Map<String, Bicho> DATABichos;
@@ -200,6 +201,7 @@ public class DataManager implements DataService {
 
 		// Creación de Entrenador
 		Entrenador santiagoTrainer = new Entrenador("Santiago");
+		santiagoTrainer.setMonedas(100);
 		santiagoTrainer.setNivel(levelList.get(0));
 		
 		Entrenador jacksonTrainer = new Entrenador("Jackson");
@@ -436,6 +438,13 @@ public class DataManager implements DataService {
 		especieDAO.guardarTupla(DATAEspeciesTupla.get("Tupla5"));
 
 		ubicacionDAO.guardarGuarderia(DATAUbicacionesTupla.get("GuarderiaLas24Hrs"));
+		
+		mapaDAO.crearUbicacion(DATAUbicacionesTupla.get("GuarderiaLas24Hrs"));
+		mapaDAO.crearUbicacion(new Dojo("Neverland"));
+		mapaDAO.crearUbicacion(new Dojo("Torre Karin"));
+		
+		mapaDAO.conectar("Neverland", "Guarderia Las 24 horas!", "AEREO");
+		mapaDAO.conectar("Torre Karin", "Neverland", "MARITIMO");
 	}
 
 	@Override
@@ -451,7 +460,7 @@ public class DataManager implements DataService {
 			session.createNativeQuery("SET FOREIGN_KEY_CHECKS=1").executeUpdate();
 			return null;
 		});
-
+		
 	}
 
 }

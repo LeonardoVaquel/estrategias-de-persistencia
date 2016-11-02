@@ -10,18 +10,20 @@ import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
 
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.CaminoCosto;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.service.mapa.UbicacionMuyLejana;
 
 /**
  * MapaNeo4jDAO encapsula el acceso a Neo4j
  * 
  * @author santiago
  */
-public class MapaNeo4jDAO {
+public class Neo4jMapaDAO {
 
 	private Driver driver;
 	
-	public MapaNeo4jDAO() {
+	public Neo4jMapaDAO() {
 		this.driver = GraphDatabase.driver("bolt://localhost", AuthTokens.basic("neo4j", "root"));
 	}
 	
@@ -33,10 +35,8 @@ public class MapaNeo4jDAO {
 		Session session = this.driver.session();
 		
 		try {
-			
-			//"MERGE (u:Ubicacion {nombre: {elNombre}}) " +
-			//"SET n.name = {elNombre} ";
-			String query = "CREATE (u:Ubicacion { name: {nombreUbicacion} })"; 
+
+			String query = "CREATE (u:Ubicacion { nombre: {nombreUbicacion} })"; 
 			session.run(query, Values.parameters("nombreUbicacion", ubicacion.getNombre()));
 
 		} finally {
@@ -58,10 +58,12 @@ public class MapaNeo4jDAO {
 			
 			String query = 	"MATCH (u1:Ubicacion { nombre: {nombreUbicacion1} }) " +
 							"MATCH (u2:Ubicacion { nombre: {nombreUbicacion2} }) " +
-							"MERGE (u1)-[:tipoCamino]->(u2)";
+							"MERGE (u1)-[:Camino { tipo: {tipoCamino}, costo: {costoCamino} }]->(u2)";
 			
 			session.run(query, Values.parameters(	"nombreUbicacion1", nombreUbicacion1,
-													"nombreUbicacion2", nombreUbicacion2));
+													"nombreUbicacion2", nombreUbicacion2,
+													"tipoCamino", tipoCamino,
+													"costoCamino", CaminoCosto.valueOf(tipoCamino).getValue()));
 			
 //			String queryExample = "MATCH (padre:Persona {dni: {elDniPadre}}) " +
 //					"MATCH (hijo:Persona {dni: {elDniHijo}}) " +
@@ -88,18 +90,18 @@ public class MapaNeo4jDAO {
 
 		try {
 			String query = "MATCH (u:Ubicacion { nombre: {nombreUbicacion}}) " +
-					"MATCH (conectada)-[:tipoCamino]->(u) " +
+					"MATCH (conectada)-[:Camino {tipo: tipoCamino } ]->(u) " +
 					"RETURN conectada";
 			StatementResult result = session.run(query, Values.parameters(	"tipoCamino", 		tipoCamino,
 																			"nombreUbicacion", 	nombreUbicacion));
 			
 			//Similar a list.stream().map(...)
-			return result.list(record -> {
-				Value conectada = record.get(0);
-				String nombre = conectada.get("nombre").asString();
-				return new Ubicacion(nombre);
-			});
-			
+//			return result.list(record -> {
+//				Value conectada = record.get(0);
+//				String nombre = conectada.get("nombre").asString();
+//				return new Ubicacion(nombre);
+//			});
+			return null;
 			
 		} finally {
 			session.close();
@@ -122,6 +124,28 @@ public class MapaNeo4jDAO {
 			
 			String query = "";
 			StatementResult result = session.run(query);
+		}
+		finally {
+			session.close();
+		}
+	}
+
+	public Integer getCostoDesdeHasta(String ubicOrigen, String ubicDestino) {
+		Session session = this.driver.session();
+		try {
+			String query = 	"MATCH (o:Ubicacion { nombre: {nombreOrigen} })" +
+						 	"MATCH (d:Ubicacion { nombre: {nombreDestino} })" +
+						 	"MATCH (o)-[r:Camino]->(d)" +
+						 	"RETURN r.costo as costo";
+			
+			StatementResult result = session.run(query, Values.parameters("nombreOrigen",  ubicOrigen,
+																		  "nombreDestino", ubicDestino));
+			if(!result.hasNext()) {
+				throw new UbicacionMuyLejana(ubicDestino);
+			}
+			else {
+				return result.single().get("costo").asInt();
+			}
 		}
 		finally {
 			session.close();

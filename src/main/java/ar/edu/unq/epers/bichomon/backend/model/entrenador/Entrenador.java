@@ -16,6 +16,7 @@ import ar.edu.unq.epers.bichomon.backend.model.experiencia.ExpHandler;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.Experiencia;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.Level;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.service.mapa.CaminoMuyCostoso;
 
 /**
  * {@link Entrenador} es una clase que representa un jugador del sistema.
@@ -57,6 +58,7 @@ public class Entrenador {
 		this.setTotalExp(0d);
 		this.setUbicacion(ubicacion);
 		this.bichos = new ArrayList<>();
+		this.monedas = 0;
 	}
 	
 	public Entrenador(String nombre) {
@@ -65,6 +67,7 @@ public class Entrenador {
 		this.setTotalExp(0d);
 		this.setUbicacion(null);
 		this.bichos = new ArrayList<>();
+		this.monedas = 0;
 	}
 	
 	public Entrenador() {};
@@ -200,8 +203,21 @@ public class Entrenador {
 	 * Se delega en una {@link Ubicacion}, que es la actual, para modificar la ubicación actual.
 	 * @param ubicacion - una instancia de {@link Ubicacion}
 	 */
-	public void mover(Ubicacion ubicacion) {
+	public void mover(Ubicacion ubicacion, Integer unaCantidadDeMonedas) {
+		
+		if(this.monedas < unaCantidadDeMonedas) {
+			throw new CaminoMuyCostoso(unaCantidadDeMonedas - this.monedas);
+		}
 		this.setUbicacion(ubicacion);
+		this.restarMonedas(unaCantidadDeMonedas);
+	}
+	
+	/**
+	 * Dado un número que representa una cantidad de monedas, se restan con la cantidad
+	 * actual de un {@link Entrenador}
+	 */
+	private void restarMonedas(Integer unaCantidadDeMonedas) {
+		this.monedas = monedas - unaCantidadDeMonedas;
 	}
 	
 	/**

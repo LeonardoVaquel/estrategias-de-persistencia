@@ -4,6 +4,7 @@ import org.hibernate.Session;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -21,16 +22,19 @@ public class MapaSessionService implements MapaService {
 	private GenericService service;
 	private EntrenadorDAO entrenadorDAO;
 	private MapaDAO mapaDAO;
+	private Neo4jMapaDAO neo4jMapaDAO;
 	
 	/**
 	 * Crea una instancia de MapaSessionService que utilizará un dao,
 	 * a quien delegará los pedidos necesarios sobre una base de datos.
 	 * @param mapaDAO
 	 */
-	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service) {
+	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service, 
+			Neo4jMapaDAO neo4jMapaDAO) {
 		this.service 	   = service;
 		this.mapaDAO	   = mapaDAO;
 		this.entrenadorDAO = entrenadorDAO;
+		this.neo4jMapaDAO  = neo4jMapaDAO;
 	}
 	
 	/**
@@ -45,7 +49,17 @@ public class MapaSessionService implements MapaService {
 		
 		Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
 		Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, nombreUbicacion);
-		entrenador.mover(ubicacion);
+		
+		String desde = entrenador.getUbicacion().getNombre();
+		String hasta = ubicacion.getNombre();
+		
+		System.out.println(desde);
+		System.out.println(hasta);
+		
+		Integer costo = this.neo4jMapaDAO.getCostoDesdeHasta(desde, hasta);
+		
+		entrenador.mover(ubicacion, costo);
+		
 		return null;
 		});		
 	}

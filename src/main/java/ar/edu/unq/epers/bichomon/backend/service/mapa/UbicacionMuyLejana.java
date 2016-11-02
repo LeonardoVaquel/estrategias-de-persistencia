@@ -4,8 +4,8 @@ public class UbicacionMuyLejana extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public UbicacionMuyLejana() {
-		super("No es posible llegar a la ubicación por medio del camino especificado");
+	public UbicacionMuyLejana(String nombreUbicaicon) {
+		super("No es posible llegar a la ubicación" + nombreUbicaicon + "por medio de un salto");
 	}
 
 }

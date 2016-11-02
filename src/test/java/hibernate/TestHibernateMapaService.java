@@ -8,8 +8,10 @@ import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateMapaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.CaminoCosto;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.service.DataManager;
@@ -33,7 +35,8 @@ public class TestHibernateMapaService {
 	private MapaDAO mapaDAO;
 	private EntrenadorDAO entrenadorDAO;
 	private DataService dataService;
-	private GenericService testService;	
+	private GenericService testService;
+	private Neo4jMapaDAO neo4jmapaDAO;
 	
 	@Before
 	public void prepare() {
@@ -41,8 +44,10 @@ public class TestHibernateMapaService {
 		this.mapaDAO 	   = new HibernateMapaDAO();
 		this.entrenadorDAO = new HibernateEntrenadorDAO();
 		this.testService   = new GenericService();
-		this.service 	   = new MapaSessionService(this.mapaDAO, this.entrenadorDAO, this.testService);
+		this.neo4jmapaDAO  = new Neo4jMapaDAO();
+		this.service 	   = new MapaSessionService(this.mapaDAO, this.entrenadorDAO, this.testService, this.neo4jmapaDAO);
 		this.dataService   = new DataSessionService(new DataManager());
+		
 		
 		this.dataService.crearSetDatosIniciales();
 	}
@@ -58,11 +63,14 @@ public class TestHibernateMapaService {
 		
 		Runner.runInSession(() -> {
 			
-			this.service.mover("Santiago", "Neverland");
-			
 			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Santiago");
 			
+			Integer monedas = entrenador.getMonedas();
+			
+			this.service.mover("Santiago", "Neverland");
+			
 			Assert.assertEquals(entrenador.getUbicacion().getNombre(), "Neverland");
+			Assert.assertEquals(entrenador.getMonedas(), monedas - CaminoCosto.MARITIMO.getValue(), 0);
 			
 			return null;
 		});
