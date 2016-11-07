@@ -58,15 +58,27 @@ public class Dojo extends Ubicacion {
 	/**
 	 * Dado un {@link Entrenador}, si se produce una búsqueda exitosa se retorna una instancia de
 	 * {@link Bicho} cuya {@link Especie} es la raíz del actual campeón de la ubicación actual.
+	 * @throws NoSePuedeBuscarSinCampeonException 
 	 */
 	@Override
-	public Bicho buscar(Entrenador entrenador) {
-		if (this.esBusquedaExitosa(entrenador)) {
-			return new Bicho(this.obtenerEspecieRaizActual());
-		}		
-		else {
-			return null;
+	public Bicho buscar(Entrenador entrenador){
+		Bicho bicho = null;
+		try{
+			if (this.esBusquedaExitosa(entrenador)) {
+				bicho = this.buscarBichoPara(entrenador);
+			}
+		}catch(NoSePuedeBuscarSinCampeonException e){
+			
 		}
+		return bicho;
+	}
+	
+	private Bicho buscarBichoPara(Entrenador entrenador) throws NoSePuedeBuscarSinCampeonException{
+		
+		if(this.obtenerEspecieRaizActual() == null){
+			throw new NoSePuedeBuscarSinCampeonException("No hay un Campeon, por lo tanto no podes realizar una busqueda");
+		}
+		return  new Bicho(this.obtenerEspecieRaizActual());
 	}
 	
 	/**
