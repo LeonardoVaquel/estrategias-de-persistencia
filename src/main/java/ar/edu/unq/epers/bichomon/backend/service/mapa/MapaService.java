@@ -25,4 +25,14 @@ public interface MapaService {
 	 */
 	public int cantidadEntrenadores(String ubicacion);
 	
+	/**
+	 * Recibe por parámetro un nombre de {@link Entrenador} y un nombre de {@link Ubicacion} para
+	 * mover al entrenador hacia la ubicación mediante el camino mas corto.
+	 * Se espera que el entrenador obtenga su {@link Ubicacion} modificada a la que
+	 * se especifica por parámetro.
+	 * @param entrenador - el nombre de un {@link Entrenador}
+	 * @param ubicacion - el nombre de una {@link Ubicacion}
+	 */
+	public void moverMasCorto(String entrenador, String ubicacion);
+	
 }

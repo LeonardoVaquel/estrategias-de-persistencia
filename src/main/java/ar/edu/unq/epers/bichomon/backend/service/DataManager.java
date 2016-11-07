@@ -68,6 +68,10 @@ public class DataManager implements DataService {
 	public Map<String, Tupla> DATAEspeciesTupla;
 	public Map<String, Guarderia> DATAUbicacionesTupla;
 
+	public void createNeo4jData() {
+		
+	}
+	
 	public void createData() {
 		DATAEspecies = new HashMap<>();
 		DATABichos = new HashMap<>();
@@ -446,6 +450,19 @@ public class DataManager implements DataService {
 		mapaDAO.conectar("Neverland", "Guarderia Las 24 horas!", "AEREO");
 		mapaDAO.conectar("Torre Karin", "Neverland", "MARITIMO");
 	}
+	
+	public void crearSetDeUbicacionesNeo4j() {
+		
+		mapaDAO.crearUbicacion(new Dojo("Quilmes"));
+		mapaDAO.crearUbicacion(new Pueblo("Bernal"));
+		mapaDAO.crearUbicacion(new Pueblo("Don Bosco"));
+		mapaDAO.crearUbicacion(new Dojo("F. Varela"));
+		
+		mapaDAO.conectar("Bernal", "Don Bosco", "MARITIMO");
+		mapaDAO.conectar("Quilmes", "Bernal", "TERRESTRE");
+		mapaDAO.conectar("Don Bosco", "F. Varela", "AEREO");
+		
+	}
 
 	@Override
 	public void eliminarTablas() {
@@ -461,6 +478,10 @@ public class DataManager implements DataService {
 			return null;
 		});
 		
+	}
+	
+	public void eliminarUbicaciones() {
+		this.mapaDAO.eliminarUbicaciones();
 	}
 
 }

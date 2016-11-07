@@ -56,6 +56,7 @@ public class TestHibernateMapaService {
 	@After
 	public void deleteAll() {
 		this.dataService.eliminarTablas();
+		this.neo4jmapaDAO.eliminarUbicaciones();
 	}
 	
 	@Test
@@ -74,6 +75,25 @@ public class TestHibernateMapaService {
 			
 			return null;
 		});
+	}
+	
+//	@Test
+	public void dado_un_entrenador_y_una_ubicacion_no_lindante_se_mueve_al_entrenador_a_dicha_ubicacion_y_se_restan_sus_monedas(){
+		
+		Runner.runInSession(() -> {
+			
+			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Santiago");
+			
+			Integer monedas = entrenador.getMonedas();
+			
+			this.service.mover("Santiago", "Neverland");
+			
+			Assert.assertEquals(entrenador.getUbicacion().getNombre(), "Neverland");
+			Assert.assertEquals(entrenador.getMonedas(), monedas - CaminoCosto.MARITIMO.getValue(), 0);
+			
+			return null;
+		});
+		
 	}
 	
 	@Test

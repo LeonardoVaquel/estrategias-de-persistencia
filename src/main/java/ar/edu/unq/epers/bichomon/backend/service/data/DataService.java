@@ -21,6 +21,9 @@ public interface DataService {
 	 */
 	void crearSetDatosIniciales();
 
+	/**
+	 * Eliminar todas las tablas de una base de datos SQL
+	 */
 	void eliminarTablas();
 	
 }

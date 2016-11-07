@@ -7,7 +7,6 @@ import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.GraphDatabase;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
-import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
 
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.CaminoCosto;
@@ -79,7 +78,7 @@ public class Neo4jMapaDAO {
 	
 	/**
 	 * Dado el nombre de una ubicación y un tipo de camino se espera devolver todas aquellas ubicaciones
-	 * conectadas directamente con la ubicación de nombre pasado por parámetro a tracés del camino
+	 * conectadas directamente con la ubicación de nombre pasado por parámetro a través del camino
 	 * especificado. 
 	 * @param nombreUbicacion - un string
 	 * @param tipoCamino - un string
@@ -130,7 +129,7 @@ public class Neo4jMapaDAO {
 		}
 	}
 
-	public Integer getCostoDesdeHasta(String ubicOrigen, String ubicDestino) {
+	public Integer getCostoLindantes(String ubicOrigen, String ubicDestino) {
 		Session session = this.driver.session();
 		try {
 			String query = 	"MATCH (o:Ubicacion { nombre: {nombreOrigen} })" +
@@ -146,6 +145,37 @@ public class Neo4jMapaDAO {
 			else {
 				return result.single().get("costo").asInt();
 			}
+		}
+		finally {
+			session.close();
+		}
+	}
+	
+	public Integer getCostoEntreUbicaciones(String ubicOrigen, String ubicDestino) {
+		Session session = this.driver.session();
+		try {
+			String query = "MATCH (o:Ubicacion { nombre: {nombreOrigen} }) " +
+						   "MATCH (d:Ubicacion { nombre: {nombreDestino} }) " +
+						   "MATCH p = shortestPath((o)-[Camino*]->(d)) " +
+						   "WITH REDUCE(costo = 0, camino in rels(p) | costo + toInt(camino.costo)) " +
+						   "AS sumaCosto, p " +
+						   "RETURN p, sumaCosto";
+			
+			StatementResult result = session.run(query, Values.parameters("nombreOrigen",  ubicOrigen,
+																		   "nombreDestino", ubicDestino));
+			return result.peek().get("sumaCosto").asInt();
+		}
+		finally {
+			session.close();
+		}
+	}
+	
+	public void eliminarUbicaciones() {
+		Session session = this.driver.session();
+		try {
+			String query = "MATCH (n:Ubicacion) DETACH DELETE n";
+			
+			session.run(query);
 		}
 		finally {
 			session.close();

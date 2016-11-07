@@ -47,21 +47,38 @@ public class MapaSessionService implements MapaService {
 	public void mover(String nombreEntrenador, String nombreUbicacion) {
 		Runner.runInSession(() -> {
 		
-		Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
-		Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, nombreUbicacion);
-		
-		String desde = entrenador.getUbicacion().getNombre();
-		String hasta = ubicacion.getNombre();
-		
-		System.out.println(desde);
-		System.out.println(hasta);
-		
-		Integer costo = this.neo4jMapaDAO.getCostoDesdeHasta(desde, hasta);
-		
-		entrenador.mover(ubicacion, costo);
-		
-		return null;
+			Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
+			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, nombreUbicacion);
+			
+			String desde = entrenador.getUbicacion().getNombre();
+			String hasta = ubicacion.getNombre();
+			
+			Integer costo = this.neo4jMapaDAO.getCostoLindantes(desde, hasta);
+			
+			entrenador.mover(ubicacion, costo);
+			
+			return null;
 		});		
+	}
+	
+	@Override
+	public void moverMasCorto(String nombreEntrenador, String nombreUbicacion) {
+		
+			Runner.runInSession(() -> {
+			
+			Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
+			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, nombreUbicacion);
+			
+			String desde = entrenador.getUbicacion().getNombre();
+			String hasta = ubicacion.getNombre();
+			
+			Integer costo = this.neo4jMapaDAO.getCostoEntreUbicaciones(desde, hasta);
+			
+			entrenador.mover(ubicacion, costo);
+			
+			return null;
+		
+		});
 	}
 	
 	/**

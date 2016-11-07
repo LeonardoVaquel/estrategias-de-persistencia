@@ -1,55 +1,62 @@
 package neo4j;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
+import ar.edu.unq.epers.bichomon.backend.service.DataManager;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.UbicacionMuyLejana;
 
 public class TestNeo4jMapaDAO {
 
 	
-	Neo4jMapaDAO mapaDAO;
+	private Neo4jMapaDAO mapaDAO;
+	private DataManager dataManager;
 	
 	@Before
 	public void setUp() {
 		
-		this.mapaDAO = new Neo4jMapaDAO();
+		this.mapaDAO 	 = new Neo4jMapaDAO();
+		this.dataManager = new DataManager();
+		this.dataManager.crearSetDeUbicacionesNeo4j();
+	}
+	
+	@After
+	public void deleteUbicaciones() {
+		this.dataManager.eliminarUbicaciones();
+	}
+	
+	@Test
+	public void dadas_dos_ubicaciones_no_lindantes_se_obtiene_el_costo_total_entre_ambas() {
 		
+		Integer costo = this.mapaDAO.getCostoEntreUbicaciones("Quilmes", "Don Bosco");
+		
+		Assert.assertEquals(3, costo, 0);		
 	}
 	
 	@Test(expected=UbicacionMuyLejana.class)
 	public void dadas_dos_ubicaciones_que_no_se_conectan_de_un_salto_se_levanta_una_exepcion() {
 		
-		this.mapaDAO.getCostoDesdeHasta("Bernal", "F. Varela");
+		this.mapaDAO.getCostoLindantes("Quilmes", "Don Bosco");
 	}
 	
 	@Test
 	public void dadas_dos_ubicaciones_se_obtiene_el_costo() {
-		Integer costo = this.mapaDAO.getCostoDesdeHasta("Bernal", "Don Bosco");
+		Integer costo = this.mapaDAO.getCostoLindantes("Bernal", "Don Bosco");
 		
 		Assert.assertEquals(costo, 2, 0);
 	}
 	
 	@Test
-	public void se_crea_una_ubicacion_con_nombre_en_neo4j() {
+	public void se_conecta_una_ubicacion_f_varela_con_otra_ubicacion_quilmes() {
 		
-		Dojo dojo = new Dojo("Berazategui");
-		this.mapaDAO.crearUbicacion(dojo);
+		this.mapaDAO.conectar("F. Varela", "Quilmes", "TERRESTRE");
 		
-	}
-	
-	@Test
-	public void se_conecta_una_ubicacion_f_varela_con_otra_ubicacion_bernal() {
-		
-		this.mapaDAO.conectar("F. Varela", "Bernal", "TERRESTRE");
-		
-		Integer costo = this.mapaDAO.getCostoDesdeHasta("F. Varela", "Bernal");
+		Integer costo = this.mapaDAO.getCostoLindantes("F. Varela", "Quilmes");
 		
 		Assert.assertEquals(1, costo, 0);
-
 	}
-
+	
 }
