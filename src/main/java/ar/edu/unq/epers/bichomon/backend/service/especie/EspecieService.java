@@ -55,12 +55,11 @@ public interface EspecieService {
 	 */
 	Bicho crearBicho(String nombreEspecie, String nombreBicho);
 
-// Descomentar al implementar los servicios en DAO y demás clases	
-//	/** 
-//	 * TODO
-//	 * @return
-//	 */
-//public List<Especie> populares();
+	/** 
+	 * 
+	 * @return retorna la las 10 especie mas populares de bichomon go.
+	 */
+	public List<Especie> populares();
 //	
 //	/**
 //	 * TODO

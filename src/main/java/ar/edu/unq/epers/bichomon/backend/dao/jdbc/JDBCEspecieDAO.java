@@ -227,5 +227,11 @@ public class JDBCEspecieDAO implements EspecieService {
 		} catch (SQLException e) {
 			throw new RuntimeException("Error al cerrar la conexion", e);
 		}
+	}
+
+	@Override
+	public List<Especie> populares() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

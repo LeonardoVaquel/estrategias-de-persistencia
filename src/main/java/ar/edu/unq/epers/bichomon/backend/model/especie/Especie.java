@@ -27,29 +27,22 @@ public class Especie {
 
 	@Id
 	private String nombre;
-	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Especie raiz;
-
 	@OneToOne(cascade = CascadeType.ALL)
 	private Especie evolucion;
-	
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<CriterioEvolucion> criteriosDeEvolucion;
-	
 	private int altura;
 	private int peso;
-	
 	@Column(name="tipoBicho")
 	@Enumerated(EnumType.STRING)
 	private TipoBicho tipo;
-
 	private int energiaInicial;
-	
 	@Column(name="urlFoto", length=100000)
 	private String urlFoto;
-	
 	private int cantidadBichos;
+
 	
 	public Especie(){
 	}

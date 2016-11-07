@@ -20,12 +20,12 @@ public class Experiencia {
 
 	@Id
 	private String version; 
-	
 	private Double baseExp;
-	
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Level> levelList;
 	
+	public Experiencia() {}
+
 	public Experiencia(Double baseExp, List<Level> levelList) {
 		
 		this.setBaseExp(baseExp);
@@ -33,8 +33,6 @@ public class Experiencia {
 		this.listToMap();
 	}
 	
-	public Experiencia() {}
-
 	public String getVersion() {
 		return this.version;
 	}

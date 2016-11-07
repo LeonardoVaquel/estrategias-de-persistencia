@@ -22,7 +22,6 @@ public abstract class CriterioEvolucion {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-
 	private String tipo;
 	private Integer valor;
 	

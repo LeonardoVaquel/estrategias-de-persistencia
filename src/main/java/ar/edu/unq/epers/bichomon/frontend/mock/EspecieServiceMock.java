@@ -99,4 +99,10 @@ public class EspecieServiceMock implements EspecieService {
 		return new Bicho(especie, nombreBicho);
 	}
 
+	@Override
+	public List<Especie> populares() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

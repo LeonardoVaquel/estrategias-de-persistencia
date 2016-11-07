@@ -17,9 +17,7 @@ public class EvolutionHandler {
 
 	private Bicho bicho;
 	
-	public EvolutionHandler() {
-		
-	}
+	public EvolutionHandler(){};
 
 	public Bicho getBicho() {
 		return bicho;

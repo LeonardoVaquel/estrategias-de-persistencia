@@ -25,10 +25,9 @@ public class Dojo extends Ubicacion {
 	
 	@OneToOne
 	private Bicho campeon;
-	
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Campeon> historial;
-		
+	
 	public Dojo(String nombreDojo, BichomonRandom random) {
 		super(nombreDojo, random);
 	}
@@ -76,10 +75,10 @@ public class Dojo extends Ubicacion {
 	 */
 	public Especie obtenerEspecieRaizActual() {
 		// TODO caso borde cuando no hay campeón
-		if(this.campeon != null) {
-			return this.campeon.getEspecieRaiz();
+		if(this.campeon == null) {
+			//return null;
 		}
-		else return null;
+		return this.campeon.getEspecieRaiz();
 	}
 
 	/**

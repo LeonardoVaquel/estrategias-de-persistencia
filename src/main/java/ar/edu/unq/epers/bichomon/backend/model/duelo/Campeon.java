@@ -34,6 +34,7 @@ public class Campeon {
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Entrenador entrenador;
 	
+	public Campeon() {}
 	
 	public Campeon(Bicho bicho, LocalDateTime fechaCoronado, Entrenador entrenador, Dojo dojo){
 		this.fechaCoronado 	= fechaCoronado;
@@ -41,8 +42,6 @@ public class Campeon {
 		this.entrenador = entrenador;
 		this.dojo = dojo;
 	}
-	
-	public Campeon() {}
 
 	public LocalDateTime getCoronado() {
 		return fechaCoronado;

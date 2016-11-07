@@ -29,22 +29,18 @@ public class Entrenador {
 	
 	@Id
 	private String nombre;
-	
 	private Integer monedas;
-	
 	private Double currentExp;
-	
 	private Double totalExp;
-	
 	@OneToMany(mappedBy="owner", cascade=CascadeType.ALL)
 	private List<Bicho> bichos;
-	
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Level nivel;
-
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Ubicacion ubicacion;
 	
+	public Entrenador() {};
+
 	/**
 	 * Crea un {@link Entrenador} con un nombre, experiencia actual, experiencia total, nivel y 
 	 * una ubicación por default pasada por parámetro.
@@ -70,7 +66,6 @@ public class Entrenador {
 		this.monedas = 0;
 	}
 	
-	public Entrenador() {};
 	
 	/**
 	 * Getters & Setters

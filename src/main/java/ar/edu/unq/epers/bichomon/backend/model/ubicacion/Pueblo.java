@@ -21,7 +21,16 @@ import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
  */
 @Entity
 public class Pueblo extends Ubicacion {
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<Tupla> listaDeEspecies;
 		
+	public Pueblo(String nombrePueblo) {
+		super(nombrePueblo, new BichomonRandom());
+	}
+	
+	public Pueblo() {}
+
 	public List<Tupla> getListaDeEspecies() {
 		return listaDeEspecies;
 	}
@@ -29,15 +38,6 @@ public class Pueblo extends Ubicacion {
 	public void setListaDeEspecies(List<Tupla> listaDeEspecies) {
 		this.listaDeEspecies = listaDeEspecies;
 	}
-
-	@OneToMany(cascade=CascadeType.ALL)
-	private List<Tupla> listaDeEspecies;
-
-	public Pueblo(String nombrePueblo) {
-		super(nombrePueblo, new BichomonRandom());
-	}
-	
-	public Pueblo() {}
 	
 	@Override
 	public Bicho buscar(Entrenador entrenador) {

@@ -20,7 +20,6 @@ public class Level {
 	private Integer nivel;
 	private Double coeficienteExp;
 	private Integer coeficienteBichos;
-	
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Experiencia configuracion;
 	

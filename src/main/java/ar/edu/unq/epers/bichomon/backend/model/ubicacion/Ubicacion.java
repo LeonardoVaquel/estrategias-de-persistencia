@@ -19,10 +19,8 @@ public abstract class Ubicacion implements BusquedaEnUbicacion {
 
 	@Id
 	protected String nombre;
-	
 	@OneToMany(mappedBy="ubicacion", cascade = CascadeType.ALL)
 	protected List<Entrenador> entrenadores;
-	
 	@Transient
 	protected BichomonRandom random;
 	

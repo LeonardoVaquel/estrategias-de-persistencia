@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -27,18 +28,15 @@ public class Bicho {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
-	@OneToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Especie especie;
-	
 	private int energia;
-	
-	@OneToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Entrenador owner;
-	
 	private Integer victorias;
-
 	private LocalDateTime fechaCaptura;
+	
+	public Bicho() {}
 	
 	public Bicho(Especie especie, String nombre) {
 		this.especie = especie;
@@ -50,9 +48,7 @@ public class Bicho {
 		this.victorias    = 0;
 		this.setFechaCaptura();
 	}
-
 	
-	public Bicho() {}
 	
 	/**
 	 * @return la especie a la que este bicho pertenece.

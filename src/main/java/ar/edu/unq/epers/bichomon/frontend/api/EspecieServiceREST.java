@@ -63,4 +63,10 @@ public class EspecieServiceREST implements EspecieService {
 		return this.decorado.crearBicho(nombreEspecie, nombreBicho);
 	}
 
+	@Override
+	public List<Especie> populares() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
