@@ -1,6 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
-public class NoSePuedeBuscarSinCampeonException extends Exception {
+public class NoSePuedeBuscarSinCampeonException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

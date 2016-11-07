@@ -68,12 +68,12 @@ public class Dojo extends Ubicacion {
 				bicho = this.buscarBichoPara(entrenador);
 			}
 		}catch(NoSePuedeBuscarSinCampeonException e){
-			
+			throw e;
 		}
 		return bicho;
 	}
 	
-	private Bicho buscarBichoPara(Entrenador entrenador) throws NoSePuedeBuscarSinCampeonException{
+	private Bicho buscarBichoPara(Entrenador entrenador){
 		
 		if(this.obtenerEspecieRaizActual() == null){
 			throw new NoSePuedeBuscarSinCampeonException("No hay un Campeon, por lo tanto no podes realizar una busqueda");
