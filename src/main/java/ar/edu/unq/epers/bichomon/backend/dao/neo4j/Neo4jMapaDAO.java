@@ -7,6 +7,7 @@ import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.GraphDatabase;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.Values;
 
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.CaminoCosto;
@@ -84,15 +85,21 @@ public class Neo4jMapaDAO {
 	 * @param tipoCamino - un string
 	 * @return - una lista de {@link Ubicacion}
 	 */
-	public List<Ubicacion> conectados(String nombreUbicacion, String tipoCamino) {
+	public List<String> conectados(String nombreUbicacion, String tipoCamino) {
 		Session session = this.driver.session();
 
 		try {
-			String query = "MATCH (u:Ubicacion { nombre: {nombreUbicacion}}) " +
-					"MATCH (conectada)-[:Camino {tipo: tipoCamino } ]->(u) " +
-					"RETURN conectada";
+			String query = "MATCH (u:Ubicacion { nombre: {nombreUbicacion}})" +
+					"MATCH (n:Ubicacion)" +
+					"MATCH (u)-[c:Camino {tipo: {tipoCamino} } ]->(n)" +
+					"RETURN n";
 			StatementResult result = session.run(query, Values.parameters(	"tipoCamino", 		tipoCamino,
 																			"nombreUbicacion", 	nombreUbicacion));
+			return result.list(record -> {
+				Value ubic = record.get(0);
+				String nuevaUbicacion = ubic.get("nombre").asString(); 
+				return nuevaUbicacion;
+			});
 			
 			//Similar a list.stream().map(...)
 //			return result.list(record -> {
@@ -100,11 +107,11 @@ public class Neo4jMapaDAO {
 //				String nombre = conectada.get("nombre").asString();
 //				return new Ubicacion(nombre);
 //			});
-			return null;
 			
 		} finally {
 			session.close();
 		}
+
 	}
 	
 	/**

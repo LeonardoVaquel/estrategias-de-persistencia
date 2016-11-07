@@ -1,5 +1,9 @@
 package ar.edu.unq.epers.bichomon.backend.service.mapa;
 
+import java.util.List;
+
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+
 /**
  * MapaService es una interfaz provista por los encargados frontend
  * para obtener servicios sobre las ubicaciones del juego
@@ -34,5 +38,7 @@ public interface MapaService {
 	 * @param ubicacion - el nombre de una {@link Ubicacion}
 	 */
 	public void moverMasCorto(String entrenador, String ubicacion);
+	
+	public List<Ubicacion> conectados(String ubicacion, String tipoCamino);
 	
 }

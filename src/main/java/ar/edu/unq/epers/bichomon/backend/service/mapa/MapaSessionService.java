@@ -1,5 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.service.mapa;
 
+import java.util.List;
+
 import org.hibernate.Session;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
@@ -90,6 +92,25 @@ public class MapaSessionService implements MapaService {
 		return Runner.runInSession(() -> {
 			return this.mapaDAO.cantidadEntrenadores(nombreUbicacion);
 		});
+	}
+
+	@Override
+	public List<Ubicacion> conectados(String nombreUbicacion, String tipoCamino) {
+		return Runner.runInSession(() -> {
+
+//			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, nombreUbicacion);
+			
+//			String unaUbicacion = ubicacion.getNombre();
+//			String tipo=ubicacion.; //necesito el tipo
+			
+			List<String> nombresDeUbicacion = this.neo4jMapaDAO.conectados(nombreUbicacion, tipoCamino); 
+			
+			List<Ubicacion> ubicaciones = this.mapaDAO.getUbicaciones(nombresDeUbicacion);
+			
+		
+			
+			return ubicaciones;
+		});	
 	}
 	
 	
