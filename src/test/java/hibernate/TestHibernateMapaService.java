@@ -1,6 +1,7 @@
 package hibernate;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -53,6 +54,7 @@ public class TestHibernateMapaService {
 		
 		
 		this.dataService.crearSetDatosIniciales();
+		this.dataService.crearSetDeUbicaciones();
 	}
 	
 	
@@ -148,5 +150,26 @@ public class TestHibernateMapaService {
 			
 			return null;
 		});	
+	}
+	
+	@Test
+	public void dada_una_lista_de_string_se_obtiene_una_lista_de_ubicaciones() {
+
+		List<String> nombresDeUbicacion = new ArrayList<>();
+		nombresDeUbicacion.add("Neverland");
+		nombresDeUbicacion.add("Torre Karin");
+		nombresDeUbicacion.add("Quilmes-Dojo");
+		
+		Runner.runInSession(() -> {
+			
+			List<Ubicacion> ubicaciones = this.mapaDAO.getUbicacionesDeNombre(nombresDeUbicacion);
+			
+			Assert.assertEquals(3, ubicaciones.size());
+			Assert.assertEquals("Neverland", 	ubicaciones.get(0).getNombre());
+			Assert.assertEquals("Quilmes-Dojo",	ubicaciones.get(1).getNombre());
+			Assert.assertEquals("Torre Karin",  ubicaciones.get(2).getNombre());
+			
+			return null;
+		});
 	}
 }

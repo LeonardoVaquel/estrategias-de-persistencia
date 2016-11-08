@@ -4,7 +4,7 @@ public class NoSePuedeBuscarSinCampeonException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public NoSePuedeBuscarSinCampeonException(String e){
-		super(e);
+	public NoSePuedeBuscarSinCampeonException(){
+		super("No hay un Campeon, por lo tanto no podes realizar una busqueda");
 	};
 }

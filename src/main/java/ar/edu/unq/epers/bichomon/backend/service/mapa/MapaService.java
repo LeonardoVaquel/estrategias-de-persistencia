@@ -38,7 +38,21 @@ public interface MapaService {
 	 * @param ubicacion - el nombre de una {@link Ubicacion}
 	 */
 	public void moverMasCorto(String entrenador, String ubicacion);
-	
+
+	/**
+	 * Recibe por parámetro el nombre de una {@link Ubicacion} y un tipo de camino.
+	 * Se espera devolver una lista de {@link Ubicacion} las cuales se encuentran conectadas 
+	 * directamente con aquella pasada como parámetro.
+	 * @param ubicacion - un string
+	 * @param tipoCamino - un string
+	 * @return una lista de {@link Ubicacion}
+	 */
 	public List<Ubicacion> conectados(String ubicacion, String tipoCamino);
+	
+	/**
+	 * Recibe una instancia de {@link Ubicacion} para ser persistida en una base de datos en Hibernate y Neo4j
+	 * @param ubicacion - una instancia de {@link Ubicacion}
+	 */
+	public void crearUbicacion(Ubicacion ubicacion);
 	
 }

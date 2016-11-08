@@ -80,5 +80,15 @@ public class DataEspecieManagerJDBC implements DataService {
 		});
 		
 	}
+
+	@Override
+	public void crearTestSetDeUbicacionesNeo4j() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void crearSetDeUbicaciones() {
+		// TODO Auto-generated method stub		
+	}
 	
 }

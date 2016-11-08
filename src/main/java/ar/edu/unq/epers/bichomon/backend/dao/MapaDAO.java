@@ -1,5 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.dao;
 
+import java.util.List;
+
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -23,12 +25,12 @@ public interface MapaDAO {
 	 * @return una instancia de {@link Bicho}
 	 */
 	public Bicho campeon(String dojo);
-	
+
 	/**
-	 * TODO
-	 * @param dojo
-	 * @return
+	 * A partir de una sesion en una base de datos en Hibernate se obtiene una lista de ubicaciones.
+	 * @param nombresDeUbicacion - recibe una lista de nombres de {@link Ubicacion}
+	 * @return una lista de ubicaciones cuyos nombres se encuentran en la lista pasada como parámetro
 	 */
-	public Bicho campeonHistorico(String dojo);
-	
+	public List<Ubicacion> getUbicacionesDeNombre(List<String> nombresDeUbicacion);
+		
 }

@@ -1,5 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -47,13 +49,22 @@ public class HibernateMapaDAO implements MapaDAO {
 	}
 
 	/**
-	 * TODO
+	 * A partir de una sesion en una base de datos en Hibernate se obtiene una lista de ubicaciones.
+	 * @param nombresDeUbicacion - recibe una lista de nombres de {@link Ubicacion}
+	 * @return una lista de ubicaciones cuyos nombres se encuentran en la lista pasada como parámetro
 	 */
 	@Override
-	public Bicho campeonHistorico(String dojo) {
+	public List<Ubicacion> getUbicacionesDeNombre(List<String> nombresDeUbicacion) {
+		
 		Session session = Runner.getCurrentSession();
-
-		return null;
+		
+		String hql = 	"FROM Ubicacion u where u.nombre " +
+						"IN :nombresDeUbicacion";
+		
+		Query<Ubicacion> query = session.createQuery(hql, Ubicacion.class);
+		query.setParameter("nombresDeUbicacion", nombresDeUbicacion);
+		
+		return query.list();
 	}
 
 }

@@ -22,7 +22,7 @@ public class TestNeo4jMapaDAO {
 		
 		this.mapaDAO 	 = new Neo4jMapaDAO();
 		this.dataManager = new DataManager();
-		this.dataManager.crearSetDeUbicacionesNeo4j();
+		this.dataManager.crearTestSetDeUbicacionesNeo4j();
 	}
 	
 	@After

@@ -46,4 +46,21 @@ public class DataSessionService implements DataService {
 		});
 		
 	}
+
+	@Override
+	public void crearTestSetDeUbicacionesNeo4j() {
+		Runner.runInSession(()-> {
+			dataService.crearTestSetDeUbicacionesNeo4j();
+			return null;
+		});
+	}
+
+	@Override
+	public void crearSetDeUbicaciones() {
+		Runner.runInSession(()-> {
+			dataService.crearSetDeUbicaciones();
+			return null;
+		});
+		
+	}
 }

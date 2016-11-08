@@ -1,8 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.service.mapa;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
@@ -13,13 +11,11 @@ import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
- * MapaSessionService 
- * 
+ * MapaSessionService es una clase que provee servicios de ubicacion.
  * @author santiago
  */
 public class MapaSessionService implements MapaService {
 
-	
 	private GenericService service;
 	private EntrenadorDAO entrenadorDAO;
 	private MapaDAO mapaDAO;
@@ -30,8 +26,7 @@ public class MapaSessionService implements MapaService {
 	 * a quien delegará los pedidos necesarios sobre una base de datos.
 	 * @param mapaDAO
 	 */
-	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service, 
-			Neo4jMapaDAO neo4jMapaDAO) {
+	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service, Neo4jMapaDAO neo4jMapaDAO) {
 		this.service 	   = service;
 		this.mapaDAO	   = mapaDAO;
 		this.entrenadorDAO = entrenadorDAO;
@@ -62,6 +57,12 @@ public class MapaSessionService implements MapaService {
 		});		
 	}
 	
+	/**
+	 * Dado un nombre de {@link Entrenador} y un nombre de {@link Ubicacion} se mueve a dicho entrenador a la ubicacion
+	 * pasada como parámetro.
+	 * En caso que el entrenador no cuente con monedas suficientes para realizar el movimiento, 
+	 * se levantará una excepción {@link CaminoMuyCostoso}
+	 */
 	@Override
 	public void moverMasCorto(String nombreEntrenador, String nombreUbicacion) {
 		
@@ -78,7 +79,6 @@ public class MapaSessionService implements MapaService {
 			entrenador.mover(ubicacion, costo);
 			
 			return null;
-		
 		});
 	}
 	
@@ -93,25 +93,37 @@ public class MapaSessionService implements MapaService {
 		});
 	}
 
+	/**
+	 * Recibe por parámetro el nombre de una {@link Ubicacion} y un tipo de camino.
+	 * Se espera devolver una lista de {@link Ubicacion} las cuales se encuentran conectadas 
+	 * directamente con aquella pasada como parámetro.
+	 * @param ubicacion - un string
+	 * @param tipoCamino - un string
+	 * @return una lista de {@link Ubicacion}
+	 */
 	@Override
 	public List<Ubicacion> conectados(String nombreUbicacion, String tipoCamino) {
 		return Runner.runInSession(() -> {
 
-//			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, nombreUbicacion);
-			
-//			String unaUbicacion = ubicacion.getNombre();
-//			String tipo=ubicacion.; //necesito el tipo
-			
 			List<String> nombresDeUbicacion = this.neo4jMapaDAO.conectados(nombreUbicacion, tipoCamino); 
 			
-			
-			List<Ubicacion> ubicaciones = nombresDeUbicacion.stream().map((String s) -> 
-				this.service.recuperarEntidad(Ubicacion.class, s)).collect(Collectors.toList());
-				
-		
-			return ubicaciones;
+			return this.mapaDAO.getUbicacionesDeNombre(nombresDeUbicacion);
 		});	
 	}
-	
+
+	/**
+	 * Recibe una instancia de {@link Ubicacion} para ser persistida en una base de datos en Hibernate y Neo4j
+	 * @param ubicacion - una instancia de {@link Ubicacion}
+	 */
+	@Override
+	public void crearUbicacion(Ubicacion ubicacion) {
+		
+		Runner.runInSession(()-> {
+			
+			this.service.crearEntidad(ubicacion);
+			this.neo4jMapaDAO.crearUbicacion(ubicacion);
+			return null;
+		});
+	}
 	
 }

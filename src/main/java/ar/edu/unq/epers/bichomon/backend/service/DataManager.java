@@ -397,8 +397,8 @@ public class DataManager implements DataService {
 
 	@Override
 	public void eliminarDatos() {
-		especieDAO.removeAllEspecies();
-		bichoDAO.removeAllBichos();
+		this.eliminarTablas();
+		this.eliminarUbicaciones();
 	}
 
 	@Override
@@ -443,6 +443,9 @@ public class DataManager implements DataService {
 
 		ubicacionDAO.guardarGuarderia(DATAUbicacionesTupla.get("GuarderiaLas24Hrs"));
 		
+	}
+	
+	public void crearSetDeUbicaciones() {
 		mapaDAO.crearUbicacion(DATAUbicacionesTupla.get("GuarderiaLas24Hrs"));
 		mapaDAO.crearUbicacion(new Dojo("Neverland"));
 		mapaDAO.crearUbicacion(new Dojo("Torre Karin"));
@@ -455,7 +458,7 @@ public class DataManager implements DataService {
 		mapaDAO.conectar("Neverland", "Bernal-Dojo", "MARITIMO");
 	}
 	
-	public void crearSetDeUbicacionesNeo4j() {
+	public void crearTestSetDeUbicacionesNeo4j() {
 		
 		mapaDAO.crearUbicacion(new Dojo("Quilmes"));
 		mapaDAO.crearUbicacion(new Pueblo("Bernal"));

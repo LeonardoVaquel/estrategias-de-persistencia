@@ -122,7 +122,7 @@ public class Neo4jMapaDAO {
 				throw new UbicacionMuyLejana(ubicDestino);
 			}
 			else {
-				return result.list().get(0).get("costo").asInt();
+				return result.single().get("costo").asInt();
 			}
 		}
 		finally {
@@ -144,8 +144,8 @@ public class Neo4jMapaDAO {
 						   "MATCH (d:Ubicacion { nombre: {nombreDestino} }) " +
 						   "MATCH p = shortestPath((o)-[Camino*]->(d)) " +
 						   "WITH REDUCE(costo = 0, camino in rels(p) | costo + toInt(camino.costo)) " +
-						   "AS sumaCosto, p " +
-						   "RETURN p, sumaCosto";
+						   "AS sumaCosto " +
+						   "RETURN sumaCosto";
 			
 			StatementResult result = session.run(query, Values.parameters("nombreOrigen",  ubicOrigen,
 																		   "nombreDestino", ubicDestino));

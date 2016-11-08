@@ -26,4 +26,14 @@ public interface DataService {
 	 */
 	void eliminarTablas();
 	
+	/**
+	 * Crea un set de datos iniciales para test en Neo4j
+	 */
+	public void crearTestSetDeUbicacionesNeo4j();
+	
+	/**
+	 * Crea un set de datos iniciales con datos de Hibernate
+	 */
+	public void crearSetDeUbicaciones();
+	
 }
