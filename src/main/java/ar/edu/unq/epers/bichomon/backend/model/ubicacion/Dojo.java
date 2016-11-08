@@ -62,23 +62,24 @@ public class Dojo extends Ubicacion {
 	 */
 	@Override
 	public Bicho buscar(Entrenador entrenador){
-		Bicho bicho = null;
-		try{
-			if (this.esBusquedaExitosa(entrenador)) {
-				bicho = this.buscarBichoPara(entrenador);
-			}
-		}catch(NoSePuedeBuscarSinCampeonException e){
-			throw e;
+		if (this.obtenerEspecieRaizActual() != null) {
+			return this.buscarBichoPara(entrenador);
 		}
-		return bicho;
+		else {
+			return null;
+		}
 	}
 	
+	/**
+	 * Dado un {@link Entrenador} se evalúa si la búsqueda es exitosa para retornar una nueva instancia de {@link Bicho}
+	 * @param entrenador - una instancia de {@link Entrenador}
+	 * @return una nueva instancia de {@link Bicho}
+	 */
 	private Bicho buscarBichoPara(Entrenador entrenador){
-		
-		if(this.obtenerEspecieRaizActual() == null){
-			throw new NoSePuedeBuscarSinCampeonException("No hay un Campeon, por lo tanto no podes realizar una busqueda");
+		if(this.esBusquedaExitosa(entrenador)){
+			return new Bicho(this.obtenerEspecieRaizActual());
 		}
-		return  new Bicho(this.obtenerEspecieRaizActual());
+		return null;
 	}
 	
 	/**
