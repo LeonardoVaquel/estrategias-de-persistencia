@@ -1,13 +1,12 @@
 package ar.edu.unq.epers.bichomon.backend.service.mapa;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.hibernate.Session;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
-import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.service.GenericService;
@@ -105,10 +104,11 @@ public class MapaSessionService implements MapaService {
 			
 			List<String> nombresDeUbicacion = this.neo4jMapaDAO.conectados(nombreUbicacion, tipoCamino); 
 			
-			List<Ubicacion> ubicaciones = this.mapaDAO.getUbicaciones(nombresDeUbicacion);
 			
+			List<Ubicacion> ubicaciones = nombresDeUbicacion.stream().map((String s) -> 
+				this.service.recuperarEntidad(Ubicacion.class, s)).collect(Collectors.toList());
+				
 		
-			
 			return ubicaciones;
 		});	
 	}

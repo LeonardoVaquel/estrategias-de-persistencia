@@ -64,13 +64,6 @@ public class Neo4jMapaDAO {
 													"nombreUbicacion2", nombreUbicacion2,
 													"tipoCamino", tipoCamino,
 													"costoCamino", CaminoCosto.valueOf(tipoCamino).getValue()));
-			
-//			String queryExample = "MATCH (padre:Persona {dni: {elDniPadre}}) " +
-//					"MATCH (hijo:Persona {dni: {elDniHijo}}) " +
-//					"MERGE (padre)-[:padreDe]->(hijo) " + //CREATE
-//					"MERGE (hijo)-[:hijoDe]->(padre)"; //CREATE
-//			session.run(query, Values.parameters("elDniPadre", padre.getDni(),
-//					"elDniHijo", hijo.getDni()));
 
 		} finally {
 			session.close();
@@ -101,13 +94,6 @@ public class Neo4jMapaDAO {
 				return nuevaUbicacion;
 			});
 			
-			//Similar a list.stream().map(...)
-//			return result.list(record -> {
-//				Value conectada = record.get(0);
-//				String nombre = conectada.get("nombre").asString();
-//				return new Ubicacion(nombre);
-//			});
-			
 		} finally {
 			session.close();
 		}
@@ -115,27 +101,13 @@ public class Neo4jMapaDAO {
 	}
 	
 	/**
-	 * Dado un nombre de entrenador y un nombre de ubicacion se mueve un entrenador a la
-	 * ubicación mediante el camino mas corto posible
-	 * @param nombreEntrenador - un string
-	 * @param nombreUbicacion - un string
+	 * Dados dos nombres de {@link Ubicacion} que son lindantes, se obtiene el costo del camino que las conecta
+	 * Se espera levantar una exepción en caso de que la ubicación de destino no sea lindante a la ubicación
+	 * de origen.
+	 * @param ubicOrigen - un string
+	 * @param ubicDestino - un string
+	 * @return Integer representando el costo
 	 */
-	public void moverMasCorto(String nombreEntrenador, String nombreUbicacion) {
-		Session session = this.driver.session();
-		
-		// Utilizo Hibernate para recuperar el entrenador?
-		// este mensaje va en un service
-		
-		try {
-			
-			String query = "";
-			StatementResult result = session.run(query);
-		}
-		finally {
-			session.close();
-		}
-	}
-
 	public Integer getCostoLindantes(String ubicOrigen, String ubicDestino) {
 		Session session = this.driver.session();
 		try {
@@ -150,7 +122,7 @@ public class Neo4jMapaDAO {
 				throw new UbicacionMuyLejana(ubicDestino);
 			}
 			else {
-				return result.single().get("costo").asInt();
+				return result.list().get(0).get("costo").asInt();
 			}
 		}
 		finally {
@@ -158,6 +130,13 @@ public class Neo4jMapaDAO {
 		}
 	}
 	
+	/**
+	 * Dados dos nombres de {@link Ubicacion} se obtiene la suma del costo de todos los caminos que existen
+	 * entre las dos ubicaciones.
+	 * @param ubicOrigen - un string
+	 * @param ubicDestino - un string
+	 * @return Integer representando el costo total
+	 */
 	public Integer getCostoEntreUbicaciones(String ubicOrigen, String ubicDestino) {
 		Session session = this.driver.session();
 		try {

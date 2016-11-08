@@ -446,9 +446,13 @@ public class DataManager implements DataService {
 		mapaDAO.crearUbicacion(DATAUbicacionesTupla.get("GuarderiaLas24Hrs"));
 		mapaDAO.crearUbicacion(new Dojo("Neverland"));
 		mapaDAO.crearUbicacion(new Dojo("Torre Karin"));
+		mapaDAO.crearUbicacion(new Dojo("Quilmes-Dojo"));
+		mapaDAO.crearUbicacion(new Dojo("Bernal-Dojo"));
 		
 		mapaDAO.conectar("Neverland", "Guarderia Las 24 horas!", "AEREO");
 		mapaDAO.conectar("Torre Karin", "Neverland", "MARITIMO");
+		mapaDAO.conectar("Neverland", "Quilmes-Dojo", "MARITIMO");
+		mapaDAO.conectar("Neverland", "Bernal-Dojo", "MARITIMO");
 	}
 	
 	public void crearSetDeUbicacionesNeo4j() {

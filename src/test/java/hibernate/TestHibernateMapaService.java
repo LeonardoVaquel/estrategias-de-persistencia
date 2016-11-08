@@ -1,5 +1,8 @@
 package hibernate;
 
+
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,7 +80,22 @@ public class TestHibernateMapaService {
 		});
 	}
 	
-//	@Test
+	@Test
+	public void una_ubicacion_nerverland_se_conecta_con_otras_dos_ubicaciones_por_un_camino_maritimo() {
+		
+		Runner.runInSession(() -> {
+			
+			List<Ubicacion> listaDeUbicaciones = this.service.conectados("Neverland", "MARITIMO");
+			
+			Assert.assertEquals(2, listaDeUbicaciones.size(), 0);
+			Assert.assertEquals(listaDeUbicaciones.get(0).getNombre(), "Bernal-Dojo");
+			Assert.assertEquals(listaDeUbicaciones.get(1).getNombre(), "Quilmes-Dojo");
+			
+			return null;
+		});
+	}
+	
+	@Test
 	public void dado_un_entrenador_y_una_ubicacion_no_lindante_se_mueve_al_entrenador_a_dicha_ubicacion_y_se_restan_sus_monedas(){
 		
 		Runner.runInSession(() -> {
@@ -86,10 +104,10 @@ public class TestHibernateMapaService {
 			
 			Integer monedas = entrenador.getMonedas();
 			
-			this.service.mover("Santiago", "Neverland");
+			this.service.moverMasCorto("Santiago", "Quilmes-Dojo");
 			
-			Assert.assertEquals(entrenador.getUbicacion().getNombre(), "Neverland");
-			Assert.assertEquals(entrenador.getMonedas(), monedas - CaminoCosto.MARITIMO.getValue(), 0);
+			Assert.assertEquals(entrenador.getUbicacion().getNombre(), "Quilmes-Dojo");
+			Assert.assertEquals(entrenador.getMonedas(), monedas - 4, 0);
 			
 			return null;
 		});

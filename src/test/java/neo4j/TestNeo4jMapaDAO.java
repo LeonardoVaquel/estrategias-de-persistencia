@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.service.DataManager;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.UbicacionMuyLejana;
 
@@ -23,12 +22,12 @@ public class TestNeo4jMapaDAO {
 		
 		this.mapaDAO 	 = new Neo4jMapaDAO();
 		this.dataManager = new DataManager();
-//		this.dataManager.crearSetDeUbicacionesNeo4j();
+		this.dataManager.crearSetDeUbicacionesNeo4j();
 	}
 	
 	@After
 	public void deleteUbicaciones() {
-//		this.dataManager.eliminarUbicaciones();
+		this.dataManager.eliminarUbicaciones();
 	}
 	
 	@Test
@@ -65,10 +64,15 @@ public class TestNeo4jMapaDAO {
 	@Test
 	public void todasLasUbicacionesConectadasMedianteUnTipoDeCaminoSeObtiene(){
 		
+		this.mapaDAO.conectar("Bernal", "F. Varela", "MARITIMO");
+		this.mapaDAO.conectar("Bernal", "Quilmes", "MARITIMO");
+		
 		List<String> result = this.mapaDAO.conectados("Bernal", "MARITIMO");
 		
-		Assert.assertEquals(result.size(),1,0);
-		Assert.assertEquals(result.get(0),"Don Bosco");
+		Assert.assertEquals(result.size(),3,0);
+		Assert.assertEquals(result.get(0),"Quilmes");
+		Assert.assertEquals(result.get(1),"F. Varela");
+		Assert.assertEquals(result.get(2),"Don Bosco");
 	}
 	
 }
