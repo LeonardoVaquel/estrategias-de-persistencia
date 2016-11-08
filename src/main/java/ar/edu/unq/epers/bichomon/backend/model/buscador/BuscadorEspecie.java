@@ -35,16 +35,17 @@ public class BuscadorEspecie {
 	// genero una lista de [ (Especie, [indice...valor]) ] donde indice es el comiezo de la lista i=1
 	// queda [ (Pikachu => [1,2,3,4,5,6,7,8,9,10] ]
 	
-	/**
-	 * 
-	 * @param n Es un entero que viene del Random.
-	 * @return Un {@link Bicho} de la especie que salio por el numero Random.
-	 */
+	
 	public Bicho buscar() {
 		
 		return this.buscar(this.generarRandom(this.buscarAux()));
 	}
 	
+	/**
+	 * Busca un  {@link Bicho} dependiendo el número random que salio.
+	 * @param 'n' es un Integer (en éste caso es "random").
+	 * @return un {@link Bicho}. 
+	 * */
 	public Bicho buscar(Integer n){
 		
 		
@@ -74,6 +75,7 @@ public class BuscadorEspecie {
 		return tupla.getLsValue().contains(n);
 	}
 	
+	
 	/**
 	 * Convierte una Lista de Tupla(Especie -> probabilidad)
 	 * en una lista de Tupla(Especie -> List<Integer>)
@@ -84,6 +86,12 @@ public class BuscadorEspecie {
 		
 	}
 	
+	/**
+	 * Convierte una Lista de Tupla (Especie -> float), en una Lista de Tupla (Especie -> List<Integer>).
+	 * Donde la List<Integer> indica un "rango" donde una Especie tiene chance de ser elegida.
+	 * @param ls, una List<Tupla>(Especie -> float)
+	 * @return List<Tupla> (Especie -> List<Integer>)
+	 */
 	private List<Tupla> listaFinal(List<Tupla> ls){
 		List<Tupla> lsFinal = new ArrayList<>();
 		for(Tupla tupla : ls){

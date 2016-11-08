@@ -14,8 +14,8 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 
 /**
- * Se lleva un registro de las fechas en donde un {@link Bicho} se corono campeon
- * y fue derrocado.
+ * Se lleva un registro de las fechas, Dojo y el Entrenador de un {@link Bicho} que se corono campeon
+ * y/o fue derrocado.
  * 
  * @author leonardo
  *

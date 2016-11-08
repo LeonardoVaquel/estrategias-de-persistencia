@@ -83,15 +83,23 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 		return combatResult;
 	}
 
-	
+	/**
+	 * Se calcula el dañio del Bicho retador.
+	 */
 	private void ataqueRival() {
 		danioRetador = danioRetador + retador.getEnergia() * 1; // 1 debe ser un random(0.5,1)		
 	}
 	
+	/**
+	 * Se calcula el dañio del Bicho retado.
+	 */
 	private void ataqueRetado(){
 		danioRetado = danioRetado + retado.getEnergia() * 1;	// El 1 también debe ser un random(0.5,1)
 	}
 
+	/**
+	 * Se verifica si ya hay un Bicho ganador del Duelo.
+	 */
 	private void verSiHayGanador(){
 		if(danioRetado > retador.getEnergia()){
 			this.refreshCombat(retado, retador);
@@ -104,12 +112,21 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 		}
 	}
 	
+	/**
+	 * Se actualiza el resultado del combate, guardando del Duelo, el Bicho ganador,
+	 * el Perdedor y el Entrenador ganador.
+	 * @param ganador {@link Bicho}
+	 * @param perdedor {@link Bicho}
+	 */
 	private void refreshCombat(Bicho ganador, Bicho perdedor){
 		combatResult.setBichoGanador(ganador);
-		combatResult.setEntrenadorGanador(ganador.getOwner());
+		combatResult.setEntrenadorGanador(ganador.getOwner()); // No haria falta pasar un Entrenador, si ya lo contiene el Bicho Ganador y Perdedor respectivamente.
 		combatResult.setBichoPerdedor(perdedor);
 	}
 	
+	/**
+	 * Se decide un ganador dependiendo el dañio que recibe cada Bicho y su energia.
+	 */
 	private void decidirUnGanador(){
 		if(retador.getEnergia() - danioRetado > retado.getEnergia() - danioRetador){
 			ganador = retador;
@@ -118,6 +135,9 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 		}
 	}
 	
+	/**
+	 * @return un boolean indicando si ya hay un ganador en del Duelo.
+	 */
 	private boolean noHayGanador(){
 		return ganador == null;
 	}
@@ -130,14 +150,27 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 		return ganador;
 	}
 	
+	/**
+	 * Calcula la energia actual del Bicho retador.
+	 * @return un Integer
+	 */
 	private Integer energiaRetador(){
 		return retador.getEnergia() - danioRetado;
 	}
 	
+	/**
+	 * Calcula la energia actual del Bicho retado
+	 * @return un Integer
+	 */
 	private Integer energiaRetado(){
 		return retado.getEnergia() - danioRetador;
 	}
 	
+	/**
+	 * Se registra un nuevo Turno en el resultado del combate.
+	 * Quedando guardado el Bicho retado y retador, el daño que hicieron cada uno en ese turno,
+	 * y la energia actual de cada Bicho.
+	 */
 	private void agregarTurno(){
 		Turno turno = new Turno(retador, retado, danioRetador, danioRetado, this.energiaRetador(), this.energiaRetado());
 		combatResult.agregarTurno(turno);

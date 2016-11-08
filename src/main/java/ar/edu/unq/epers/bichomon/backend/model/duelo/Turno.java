@@ -3,6 +3,8 @@ package ar.edu.unq.epers.bichomon.backend.model.duelo;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 
 /**
+ * La Clase Turno representa un Turno del Duelo, conteniendo
+ * al Bicho retador y retado, el daño que hizo cada uno y su energia actual.
  * 
  * @author Leonardo
  *

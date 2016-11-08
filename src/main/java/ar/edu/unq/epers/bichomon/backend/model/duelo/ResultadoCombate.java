@@ -7,6 +7,9 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 /**
+ * La Clase ResultadoCombate representa el resultado de un Duelo conteniendo
+ * al Entrenador que gano, el Bicho perdedor y ganador, y todos los turnos
+ * que hubieron en el duelo.
  * 
  * @author Leonardo
  *
@@ -29,6 +32,10 @@ public class ResultadoCombate {
 		this.turnos				= new ArrayList<>();
 	};
 	
+	/**
+	 * Agrega un nuevo {@link Turno} al resultado del combate.
+	 * @param newTurno es un {@link Turno} del Duelo.
+	 */
 	public void agregarTurno(Turno newTurno){
 		this.turnos.add(newTurno);
 	}

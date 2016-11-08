@@ -27,11 +27,25 @@ public class Tupla{
 	@Transient
 	private List<Integer> lsValue;
 
+	/**
+	 * Representa una Tupla del tupo (Especie -> float)
+	 * @param especie una {@link Especie}
+	 * @param value un float que representa un "porsentaje" de probabilidad en la que "aparece" una Especie.
+	 */
 	public Tupla(Especie especie, float value){
 		this.key 	= especie;
 		this.value 	= value;
 	};
 	
+	/**
+	 * Representa una Tupla del tipo (Especie -> List<Integer>)
+	 * @param especie una {@link Especie}
+	 * @param value una List<Integer>
+	 */
+	
+	// El refactor de separar los tipos de Tuplas en clases distintas está en la branch 'leo' 
+	// falto pulir unos detalles para que funcione, pero por cuestiones de tiempo y, como el correspondiente
+	// issue era de clase menor decidimos dejar esta implementacion que funcionaba.
 	public Tupla(Especie especie, List<Integer> value){
 		this.key	 	= especie;
 		this.lsValue	= value;
