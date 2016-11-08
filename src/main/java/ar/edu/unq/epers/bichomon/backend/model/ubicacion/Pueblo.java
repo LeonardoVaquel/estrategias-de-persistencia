@@ -41,9 +41,10 @@ public class Pueblo extends Ubicacion {
 	
 	@Override
 	public Bicho buscar(Entrenador entrenador) {
-		
+
 		if (esBusquedaExitosa(entrenador)) {
-			return new BuscadorEspecie(this.listaDeEspecies).buscar();
+			BuscadorEspecie buscador = new BuscadorEspecie(this.listaDeEspecies);
+			return buscador.buscar();
 		}
 		return null;
 	}
