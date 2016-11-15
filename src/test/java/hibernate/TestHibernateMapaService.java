@@ -22,7 +22,9 @@ import ar.edu.unq.epers.bichomon.backend.service.DataManager;
 import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
+import ar.edu.unq.epers.bichomon.backend.service.mapa.CaminoMuyCostoso;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.MapaSessionService;
+import ar.edu.unq.epers.bichomon.backend.service.mapa.UbicacionMuyLejana;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 import org.junit.Assert;
 
@@ -77,6 +79,32 @@ public class TestHibernateMapaService {
 			
 			Assert.assertEquals(entrenador.getUbicacion().getNombre(), "Neverland");
 			Assert.assertEquals(entrenador.getMonedas(), monedas - CaminoCosto.MARITIMO.getValue(), 0);
+			
+			return null;
+		});
+	}
+	
+	@Test(expected=CaminoMuyCostoso.class)
+	public void dada_una_ubicacion_el_entrenador_no_puede_mover_por_monedas_insuficientes() {
+		
+		Runner.runInSession(() -> {
+			
+			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Santiago");
+			
+			entrenador.setMonedas(1);
+			
+			this.service.mover("Santiago", "Neverland");
+			
+			return null;
+		});
+	}
+	
+	@Test(expected=UbicacionMuyLejana.class)
+	public void dada_una_ubicacion_muy_lejana_el_entrenador_no_puede_mover() {
+		
+		Runner.runInSession(() -> {
+			
+			this.service.mover("Santiago", "Quilmes-Dojo");
 			
 			return null;
 		});
