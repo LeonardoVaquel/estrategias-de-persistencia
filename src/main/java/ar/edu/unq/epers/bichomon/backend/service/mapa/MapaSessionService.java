@@ -112,7 +112,8 @@ public class MapaSessionService implements MapaService {
 	}
 
 	/**
-	 * Recibe una instancia de {@link Ubicacion} para ser persistida en una base de datos en Hibernate y Neo4j
+	 * Recibe una instancia de {@link Ubicacion} para ser persistida en una base de datos en 
+	 * Hibernate y Neo4j
 	 * @param ubicacion - una instancia de {@link Ubicacion}
 	 */
 	@Override
@@ -122,6 +123,19 @@ public class MapaSessionService implements MapaService {
 			
 			this.service.crearEntidad(ubicacion);
 			this.neo4jMapaDAO.crearUbicacion(ubicacion);
+			return null;
+		});
+	}
+	
+	/**
+	 * Recibe dos nombres de {@link Ubicacion} y un tipo de camino
+	 * Se espera que las ubicaciones estén relacionadas por el tipo de camino dado, 
+	 * en una base de datos en Neo4j
+	 */
+	@Override
+	public void conectar(String nombreUbicacion1, String nombreUbicacion2, String tipoCamino) {
+		Runner.runInSession(()-> {
+			this.neo4jMapaDAO.conectar(nombreUbicacion1, nombreUbicacion2, tipoCamino);
 			return null;
 		});
 	}

@@ -55,4 +55,13 @@ public interface MapaService {
 	 */
 	public void crearUbicacion(Ubicacion ubicacion);
 	
+	/**
+	 * Recibe como parámetro dos nombres de {@link UBicacion} y un tipo de camino.
+	 * Se espera que ambas ubicaciones mantengan una relación con el camino especificado por parámetro,
+	 * @param ubicacion1 - string
+	 * @param ubicacion2 - string
+	 * @param tipoCamino - string
+	 */
+	public void conectar(String ubicacion1, String ubicacion2, String tipoCamino);
+	
 }
