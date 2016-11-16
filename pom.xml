@@ -25,6 +25,19 @@
 	</developers>
 
 	<dependencies>
+		<!-- MongoDB -->
+		<dependency>
+			<groupId>org.jongo</groupId>
+			<artifactId>jongo</artifactId>
+			<version>1.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+	
 		<!-- Neo4J -->
 		<dependency>
 			<groupId>org.neo4j.driver</groupId>
