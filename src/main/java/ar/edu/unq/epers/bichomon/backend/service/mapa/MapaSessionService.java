@@ -8,6 +8,8 @@ import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.service.GenericService;
+import ar.edu.unq.epers.bichomon.backend.service.feed.FeedService;
+import ar.edu.unq.epers.bichomon.backend.service.feed.FeedSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
@@ -20,17 +22,19 @@ public class MapaSessionService implements MapaService {
 	private EntrenadorDAO entrenadorDAO;
 	private MapaDAO mapaDAO;
 	private Neo4jMapaDAO neo4jMapaDAO;
+	private FeedService feedService;
 	
 	/**
 	 * Crea una instancia de MapaSessionService que utilizará un dao,
 	 * a quien delegará los pedidos necesarios sobre una base de datos.
 	 * @param mapaDAO
 	 */
-	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service, Neo4jMapaDAO neo4jMapaDAO) {
+	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service, Neo4jMapaDAO neo4jMapaDAO, FeedService feedService) {
 		this.service 	   = service;
 		this.mapaDAO	   = mapaDAO;
 		this.entrenadorDAO = entrenadorDAO;
 		this.neo4jMapaDAO  = neo4jMapaDAO;
+		this.feedService   = feedService;
 	}
 	
 	/**
@@ -46,12 +50,13 @@ public class MapaSessionService implements MapaService {
 			Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
 			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, nombreUbicacion);
 			
-			String desde = entrenador.getUbicacion().getNombre();
-			String hasta = ubicacion.getNombre();
+			String ubicacionOrigen = entrenador.getUbicacion().getNombre();
 			
-			Integer costo = this.neo4jMapaDAO.getCostoLindantes(desde, hasta);
+			Integer costo = this.neo4jMapaDAO.getCostoLindantes(ubicacionOrigen, nombreUbicacion);
 			
 			entrenador.mover(ubicacion, costo);
+			
+			this.feedService.saveArribo(nombreEntrenador, nombreUbicacion, ubicacionOrigen);
 			
 			return null;
 		});		

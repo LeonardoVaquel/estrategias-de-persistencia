@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,9 +13,11 @@ import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateMapaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.evento.Evento;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.CaminoCosto;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -22,11 +25,12 @@ import ar.edu.unq.epers.bichomon.backend.service.DataManager;
 import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
+import ar.edu.unq.epers.bichomon.backend.service.feed.FeedService;
+import ar.edu.unq.epers.bichomon.backend.service.feed.FeedSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.CaminoMuyCostoso;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.MapaSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.UbicacionMuyLejana;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
-import org.junit.Assert;
 
 /**
  * TestHibernateLeaderbaordService es una clase para hacer pruebas con servicios relacionados
@@ -43,6 +47,8 @@ public class TestHibernateMapaService {
 	private DataService dataService;
 	private GenericService testService;
 	private Neo4jMapaDAO neo4jmapaDAO;
+	private MongoFeedDAO mongoFeedDAO;
+	private FeedService feedSession;
 	
 	@Before
 	public void prepare() {
@@ -51,7 +57,9 @@ public class TestHibernateMapaService {
 		this.entrenadorDAO = new HibernateEntrenadorDAO();
 		this.testService   = new GenericService();
 		this.neo4jmapaDAO  = new Neo4jMapaDAO();
-		this.service 	   = new MapaSessionService(this.mapaDAO, this.entrenadorDAO, this.testService, this.neo4jmapaDAO);
+		this.mongoFeedDAO  = new MongoFeedDAO();
+		this.feedSession   = new FeedSessionService(mongoFeedDAO);
+		this.service 	   = new MapaSessionService(this.mapaDAO, this.entrenadorDAO, this.testService, this.neo4jmapaDAO, this.feedSession);
 		this.dataService   = new DataSessionService(new DataManager());
 		
 		
@@ -64,6 +72,7 @@ public class TestHibernateMapaService {
 	public void deleteAll() {
 		this.dataService.eliminarTablas();
 		this.neo4jmapaDAO.eliminarUbicaciones();
+		this.mongoFeedDAO.deleteAll();
 	}
 	
 	@Test
@@ -77,8 +86,15 @@ public class TestHibernateMapaService {
 			
 			this.service.mover("Santiago", "Neverland");
 			
+			List<Evento> feedEntrenador = this.feedSession.feedEntrenador("Santiago");
+			List<Evento> feedUbicacion  = this.feedSession.feedUbicacion("Neverland");
+			
 			Assert.assertEquals(entrenador.getUbicacion().getNombre(), "Neverland");
 			Assert.assertEquals(entrenador.getMonedas(), monedas - CaminoCosto.MARITIMO.getValue(), 0);
+			
+			Assert.assertEquals("Santiago", feedEntrenador.get(0).getEntrenador());
+			Assert.assertEquals("Neverland", feedEntrenador.get(0).getUbicacion());
+			Assert.assertEquals("Arribo", feedEntrenador.get(0).getTipo());
 			
 			return null;
 		});

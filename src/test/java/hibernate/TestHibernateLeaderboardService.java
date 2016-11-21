@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
@@ -22,6 +23,7 @@ import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
+import ar.edu.unq.epers.bichomon.backend.service.feed.FeedService;
 import ar.edu.unq.epers.bichomon.backend.service.leaderboard.LeaderboardService;
 import ar.edu.unq.epers.bichomon.backend.service.leaderboard.LeaderboardSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
@@ -43,7 +45,8 @@ public class TestHibernateLeaderboardService {
 	private BichoDAO bichoDAO;
 	private EntrenadorDAO entrenadorDAO;
 	private ExperienciaDAO experienciaDAO;
-
+	@Mock private FeedService dummyFeedService; 
+	
 	@Before
 	public void prepare() {
 
@@ -55,7 +58,7 @@ public class TestHibernateLeaderboardService {
 		this.bichoDAO 		= new HibernateBichoDAO();
 		this.entrenadorDAO 	= new HibernateEntrenadorDAO();
 		this.experienciaDAO = new HibernateExperienciaDAO();
-		this.bichoService 	= new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO);
+		this.bichoService 	= new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, dummyFeedService);
 
 		dataService.crearSetDatosIniciales();
 	}

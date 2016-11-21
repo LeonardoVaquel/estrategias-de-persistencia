@@ -41,9 +41,9 @@ public class GenericMongoDAO<T> {
 		return this.mongoCollection.findOne(objectId).as(this.entityType);
 	}
 
-	public List<T> find(String query, Object... parameters) {
+	public List<T> findSorted(String query, String sorting, Object... parameters) {
 		try {
-			MongoCursor<T> all = this.mongoCollection.find(query, parameters).as(this.entityType);
+			MongoCursor<T> all = this.mongoCollection.find(query, parameters).sort(sorting).as(this.entityType);
 
 			List<T> result = this.copyToList(all);
 			all.close();

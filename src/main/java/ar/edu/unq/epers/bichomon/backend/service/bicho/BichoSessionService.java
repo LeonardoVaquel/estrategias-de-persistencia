@@ -7,12 +7,14 @@ import ar.edu.unq.epers.bichomon.backend.dao.ExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.Experiencia;
 import ar.edu.unq.epers.bichomon.backend.model.experiencia.TablaDeExperiencia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoSePuedeAbandonarEnUbicacionException;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoSePuedeRealizarDueloEnUbicacionException;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.service.feed.FeedService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
@@ -28,11 +30,13 @@ public class BichoSessionService implements BichoService {
 	private BichoDAO 		bichoDAO;
 	private EntrenadorDAO 	entrenadorDAO;
 	private ExperienciaDAO 	expDAO;
+	private FeedService feedService;
 	
-	public BichoSessionService(BichoDAO bichoDAO, EntrenadorDAO entrenadorDAO, ExperienciaDAO expDAO) {
+	public BichoSessionService(BichoDAO bichoDAO, EntrenadorDAO entrenadorDAO, ExperienciaDAO expDAO, FeedService feedService) {
 		this.bichoDAO 		= bichoDAO;
 		this.entrenadorDAO 	= entrenadorDAO;
 		this.expDAO 		= expDAO;
+		this.feedService    = feedService;
 	}
 	
 	public Bicho getBicho(int idBicho) {
@@ -58,7 +62,12 @@ public class BichoSessionService implements BichoService {
 			
 			entrenador.gainsExp(experienciaPorCaptura, expCfg);
 			entrenador.obtenerBicho(bicho);
-			bicho.getEspecie().incrementarCantidad();
+			Especie especie = bicho.getEspecie();
+			especie.incrementarCantidad();
+			
+			System.out.println(bicho.getEspecie().getNombre());
+			
+			this.feedService.saveCaptura(nombreEntrenador, entrenador.getUbicacion().getNombre(), bicho.getEspecie().getNombre());
 			
 			return bicho;
 		});
@@ -139,8 +148,13 @@ public class BichoSessionService implements BichoService {
 			
 			double experienciaPorCombate = expTable.getValor();
 			
-			resultadoCombate.getBichoGanador().getOwner().gainsExp(experienciaPorCombate, expCfg);
-			resultadoCombate.getBichoPerdedor().getOwner().gainsExp(experienciaPorCombate, expCfg);
+			Entrenador entrenadorGanador = resultadoCombate.getBichoGanador().getOwner(); 
+			Entrenador entrenadorPerdedor = resultadoCombate.getBichoPerdedor().getOwner();
+			
+			entrenadorGanador.gainsExp(experienciaPorCombate, expCfg);
+			entrenadorPerdedor.gainsExp(experienciaPorCombate, expCfg);
+			
+			this.feedService.saveCoronacion(entrenadorGanador.getNombre(), entrenadorGanador.getUbicacion().getNombre(), entrenadorPerdedor.getNombre());
 			
 			return resultadoCombate;
 		});
