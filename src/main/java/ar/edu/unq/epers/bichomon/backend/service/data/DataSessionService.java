@@ -63,4 +63,9 @@ public class DataSessionService implements DataService {
 		});
 		
 	}
+
+	@Override
+	public void eliminarUbicaciones() {
+		dataService.eliminarUbicaciones();
+	}
 }

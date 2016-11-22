@@ -12,16 +12,11 @@ public class Captura extends Evento {
 
 	public Captura(String entrenador, String ubicacion, String especie) {
 		super(entrenador, "Captura", ubicacion);
-		this.extraProperty = especie;
+		this.especie = especie;
 	}
 	
 	public String getEspecie() {
 		return especie;
-	}
-
-	@Override
-	public String getExtraProperty() {
-		return this.extraProperty;
 	}
 	
 }

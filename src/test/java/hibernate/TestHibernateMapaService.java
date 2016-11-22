@@ -17,6 +17,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.evento.Arribo;
 import ar.edu.unq.epers.bichomon.backend.model.evento.Evento;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.CaminoCosto;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
@@ -48,7 +49,8 @@ public class TestHibernateMapaService {
 	private GenericService testService;
 	private Neo4jMapaDAO neo4jmapaDAO;
 	private MongoFeedDAO mongoFeedDAO;
-	private FeedService feedSession;
+	private FeedService feedService;
+	private MapaSessionService mapaService;
 	
 	@Before
 	public void prepare() {
@@ -58,9 +60,17 @@ public class TestHibernateMapaService {
 		this.testService   = new GenericService();
 		this.neo4jmapaDAO  = new Neo4jMapaDAO();
 		this.mongoFeedDAO  = new MongoFeedDAO();
-		this.feedSession   = new FeedSessionService(mongoFeedDAO);
-		this.service 	   = new MapaSessionService(this.mapaDAO, this.entrenadorDAO, this.testService, this.neo4jmapaDAO, this.feedSession);
+		this.mapaService   = new MapaSessionService();
+		this.feedService   = new FeedSessionService(testService, mapaService, mongoFeedDAO);
+		this.service 	   = new MapaSessionService(this.mapaDAO, this.entrenadorDAO, this.testService, this.neo4jmapaDAO, this.feedService);
 		this.dataService   = new DataSessionService(new DataManager());
+		
+		
+		this.mapaService.setEntrenadorDAO(entrenadorDAO);
+		this.mapaService.setFeedService(feedService);
+		this.mapaService.setMapaDAO(mapaDAO);
+		this.mapaService.setNeo4jMapaDAO(neo4jmapaDAO);
+		this.mapaService.setService(testService);
 		
 		
 		this.dataService.crearSetDatosIniciales();
@@ -86,15 +96,22 @@ public class TestHibernateMapaService {
 			
 			this.service.mover("Santiago", "Neverland");
 			
-			List<Evento> feedEntrenador = this.feedSession.feedEntrenador("Santiago");
-			List<Evento> feedUbicacion  = this.feedSession.feedUbicacion("Neverland");
+			List<Evento> feedEntrenador = this.feedService.feedEntrenador(entrenador.getNombre());
+			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(entrenador.getNombre());
+			
+			Arribo arriboFeedEntrenador = (Arribo) feedEntrenador.get(0);
+			Arribo arriboFeedUbicacion  = (Arribo) feedUbicacion.get(0);
 			
 			Assert.assertEquals(entrenador.getUbicacion().getNombre(), "Neverland");
 			Assert.assertEquals(entrenador.getMonedas(), monedas - CaminoCosto.MARITIMO.getValue(), 0);
 			
-			Assert.assertEquals("Santiago", feedEntrenador.get(0).getEntrenador());
-			Assert.assertEquals("Neverland", feedEntrenador.get(0).getUbicacion());
-			Assert.assertEquals("Arribo", feedEntrenador.get(0).getTipo());
+			Assert.assertEquals("Santiago", arriboFeedEntrenador.getEntrenador());
+			Assert.assertEquals("Neverland", arriboFeedEntrenador.getUbicacion());
+			Assert.assertEquals("Arribo", arriboFeedEntrenador.getTipo());
+			
+			Assert.assertEquals("Santiago", arriboFeedUbicacion.getEntrenador());
+			Assert.assertEquals("Neverland", arriboFeedUbicacion.getUbicacion());
+			Assert.assertEquals("Arribo", arriboFeedUbicacion.getTipo());
 			
 			return null;
 		});

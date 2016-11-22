@@ -51,14 +51,14 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
  */
 public class DataManager implements DataService {
 
-	private EspecieDAO 		especieDAO 		= new HibernateEspecieDAO();
-	private BichoDAO 		bichoDAO 		= new HibernateBichoDAO();
-	private EntrenadorDAO 	entrenadorDAO 	= new HibernateEntrenadorDAO();
-	private ExperienciaDAO 	experienciaDAO 	= new HibernateExperienciaDAO();
-	private HistorialDAO 	historialDAO 	= new HibernateHistorialDAO();
-	private UbicacionDAO 	ubicacionDAO 	= new HibernateUbicacionDAO();
-	private Neo4jMapaDAO    mapaDAO			= new Neo4jMapaDAO();
-	
+	private EspecieDAO especieDAO = new HibernateEspecieDAO();
+	private BichoDAO bichoDAO = new HibernateBichoDAO();
+	private EntrenadorDAO entrenadorDAO = new HibernateEntrenadorDAO();
+	private ExperienciaDAO experienciaDAO = new HibernateExperienciaDAO();
+	private HistorialDAO historialDAO = new HibernateHistorialDAO();
+	private UbicacionDAO ubicacionDAO = new HibernateUbicacionDAO();
+	private Neo4jMapaDAO mapaDAO = new Neo4jMapaDAO();
+
 	public Map<String, Especie> DATAEspecies;
 	public Map<String, Bicho> DATABichos;
 	public Map<String, Entrenador> DATAEntrenadores;
@@ -69,9 +69,9 @@ public class DataManager implements DataService {
 	public Map<String, Guarderia> DATAUbicacionesTupla;
 
 	public void createNeo4jData() {
-		
+
 	}
-	
+
 	public void createData() {
 		DATAEspecies = new HashMap<>();
 		DATABichos = new HashMap<>();
@@ -82,32 +82,29 @@ public class DataManager implements DataService {
 		DATAEspeciesTupla = new HashMap<>();
 		DATAUbicacionesTupla = new HashMap<>();
 
-		
 		// Experiencia Configuration
 		TablaDeExperiencia combateExpTable = new TablaDeExperiencia("Combatir", 10);
 		TablaDeExperiencia capturaExpTable = new TablaDeExperiencia("Capturar", 10);
 		TablaDeExperiencia evolucionExpTable = new TablaDeExperiencia("Evolucionar", 5);
 
-		
 		// Level
 		List<Level> levelList = new ArrayList<>();
 		levelList.add(new Level(1, 0.1, 3));
 		levelList.add(new Level(2, 0.3, 6));
 		levelList.add(new Level(3, 0.6, 9));
 		levelList.add(new Level(4, 1.0, 12));
-		levelList.add(new Level(5, 1.0,15));
-		levelList.add(new Level(6, 1.0,18));
-		levelList.add(new Level(7, 1.0,21));
-		levelList.add(new Level(8, 1.0,24));
-		levelList.add(new Level(9, 1.0,27));
-		levelList.add(new Level(10,1.0,30));
+		levelList.add(new Level(5, 1.0, 15));
+		levelList.add(new Level(6, 1.0, 18));
+		levelList.add(new Level(7, 1.0, 21));
+		levelList.add(new Level(8, 1.0, 24));
+		levelList.add(new Level(9, 1.0, 27));
+		levelList.add(new Level(10, 1.0, 30));
 
 		Experiencia expConfig = new Experiencia();
 		expConfig.setVersion("v1.0.0");
 		expConfig.setLevelList(levelList);
 		expConfig.setBaseExp(1000d);
-		
-		
+
 		Especie leoMon = new Especie("Leomon", TipoBicho.CHOCOLATE);
 		Especie leoMonEvolucion = new Especie("LeomonEvolucion", TipoBicho.CHOCOLATE);
 
@@ -207,7 +204,7 @@ public class DataManager implements DataService {
 		Entrenador santiagoTrainer = new Entrenador("Santiago");
 		santiagoTrainer.setMonedas(100);
 		santiagoTrainer.setNivel(levelList.get(0));
-		
+
 		Entrenador jacksonTrainer = new Entrenador("Jackson");
 		jacksonTrainer.setNivel(levelList.get(1));
 
@@ -215,12 +212,12 @@ public class DataManager implements DataService {
 
 		Entrenador majinTrainer = new Entrenador("Majin");
 		majinTrainer.setNivel(levelList.get(0));
-		
+
 		Entrenador vegetalTrainer = new Entrenador("Vegetal");
 		vegetalTrainer.setNivel(levelList.get(3));
-		
+
 		Entrenador explorer01 = new Entrenador("Explorador1");
-		
+
 		Entrenador explorer02 = new Entrenador("Explorador2");
 		explorer02.setNivel(levelList.get(5));
 		Entrenador explorer03 = new Entrenador("Explorador3");
@@ -282,10 +279,10 @@ public class DataManager implements DataService {
 
 		List<Tupla> listDeEspeciesNeverland = new ArrayList<>();
 		listDeEspeciesNeverland.add(tupla1);
-//		listDeEspeciesNeverland.add(tupla2);
-//		listDeEspeciesNeverland.add(tupla3);
-//		listDeEspeciesNeverland.add(tupla4);
-//		listDeEspeciesNeverland.add(tupla5);
+		// listDeEspeciesNeverland.add(tupla2);
+		// listDeEspeciesNeverland.add(tupla3);
+		// listDeEspeciesNeverland.add(tupla4);
+		// listDeEspeciesNeverland.add(tupla5);
 
 		// Creación de Ubicacion
 
@@ -351,7 +348,7 @@ public class DataManager implements DataService {
 		historialCampeones.add(campeon03);
 		historialCampeones.add(campeon04);
 		torreKarinDojo.setHistorial(historialCampeones);
-		
+
 		// Hashmap assignation
 		DATAEspecies.put(leoMon.getNombre(), leoMon);
 		DATAEspecies.put(leoMonEvolucion.getNombre(), leoMonEvolucion);
@@ -442,33 +439,34 @@ public class DataManager implements DataService {
 		especieDAO.guardarTupla(DATAEspeciesTupla.get("Tupla5"));
 
 		ubicacionDAO.guardarGuarderia(DATAUbicacionesTupla.get("GuarderiaLas24Hrs"));
-		
+
 	}
-	
+
 	public void crearSetDeUbicaciones() {
 		mapaDAO.crearUbicacion(DATAUbicacionesTupla.get("GuarderiaLas24Hrs"));
 		mapaDAO.crearUbicacion(new Dojo("Neverland"));
 		mapaDAO.crearUbicacion(new Dojo("Torre Karin"));
 		mapaDAO.crearUbicacion(new Dojo("Quilmes-Dojo"));
 		mapaDAO.crearUbicacion(new Dojo("Bernal-Dojo"));
-		
+
 		mapaDAO.conectar("Neverland", "Guarderia Las 24 horas!", "AEREO");
 		mapaDAO.conectar("Torre Karin", "Neverland", "MARITIMO");
 		mapaDAO.conectar("Neverland", "Quilmes-Dojo", "MARITIMO");
 		mapaDAO.conectar("Neverland", "Bernal-Dojo", "MARITIMO");
+		mapaDAO.conectar("Guarderia las 24 horas!", "Bernal-Dojo", "MARITIMO");
 	}
-	
+
 	public void crearTestSetDeUbicacionesNeo4j() {
-		
+
 		mapaDAO.crearUbicacion(new Dojo("Quilmes"));
 		mapaDAO.crearUbicacion(new Pueblo("Bernal"));
 		mapaDAO.crearUbicacion(new Pueblo("Don Bosco"));
 		mapaDAO.crearUbicacion(new Dojo("F. Varela"));
-		
+
 		mapaDAO.conectar("Bernal", "Don Bosco", "MARITIMO");
 		mapaDAO.conectar("Quilmes", "Bernal", "TERRESTRE");
 		mapaDAO.conectar("Don Bosco", "F. Varela", "AEREO");
-		
+
 	}
 
 	@Override
@@ -484,9 +482,9 @@ public class DataManager implements DataService {
 			session.createNativeQuery("SET FOREIGN_KEY_CHECKS=1").executeUpdate();
 			return null;
 		});
-		
+
 	}
-	
+
 	public void eliminarUbicaciones() {
 		this.mapaDAO.eliminarUbicaciones();
 	}

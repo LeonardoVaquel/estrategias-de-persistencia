@@ -75,4 +75,18 @@ public class TestNeo4jMapaDAO {
 		Assert.assertEquals(result.get(2),"Don Bosco");
 	}
 	
+	@Test
+	public void dada_una_ubicacion_se_obtienen_todas_las_ubicaciones_conectadas_con_ella_mediante_cualquier_camino(){
+		
+		this.mapaDAO.conectar("Bernal", "F. Varela", "MARITIMO");
+		this.mapaDAO.conectar("Bernal", "Quilmes", "TERRESTRE");
+		
+		List<String> result = this.mapaDAO.conectados("Bernal");
+		
+		Assert.assertEquals(result.size(),3,0);
+		Assert.assertEquals(result.get(0),"Quilmes");
+		Assert.assertEquals(result.get(1),"F. Varela");
+		Assert.assertEquals(result.get(2),"Don Bosco");
+	}
+	
 }

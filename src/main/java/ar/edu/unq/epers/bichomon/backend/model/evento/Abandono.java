@@ -6,16 +6,10 @@ package ar.edu.unq.epers.bichomon.backend.model.evento;
  */
 public class Abandono extends Evento {
 	
-	private String ubicacionOrigen;
-	
 	protected Abandono() {}
 	
 	public Abandono(String entrenador, String ubicacion) {
 		super(entrenador, "Abandono", ubicacion);
-	}
-
-	public String getUbicacionOrigen() {
-		return ubicacionOrigen;
 	}
 
 }

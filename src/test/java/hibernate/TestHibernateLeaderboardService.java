@@ -6,7 +6,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
@@ -15,6 +14,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateLeaderboardDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -24,6 +24,7 @@ import ar.edu.unq.epers.bichomon.backend.service.bicho.BichoSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.feed.FeedService;
+import ar.edu.unq.epers.bichomon.backend.service.feed.FeedSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.leaderboard.LeaderboardService;
 import ar.edu.unq.epers.bichomon.backend.service.leaderboard.LeaderboardSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
@@ -45,7 +46,8 @@ public class TestHibernateLeaderboardService {
 	private BichoDAO bichoDAO;
 	private EntrenadorDAO entrenadorDAO;
 	private ExperienciaDAO experienciaDAO;
-	@Mock private FeedService dummyFeedService; 
+	private MongoFeedDAO feedDAO;
+	private FeedService feedService;
 	
 	@Before
 	public void prepare() {
@@ -58,7 +60,9 @@ public class TestHibernateLeaderboardService {
 		this.bichoDAO 		= new HibernateBichoDAO();
 		this.entrenadorDAO 	= new HibernateEntrenadorDAO();
 		this.experienciaDAO = new HibernateExperienciaDAO();
-		this.bichoService 	= new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, dummyFeedService);
+		this.feedDAO        = new MongoFeedDAO();
+		this.feedService    = new FeedSessionService(feedDAO);
+		this.bichoService 	= new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, feedService);
 
 		dataService.crearSetDatosIniciales();
 	}

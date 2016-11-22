@@ -9,7 +9,6 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.service.GenericService;
 import ar.edu.unq.epers.bichomon.backend.service.feed.FeedService;
-import ar.edu.unq.epers.bichomon.backend.service.feed.FeedSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
@@ -24,6 +23,28 @@ public class MapaSessionService implements MapaService {
 	private Neo4jMapaDAO neo4jMapaDAO;
 	private FeedService feedService;
 	
+	public MapaSessionService() {}
+	
+	public void setService(GenericService service) {
+		this.service = service;
+	}
+
+	public void setEntrenadorDAO(EntrenadorDAO entrenadorDAO) {
+		this.entrenadorDAO = entrenadorDAO;
+	}
+
+	public void setMapaDAO(MapaDAO mapaDAO) {
+		this.mapaDAO = mapaDAO;
+	}
+
+	public void setNeo4jMapaDAO(Neo4jMapaDAO neo4jMapaDAO) {
+		this.neo4jMapaDAO = neo4jMapaDAO;
+	}
+
+	public void setFeedService(FeedService feedService) {
+		this.feedService = feedService;
+	}
+
 	/**
 	 * Crea una instancia de MapaSessionService que utilizará un dao,
 	 * a quien delegará los pedidos necesarios sobre una base de datos.
@@ -97,6 +118,20 @@ public class MapaSessionService implements MapaService {
 			return this.mapaDAO.cantidadEntrenadores(nombreUbicacion);
 		});
 	}
+	
+	/**
+	 * Dado el nombre de una ubicación se espera devolver todas aquellas ubicaciones
+	 * conectadas directamente con la ubicación de nombre pasado por parámetro 
+	 * @param nombreUbicacion - un string
+	 * @return - una lista de {@link Ubicacion}
+	 */
+	@Override
+	public List<Ubicacion> conectados(String nombreUbicacion) {
+		return Runner.runInSession(() -> {
+			List<String> nombresDeUbicacion = this.neo4jMapaDAO.conectados(nombreUbicacion); 
+			return this.mapaDAO.getUbicacionesDeNombre(nombresDeUbicacion);
+		});	
+	}
 
 	/**
 	 * Recibe por parámetro el nombre de una {@link Ubicacion} y un tipo de camino.
@@ -109,9 +144,7 @@ public class MapaSessionService implements MapaService {
 	@Override
 	public List<Ubicacion> conectados(String nombreUbicacion, String tipoCamino) {
 		return Runner.runInSession(() -> {
-
 			List<String> nombresDeUbicacion = this.neo4jMapaDAO.conectados(nombreUbicacion, tipoCamino); 
-			
 			return this.mapaDAO.getUbicacionesDeNombre(nombresDeUbicacion);
 		});	
 	}

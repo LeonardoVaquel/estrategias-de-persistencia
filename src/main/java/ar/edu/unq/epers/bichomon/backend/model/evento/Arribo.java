@@ -12,7 +12,7 @@ public class Arribo extends Evento {
 	
 	public Arribo(String entrenador, String ubicacion, String ubicacionOrigen) {
 		super(entrenador, "Arribo", ubicacion);
-		this.extraProperty = ubicacionOrigen;
+		this.ubicacionOrigen = ubicacionOrigen;
 	}
 
 	public String getUbicacionOrigen() {

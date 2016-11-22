@@ -6,14 +6,16 @@ package ar.edu.unq.epers.bichomon.backend.model.evento;
  */
 public class Coronacion extends Evento {
 	
+	private String destronado;
+	
 	protected Coronacion() {}
 	
-	public Coronacion(String entrenador, String ubicacion, String entrenadorDerrocado) {
+	public Coronacion(String entrenador, String ubicacion, String entrenadorDestronado) {
 		super(entrenador, "Coronacion", ubicacion);
-		this.extraProperty = entrenadorDerrocado;
+		this.destronado = entrenadorDestronado;
 	}
 
-	public String getEntrenadorDerrocado() {
-		return extraProperty;
+	public String getEntrenadorDestronado() {
+		return this.destronado;
 	}
 }

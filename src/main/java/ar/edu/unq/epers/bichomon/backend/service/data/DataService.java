@@ -36,4 +36,8 @@ public interface DataService {
 	 */
 	public void crearSetDeUbicaciones();
 	
+	/**
+	 * Elimina las ubicaciones de una base de datos en Neo4J
+	 */
+	public void eliminarUbicaciones();
 }

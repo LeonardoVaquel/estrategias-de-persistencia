@@ -22,8 +22,8 @@ public class MongoFeedDAO extends GenericMongoDAO<Evento> {
 	 * Recibe un nombre de {@link Entrenador}
 	 * Se espera obtener todos los eventos en los que el entrenador
 	 * especificado por parámetro se encuentre involucrado.
-	 * @param entrenador - string
-	 * @return - una lista de {@link Evento} ordenada por fecha
+	 * @param entrenador - String
+	 * @return - List<Evento> ordenada por fecha
 	 */
 	public List<Evento> getEventosByEntrenador(String entrenador) {
 		
@@ -31,17 +31,12 @@ public class MongoFeedDAO extends GenericMongoDAO<Evento> {
 	}
 	
 	/**
-	 * Recibe un nombre de {@link Ubicacion}
-	 * Se espera obtener todos los eventos de la ubicación especificada por
-	 * parámetro y de aquellas en las que ésta se encuentra conectada
-	 * @param ubicacion - string
-	 * @return - una lista de {@link Evento} ordenada por fecha
+	 * Recibe nombres de {@link Ubicacion}
+	 * Se espera obtener todos los eventos que tomaron parte en las ubicaciones
+	 * especificadas como parámetro.
+	 * @param ubicaciones - List<String>
+	 * @return - List<Evento> ordenada por fecha
 	 */
-	public List<Evento> feedUbicacion(String ubicacion) {
-		
-		return this.findSorted("{ ubicacion: # }", "{ fecha: 1 }", ubicacion);
-	}
-
 	public List<Evento> getEventosByUbicaciones(List<String> ubicaciones) {
 		
 		return this.findSorted("{ ubicacion: { $in: # } }", "{ fecha: 1 }", ubicaciones);

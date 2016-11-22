@@ -50,6 +50,14 @@ public interface MapaService {
 	public List<Ubicacion> conectados(String ubicacion, String tipoCamino);
 	
 	/**
+	 * Dado el nombre de una ubicación se espera devolver todas aquellas ubicaciones
+	 * conectadas directamente con la ubicación de nombre pasado por parámetro 
+	 * @param nombreUbicacion - un string
+	 * @return - una lista de {@link Ubicacion}
+	 */
+	public List<Ubicacion> conectados(String ubicacion);
+	
+	/**
 	 * Recibe una instancia de {@link Ubicacion} para ser persistida en una base de datos en Hibernate y Neo4j
 	 * @param ubicacion - una instancia de {@link Ubicacion}
 	 */

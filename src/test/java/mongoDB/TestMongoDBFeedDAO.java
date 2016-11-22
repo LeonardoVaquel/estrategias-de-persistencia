@@ -1,5 +1,6 @@
 package mongoDB;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -35,7 +36,7 @@ public class TestMongoDBFeedDAO {
 	
 	@After
 	public void deleteAll() {
-//		this.dao.deleteAll();
+		this.dao.deleteAll();
 	}
 	
 	@Test
@@ -54,18 +55,36 @@ public class TestMongoDBFeedDAO {
 	}
 	
 	@Test
-	public void se_recuperan_eventos_por_nombre_de_ubicacion() {
+	public void dada_una_lista_de_ubicaciones_se_recuperan_eventos_que_ocurren_en_estas(){
+		List<String> ubicaciones = new ArrayList<>();
+		ubicaciones.add("Dojo DonBosco");
+		ubicaciones.add("GuarderiaDeFuego");
 		
-		List<Evento> eventos = this.dao.feedUbicacion("Vegeta");
+		List<Evento> eventos = this.dao.getEventosByUbicaciones(ubicaciones);
 		
 		Assert.assertNotNull(eventos.get(0));
 		Assert.assertNotNull(eventos.get(1));
-		Assert.assertEquals(eventos.get(0).getUbicacion(), "Dojo DonBosco");
-		Assert.assertEquals(eventos.get(0).getTipo(), "Captura");
-		Assert.assertEquals(eventos.get(1).getUbicacion(), "Dojo DonBosco");
-		Assert.assertEquals(eventos.get(1).getTipo(), "Coronacion");
-		Assert.assertEquals(2, eventos.size());
+		Assert.assertNotNull(eventos.get(2));
+		Assert.assertEquals(3, eventos.size());
+		Assert.assertEquals("Dojo DonBosco", eventos.get(0).getUbicacion());
+		Assert.assertEquals("GuarderiaDeFuego", eventos.get(1).getUbicacion());
+		Assert.assertEquals("Dojo DonBosco", eventos.get(2).getUbicacion());
+		
 	}
+	
+//	@Test
+//	public void se_recuperan_eventos_por_nombre_de_ubicacion() {
+//		
+//		List<Evento> eventos = this.dao.feedUbicacion("Vegeta");
+//		
+//		Assert.assertNotNull(eventos.get(0));
+//		Assert.assertNotNull(eventos.get(1));
+//		Assert.assertEquals(eventos.get(0).getUbicacion(), "Dojo DonBosco");
+//		Assert.assertEquals(eventos.get(0).getTipo(), "Captura");
+//		Assert.assertEquals(eventos.get(1).getUbicacion(), "Dojo DonBosco");
+//		Assert.assertEquals(eventos.get(1).getTipo(), "Coronacion");
+//		Assert.assertEquals(2, eventos.size());
+//	}
 	
 }
 

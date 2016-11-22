@@ -71,6 +71,32 @@ public class Neo4jMapaDAO {
 	}
 	
 	/**
+	 * Dado el nombre de una ubicación se espera devolver todas aquellas ubicaciones
+	 * conectadas directamente con la ubicación de nombre pasado por parámetro 
+	 * @param nombreUbicacion - un string
+	 * @return - una lista de {@link Ubicacion}
+	 */
+	public List<String> conectados(String nombreUbicacion) {
+		Session session = this.driver.session();
+
+		try {
+			String query = 	"MATCH (u:Ubicacion { nombre: {nombreUbicacion}})" +
+							"MATCH (n:Ubicacion)" +
+							"MATCH (u)-[]->(n)" +
+							"RETURN n";
+			StatementResult result = session.run(query, Values.parameters("nombreUbicacion", nombreUbicacion));
+			return result.list(record -> {
+				Value ubic = record.get(0);
+				String nuevaUbicacion = ubic.get("nombre").asString(); 
+				return nuevaUbicacion;
+			});
+			
+		} finally {
+			session.close();
+		}
+	}
+	
+	/**
 	 * Dado el nombre de una ubicación y un tipo de camino se espera devolver todas aquellas ubicaciones
 	 * conectadas directamente con la ubicación de nombre pasado por parámetro a través del camino
 	 * especificado. 

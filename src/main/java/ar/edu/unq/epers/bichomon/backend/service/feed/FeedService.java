@@ -11,7 +11,7 @@ public interface FeedService {
 	
 	/**
 	 * Recibe el nombre de un {@link Entrenador} y el nombre de una {@link Ubicacion} para persistir 
-	 * un {@link Evento} en una base de datos documental.
+	 * un {@link Abandono} en una base de datos documental.
 	 * 
 	 * @param entrenador - String
 	 * @param ubicacion - String

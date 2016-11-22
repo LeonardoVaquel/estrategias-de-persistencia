@@ -18,13 +18,18 @@ import ar.edu.unq.epers.bichomon.backend.dao.ExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateExperienciaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Turno;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import ar.edu.unq.epers.bichomon.backend.model.evento.Abandono;
+import ar.edu.unq.epers.bichomon.backend.model.evento.Captura;
+import ar.edu.unq.epers.bichomon.backend.model.evento.Coronacion;
 import ar.edu.unq.epers.bichomon.backend.model.evento.Evento;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
@@ -37,6 +42,7 @@ import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.feed.FeedService;
 import ar.edu.unq.epers.bichomon.backend.service.feed.FeedSessionService;
+import ar.edu.unq.epers.bichomon.backend.service.mapa.MapaSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
 /**
@@ -56,6 +62,9 @@ public class TestHibernateBichoService {
 	private DataService dataService;
 	private GenericService testService;
 	private FeedService feedService;
+	private MapaSessionService mapaService;
+	private HibernateMapaDAO mapaDAO;
+	private Neo4jMapaDAO neo4jMapaDAO;
 	
 	@Mock private BichomonRandom dummyRandom;
 	
@@ -64,21 +73,31 @@ public class TestHibernateBichoService {
 		
 		MockitoAnnotations.initMocks(this);
 		
-		this.bichoDAO = new HibernateBichoDAO();
-		this.entrenadorDAO = new HibernateEntrenadorDAO();
+		this.bichoDAO       = new HibernateBichoDAO();
+		this.entrenadorDAO  = new HibernateEntrenadorDAO();
 		this.experienciaDAO = new HibernateExperienciaDAO();
-		this.mongoFeedDAO = new MongoFeedDAO();
-		this.feedService = new FeedSessionService(mongoFeedDAO);
-		this.service = new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, feedService);
-		this.dataService = new DataSessionService(new DataManager());
-		this.testService = new GenericService();
+		this.mongoFeedDAO   = new MongoFeedDAO();
+		this.testService    = new GenericService();
+		this.mapaService    = new MapaSessionService();
+		this.feedService    = new FeedSessionService(testService, mapaService, mongoFeedDAO);
+		this.service        = new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, feedService);
+		this.dataService    = new DataSessionService(new DataManager());
+		this.neo4jMapaDAO   = new Neo4jMapaDAO();
+		this.mapaDAO        = new HibernateMapaDAO();
+		
+		this.mapaService.setEntrenadorDAO(entrenadorDAO);
+		this.mapaService.setFeedService(feedService);
+		this.mapaService.setMapaDAO(mapaDAO);
+		this.mapaService.setNeo4jMapaDAO(neo4jMapaDAO);
+		this.mapaService.setService(testService);
 		
 		dataService.crearSetDatosIniciales();
-		
+		dataService.crearSetDeUbicaciones();
 	}
 	@After
 	public void deleteAll() {
 		this.dataService.eliminarTablas();
+		this.dataService.eliminarUbicaciones();
 		this.mongoFeedDAO.deleteAll();
 	}
 	
@@ -144,14 +163,24 @@ public class TestHibernateBichoService {
 			
 			String nombreUbicacion = guarderia.getNombre();
 			List<Evento> feedEntrenador = this.feedService.feedEntrenador("Jackson");
-			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(nombreUbicacion);
+			Abandono abandonoFeedEntrenador = (Abandono) feedEntrenador.get(0);
+			
+			List<Evento> feedUbicacion  = this.feedService.feedUbicacion("Jackson");
+			Abandono abandonoFeedUbicacion = (Abandono) feedUbicacion.get(0);
 			
 			Assert.assertEquals(guarderia.getBichos().contains(bicho), true);
 			Assert.assertEquals(bicho.getOwner(), null);
 
-			Assert.assertEquals("Jackson", feedEntrenador.get(0).getEntrenador());
-			Assert.assertEquals("Abandono", feedEntrenador.get(0).getTipo());
-			Assert.assertEquals(nombreUbicacion, feedUbicacion.get(0).getUbicacion());
+			Assert.assertEquals("Jackson", abandonoFeedEntrenador.getEntrenador());
+			Assert.assertEquals("Abandono", abandonoFeedEntrenador.getTipo());
+			Assert.assertEquals(nombreUbicacion, abandonoFeedEntrenador.getUbicacion());
+			Assert.assertNotNull(abandonoFeedEntrenador.getFecha());
+			
+			Assert.assertEquals("Jackson", abandonoFeedUbicacion.getEntrenador());
+			Assert.assertEquals("Abandono", abandonoFeedUbicacion.getTipo());
+			Assert.assertEquals(nombreUbicacion, abandonoFeedUbicacion.getUbicacion());
+			Assert.assertNotNull(abandonoFeedUbicacion.getFecha());
+			Assert.assertEquals(1, feedUbicacion.size());
 			
 			return null;
 		});
@@ -181,18 +210,29 @@ public class TestHibernateBichoService {
 			
 			String nombreUbicacion = entrenador.getUbicacion().getNombre();
 			List<Evento> feedEntrenador = this.feedService.feedEntrenador("Explorador2");
-			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(nombreUbicacion);
-
+			
+			List<Evento> feedUbicacion  = this.feedService.feedUbicacion("Explorador2");
+			Captura capturaFeedUbicacion = (Captura) feedUbicacion.get(0);
+			
 			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
 			Assert.assertEquals(bicho.getEspecie().getNombre(), "Leomon");
 			Assert.assertEquals(bicho.getEspecie().getTipo(), TipoBicho.CHOCOLATE);
 			Assert.assertTrue(entrenador.getBichos().contains(bicho));
 			
-			Assert.assertEquals("Explorador2", feedEntrenador.get(0).getEntrenador());
-			Assert.assertEquals("Captura", feedEntrenador.get(0).getTipo());
-			Assert.assertEquals(nombreUbicacion, feedUbicacion.get(0).getUbicacion());
-			Assert.assertEquals(bicho.getEspecie().getNombre(), feedEntrenador.get(0).getExtraProperty());
+			Captura captura = (Captura) feedEntrenador.get(0);
 			
+			Assert.assertEquals("Explorador2", captura.getEntrenador());
+			Assert.assertEquals("Captura", captura.getTipo());
+			Assert.assertEquals(nombreUbicacion, captura.getUbicacion());
+			Assert.assertEquals(bicho.getEspecie().getNombre(), captura.getEspecie());
+			Assert.assertNotNull(captura.getFecha());
+			
+			Assert.assertEquals("Explorador2", capturaFeedUbicacion.getEntrenador());
+			Assert.assertEquals("Captura", capturaFeedUbicacion.getTipo());
+			Assert.assertEquals(nombreUbicacion, capturaFeedUbicacion.getUbicacion());
+			Assert.assertNotNull(capturaFeedUbicacion.getFecha());
+			Assert.assertEquals(1, feedUbicacion.size());
+
 			return null;
 		});
 	}
@@ -208,16 +248,26 @@ public class TestHibernateBichoService {
 			Bicho bicho = this.service.buscar("Santiago");
 
 			String nombreUbicacion = entrenador.getUbicacion().getNombre();
-			List<Evento> feedEntrenador = this.feedService.feedEntrenador("Santiago");
-			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(nombreUbicacion);
+			List<Evento> feedEntrenador = this.feedService.feedEntrenador(entrenador.getNombre());
+			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(entrenador.getNombre());
+			Captura capturaFeedUbicacion = (Captura) feedUbicacion.get(0);
 			
 			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
 			Assert.assertTrue(entrenador.getBichos().contains(bicho));
 			
-			Assert.assertEquals("Santiago", feedEntrenador.get(0).getEntrenador());
-			Assert.assertEquals("Captura", feedEntrenador.get(0).getTipo());
-			Assert.assertEquals(nombreUbicacion, feedUbicacion.get(0).getUbicacion());
-			Assert.assertEquals(bicho.getEspecie().getNombre(), feedEntrenador.get(0).getExtraProperty());
+			Captura captura = (Captura) feedEntrenador.get(0);
+			
+			Assert.assertEquals("Santiago", captura.getEntrenador());
+			Assert.assertEquals("Captura", captura.getTipo());
+			Assert.assertEquals(nombreUbicacion, captura.getUbicacion());
+			Assert.assertEquals(bicho.getEspecie().getNombre(), captura.getEspecie());
+			Assert.assertNotNull(captura.getFecha());
+			
+			Assert.assertEquals("Santiago", capturaFeedUbicacion.getEntrenador());
+			Assert.assertEquals("Captura", capturaFeedUbicacion.getTipo());
+			Assert.assertEquals(nombreUbicacion, capturaFeedUbicacion.getUbicacion());
+			Assert.assertNotNull(capturaFeedUbicacion.getFecha());
+			Assert.assertEquals(1, feedUbicacion.size());
 			
 			return null;
 		});
@@ -236,16 +286,25 @@ public class TestHibernateBichoService {
 			Bicho bicho = this.service.buscar("Jackson");
 
 			String nombreUbicacion = entrenador.getUbicacion().getNombre();
-			List<Evento> feedEntrenador = this.feedService.feedEntrenador("Jackson");
-			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(nombreUbicacion);
+			List<Evento> feedEntrenador = this.feedService.feedEntrenador(entrenador.getNombre());
+			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(entrenador.getNombre());
+			Captura capturaFeedUbicacion = (Captura) feedUbicacion.get(0);
 			
 			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
 			Assert.assertTrue(entrenador.getBichos().contains(bicho));
 			
-			Assert.assertEquals(entrenador.getNombre(), feedEntrenador.get(0).getEntrenador());
-			Assert.assertEquals("Captura", feedEntrenador.get(0).getTipo());
-			Assert.assertEquals(nombreUbicacion, feedUbicacion.get(0).getUbicacion());
-			Assert.assertEquals(bicho.getEspecie().getNombre(), feedEntrenador.get(0).getExtraProperty());
+			Captura captura = (Captura) feedEntrenador.get(0);
+			
+			Assert.assertEquals(entrenador.getNombre(), captura.getEntrenador());
+			Assert.assertEquals("Captura", captura.getTipo());
+			Assert.assertEquals(bicho.getEspecie().getNombre(), captura.getEspecie());
+			Assert.assertNotNull(captura.getFecha());
+			
+			Assert.assertEquals("Jackson", capturaFeedUbicacion.getEntrenador());
+			Assert.assertEquals("Captura", capturaFeedUbicacion.getTipo());
+			Assert.assertEquals(nombreUbicacion, capturaFeedUbicacion.getUbicacion());
+			Assert.assertNotNull(capturaFeedUbicacion.getFecha());
+			Assert.assertEquals(1, feedUbicacion.size());
 			
 			return null;
 		});
@@ -265,7 +324,9 @@ public class TestHibernateBichoService {
 			
 			String nombreUbicacion = resultadoCombate.getEntrenadorGanador().getUbicacion().getNombre();
 			List<Evento> feedEntrenador = this.feedService.feedEntrenador("Vegetal");
-			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(nombreUbicacion);
+			List<Evento> feedUbicacion  = this.feedService.feedUbicacion("Vegetal");
+			Coronacion coronacionFeedUbicacion = (Coronacion) feedUbicacion.get(0);
+			Coronacion coronacionFeedEntrenador = (Coronacion) feedEntrenador.get(0);
 			
 			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getNombre(), "Vegetal");
 			Assert.assertEquals(resultadoCombate.getBichoGanador().getId(), bichoRetadorId);
@@ -279,10 +340,17 @@ public class TestHibernateBichoService {
 			Assert.assertEquals(turnos.iterator().next().getRetador().getId(), bichoRetadorId);
 			Assert.assertEquals(dojo.getCampeon().getId(), bichoRetadorId);
 			
-			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getNombre(), feedEntrenador.get(0).getEntrenador());
-			Assert.assertEquals("Coronacion", feedEntrenador.get(0).getTipo());
-			Assert.assertEquals(nombreUbicacion, feedUbicacion.get(0).getUbicacion());
-			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getOwner().getNombre(), feedEntrenador.get(0).getExtraProperty());
+			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getNombre(), coronacionFeedEntrenador.getEntrenador());
+			Assert.assertEquals("Coronacion", coronacionFeedEntrenador.getTipo());
+			Assert.assertEquals(nombreUbicacion, coronacionFeedEntrenador.getUbicacion());
+			Assert.assertEquals(resultadoCombate.getBichoPerdedor().getOwner().getNombre(), coronacionFeedEntrenador.getEntrenadorDestronado());
+			Assert.assertNotNull(coronacionFeedEntrenador.getFecha());
+			
+			Assert.assertEquals("Vegetal", coronacionFeedUbicacion.getEntrenador());
+			Assert.assertEquals("Coronacion", coronacionFeedUbicacion.getTipo());
+			Assert.assertEquals(nombreUbicacion, coronacionFeedUbicacion.getUbicacion());
+			Assert.assertNotNull(coronacionFeedUbicacion.getFecha());
+			Assert.assertEquals(1, feedUbicacion.size());
 			
 			return null;
 		});
