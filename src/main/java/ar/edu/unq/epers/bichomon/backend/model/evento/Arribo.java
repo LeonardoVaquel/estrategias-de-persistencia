@@ -10,17 +10,13 @@ public class Arribo extends Evento {
 	
 	protected Arribo() {}
 	
-	public Arribo(String entrenador, String ubicacion, long fecha, String ubicacionOrigen) {
-		super(entrenador, "Arribo", ubicacion, fecha);
-		this.ubicacionOrigen = ubicacionOrigen;
-	}
-	
 	public Arribo(String entrenador, String ubicacion, String ubicacionOrigen) {
 		super(entrenador, "Arribo", ubicacion);
-		this.ubicacionOrigen = ubicacionOrigen;
+		this.extraProperty = ubicacionOrigen;
 	}
 
 	public String getUbicacionOrigen() {
 		return ubicacionOrigen;
 	}
+
 }

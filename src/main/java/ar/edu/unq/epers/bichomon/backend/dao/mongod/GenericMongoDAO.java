@@ -54,6 +54,19 @@ public class GenericMongoDAO<T> {
 		}
 	}
 	
+	public List<T> find(String query, Object... parameters) {
+		try {
+			MongoCursor<T> all = this.mongoCollection.find(query, parameters).as(this.entityType);
+
+			List<T> result = this.copyToList(all);
+			all.close();
+			
+			return result;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	/**
 	 * Copia el contenido de un iterable en una lista
 	 */

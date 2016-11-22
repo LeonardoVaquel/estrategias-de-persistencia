@@ -8,11 +8,6 @@ public class Coronacion extends Evento {
 	
 	protected Coronacion() {}
 	
-	public Coronacion(String entrenador, String ubicacion, long fecha, String entrenadorDerrocado) {
-		super(entrenador, "Coronacion", ubicacion, fecha);
-		this.extraProperty = entrenadorDerrocado;
-	}
-	
 	public Coronacion(String entrenador, String ubicacion, String entrenadorDerrocado) {
 		super(entrenador, "Coronacion", ubicacion);
 		this.extraProperty = entrenadorDerrocado;

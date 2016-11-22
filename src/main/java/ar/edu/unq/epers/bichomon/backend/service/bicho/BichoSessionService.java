@@ -120,7 +120,10 @@ public class BichoSessionService implements BichoService {
 			//Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
 			// el entrenador no es necesario
 			//entrenador.abandonar(bicho);
+			String nombreUbicacion = bicho.getOwner().getUbicacion().getNombre();
 			bicho.getOwner().abandonar(bicho);
+			
+			this.feedService.saveAbandono(nombreEntrenador, nombreUbicacion);
 			
 			return null;
 		});

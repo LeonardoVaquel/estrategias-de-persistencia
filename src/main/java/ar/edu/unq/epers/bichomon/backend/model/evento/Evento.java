@@ -22,12 +22,6 @@ public class Evento {
 	
 	protected Evento() {}
 	
-	public Evento(String entrenador, String tipo, String ubicacion, long fecha) {
-		this.entrenador = entrenador;
-		this.tipo       = tipo;
-		this.ubicacion  = ubicacion;
-	}
-	
 	public Evento(String entrenador, String tipo, String ubicacion) {
 		this.entrenador = entrenador;
 		this.tipo       = tipo;

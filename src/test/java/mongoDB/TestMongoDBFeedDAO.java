@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
+import ar.edu.unq.epers.bichomon.backend.model.evento.Abandono;
 import ar.edu.unq.epers.bichomon.backend.model.evento.Captura;
 import ar.edu.unq.epers.bichomon.backend.model.evento.Coronacion;
 import ar.edu.unq.epers.bichomon.backend.model.evento.Evento;
@@ -20,10 +21,10 @@ public class TestMongoDBFeedDAO {
 	public void setUp() {
 		this.dao = new MongoFeedDAO();
 
-		Evento evento1 = new Evento("Vegeta", "Abandono", "Guarderia24Hrs", System.currentTimeMillis());
-		Captura evento2 = new Captura("Vegeta", "Dojo DonBosco", System.currentTimeMillis(), "Charmander");
-		Evento evento3 = new Evento("Vegeta", "Abandono", "GuarderiaDeFuego", System.currentTimeMillis());
-		Evento evento4 = new Coronacion("Vegeta", "Dojo DonBosco", System.currentTimeMillis(), "Krilin");
+		Evento evento1 = new Abandono("Vegeta", "Guarderia24Hrs");
+		Captura evento2 = new Captura("Vegeta", "Dojo DonBosco", "Charmander");
+		Evento evento3 = new Abandono("Vegeta", "GuarderiaDeFuego");
+		Evento evento4 = new Coronacion("Vegeta", "Dojo DonBosco", "Krilin");
 		
 		this.dao.save(evento1);
 		this.dao.save(evento2);
@@ -34,13 +35,13 @@ public class TestMongoDBFeedDAO {
 	
 	@After
 	public void deleteAll() {
-		this.dao.deleteAll();
+//		this.dao.deleteAll();
 	}
 	
 	@Test
 	public void se_recuperan_eventos_por_nombre_de_entrenador() {
 		
-		List<Evento> eventos = this.dao.feedEntrenador("Vegeta");
+		List<Evento> eventos = this.dao.getEventosByEntrenador("Vegeta");
 		Assert.assertNotNull(eventos.get(0).getId());
 		Assert.assertNotNull(eventos.get(1).getId());
 		Assert.assertNotNull(eventos.get(2).getId());
@@ -55,7 +56,7 @@ public class TestMongoDBFeedDAO {
 	@Test
 	public void se_recuperan_eventos_por_nombre_de_ubicacion() {
 		
-		List<Evento> eventos = this.dao.feedUbicacion("Dojo DonBosco");
+		List<Evento> eventos = this.dao.feedUbicacion("Vegeta");
 		
 		Assert.assertNotNull(eventos.get(0));
 		Assert.assertNotNull(eventos.get(1));

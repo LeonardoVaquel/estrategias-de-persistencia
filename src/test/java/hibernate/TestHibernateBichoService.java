@@ -142,9 +142,17 @@ public class TestHibernateBichoService {
 			Guarderia guarderia = this.testService.recuperarEntidad(Guarderia.class, "Guarderia las 24 horas!");
 			Bicho bicho = this.testService.recuperarEntidad(Bicho.class, bichoId);
 			
+			String nombreUbicacion = guarderia.getNombre();
+			List<Evento> feedEntrenador = this.feedService.feedEntrenador("Jackson");
+			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(nombreUbicacion);
+			
 			Assert.assertEquals(guarderia.getBichos().contains(bicho), true);
 			Assert.assertEquals(bicho.getOwner(), null);
 
+			Assert.assertEquals("Jackson", feedEntrenador.get(0).getEntrenador());
+			Assert.assertEquals("Abandono", feedEntrenador.get(0).getTipo());
+			Assert.assertEquals(nombreUbicacion, feedUbicacion.get(0).getUbicacion());
+			
 			return null;
 		});
 		
@@ -170,11 +178,20 @@ public class TestHibernateBichoService {
 			Entrenador entrenador = this.testService.recuperarEntidad(Entrenador.class, "Explorador2");
 			
 			Bicho bicho = this.service.buscar("Explorador2");
+			
+			String nombreUbicacion = entrenador.getUbicacion().getNombre();
+			List<Evento> feedEntrenador = this.feedService.feedEntrenador("Explorador2");
+			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(nombreUbicacion);
 
 			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
 			Assert.assertEquals(bicho.getEspecie().getNombre(), "Leomon");
 			Assert.assertEquals(bicho.getEspecie().getTipo(), TipoBicho.CHOCOLATE);
 			Assert.assertTrue(entrenador.getBichos().contains(bicho));
+			
+			Assert.assertEquals("Explorador2", feedEntrenador.get(0).getEntrenador());
+			Assert.assertEquals("Captura", feedEntrenador.get(0).getTipo());
+			Assert.assertEquals(nombreUbicacion, feedUbicacion.get(0).getUbicacion());
+			Assert.assertEquals(bicho.getEspecie().getNombre(), feedEntrenador.get(0).getExtraProperty());
 			
 			return null;
 		});
@@ -196,6 +213,7 @@ public class TestHibernateBichoService {
 			
 			Assert.assertEquals(bicho.getOwner().getNombre(), entrenador.getNombre());
 			Assert.assertTrue(entrenador.getBichos().contains(bicho));
+			
 			Assert.assertEquals("Santiago", feedEntrenador.get(0).getEntrenador());
 			Assert.assertEquals("Captura", feedEntrenador.get(0).getTipo());
 			Assert.assertEquals(nombreUbicacion, feedUbicacion.get(0).getUbicacion());
@@ -245,6 +263,10 @@ public class TestHibernateBichoService {
 			int bichoRetadoId = 9; // Frutimon
 			ResultadoCombate resultadoCombate = this.service.duelo("Vegetal", bichoRetadorId);
 			
+			String nombreUbicacion = resultadoCombate.getEntrenadorGanador().getUbicacion().getNombre();
+			List<Evento> feedEntrenador = this.feedService.feedEntrenador("Vegetal");
+			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(nombreUbicacion);
+			
 			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getNombre(), "Vegetal");
 			Assert.assertEquals(resultadoCombate.getBichoGanador().getId(), bichoRetadorId);
 			Assert.assertEquals(resultadoCombate.getBichoGanador().getVictorias(), 101, 0);
@@ -256,10 +278,6 @@ public class TestHibernateBichoService {
 			Assert.assertEquals(turnos.iterator().next().getRetado().getId(), bichoRetadoId);
 			Assert.assertEquals(turnos.iterator().next().getRetador().getId(), bichoRetadorId);
 			Assert.assertEquals(dojo.getCampeon().getId(), bichoRetadorId);
-			
-			String nombreUbicacion = resultadoCombate.getEntrenadorGanador().getUbicacion().getNombre();
-			List<Evento> feedEntrenador = this.feedService.feedEntrenador("Vegetal");
-			List<Evento> feedUbicacion  = this.feedService.feedUbicacion(nombreUbicacion);
 			
 			Assert.assertEquals(resultadoCombate.getEntrenadorGanador().getNombre(), feedEntrenador.get(0).getEntrenador());
 			Assert.assertEquals("Coronacion", feedEntrenador.get(0).getTipo());
