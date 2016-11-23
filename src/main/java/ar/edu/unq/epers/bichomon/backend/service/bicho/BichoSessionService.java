@@ -157,7 +157,9 @@ public class BichoSessionService implements BichoService {
 			entrenadorGanador.gainsExp(experienciaPorCombate, expCfg);
 			entrenadorPerdedor.gainsExp(experienciaPorCombate, expCfg);
 			
-			this.feedService.saveCoronacion(entrenadorGanador.getNombre(), entrenadorGanador.getUbicacion().getNombre(), entrenadorPerdedor.getNombre());
+			if(idBicho == resultadoCombate.getBichoGanador().getId()) {
+				this.feedService.saveCoronacion(entrenadorGanador.getNombre(), entrenadorGanador.getUbicacion().getNombre(), entrenadorPerdedor.getNombre());
+			}
 			
 			return resultadoCombate;
 		});
