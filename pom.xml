@@ -25,6 +25,14 @@
 	</developers>
 
 	<dependencies>
+		
+		<!-- Infinispan -->
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-client-hotrod</artifactId>
+			<version>8.2.5.Final</version>
+		</dependency>
+		
 		<!-- MongoDB -->
 		<dependency>
 			<groupId>org.jongo</groupId>
