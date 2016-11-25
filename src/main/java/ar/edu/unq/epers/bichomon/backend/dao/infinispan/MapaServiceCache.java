@@ -14,9 +14,9 @@ import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
  */
 public class MapaServiceCache {
 
-	private RemoteCache<Ubicacion, Integer> realCache;
+	private RemoteCache<String, Integer> realCache;
 
-	public MapaServiceCache(RemoteCache<Ubicacion, Integer> realCache){
+	public MapaServiceCache(RemoteCache<String, Integer> realCache){
 		this.realCache = realCache;
 	};
 	
@@ -24,11 +24,11 @@ public class MapaServiceCache {
 		this.realCache.clear();
 	}
 
-	public Integer put(Ubicacion key, Integer value) {
+	public Integer put(String key, Integer value) {
 		return this.realCache.put(key, value);
 	}
 	
-	public Integer get(Ubicacion key) {
+	public Integer get(String key) {
 		return this.realCache.get(key);
 	}
 

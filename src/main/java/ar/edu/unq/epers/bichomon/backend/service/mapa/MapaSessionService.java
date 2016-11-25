@@ -4,6 +4,7 @@ import java.util.List;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.MapaServiceCache;
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -22,6 +23,7 @@ public class MapaSessionService implements MapaService {
 	private MapaDAO mapaDAO;
 	private Neo4jMapaDAO neo4jMapaDAO;
 	private FeedService feedService;
+	private MapaServiceCache mapaCache; 
 	
 	public MapaSessionService() {}
 	
@@ -50,12 +52,14 @@ public class MapaSessionService implements MapaService {
 	 * a quien delegará los pedidos necesarios sobre una base de datos.
 	 * @param mapaDAO
 	 */
-	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service, Neo4jMapaDAO neo4jMapaDAO, FeedService feedService) {
+	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service, 
+			Neo4jMapaDAO neo4jMapaDAO, FeedService feedService, MapaServiceCache mapaCache) {
 		this.service 	   = service;
 		this.mapaDAO	   = mapaDAO;
 		this.entrenadorDAO = entrenadorDAO;
 		this.neo4jMapaDAO  = neo4jMapaDAO;
 		this.feedService   = feedService;
+		this.mapaCache     = mapaCache;
 	}
 	
 	/**
@@ -115,7 +119,14 @@ public class MapaSessionService implements MapaService {
 	@Override
 	public int cantidadEntrenadores(String nombreUbicacion) {
 		return Runner.runInSession(() -> {
-			return this.mapaDAO.cantidadEntrenadores(nombreUbicacion);
+			
+			Integer cantidadEntrenadores = this.mapaCache.get(nombreUbicacion);
+			if(cantidadEntrenadores != null) {
+				return cantidadEntrenadores;
+			}
+			cantidadEntrenadores = this.mapaDAO.cantidadEntrenadores(nombreUbicacion);
+			this.mapaCache.put(nombreUbicacion, cantidadEntrenadores);
+			return cantidadEntrenadores; 
 		});
 	}
 	

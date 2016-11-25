@@ -19,6 +19,8 @@ public class CacheProvider {
 	}
 
 	private RemoteCacheManager cacheManager;
+	private MapaServiceCache mapaServiceCache;
+	private LeaderboardServiceCache leaderboardCache;
 	
 	private CacheProvider() {
 		ConfigurationBuilder builder = new ConfigurationBuilder();
@@ -26,12 +28,15 @@ public class CacheProvider {
 
 		this.cacheManager = new RemoteCacheManager(builder.build());
 		
-		RemoteCache<Object, Object> realCache = this.cacheManager.getCache();
+		RemoteCache<String, Integer> realCache = this.cacheManager.getCache();
+		this.mapaServiceCache = new MapaServiceCache(realCache);
+		
+//		RemoteCache<String, List<Entrenador>>  
 		
 	}
 	
-//	public RankingDiarioCache getRankingDiarioCache() {
-//		return this.rankingDiarioCache;
-//	}
+	public MapaServiceCache getMapaServiceCache() {
+		return this.mapaServiceCache;
+	}
 
 }

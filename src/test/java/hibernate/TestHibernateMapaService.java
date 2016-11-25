@@ -8,11 +8,18 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateMapaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.MapaServiceCache;
 import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -51,9 +58,12 @@ public class TestHibernateMapaService {
 	private MongoFeedDAO mongoFeedDAO;
 	private FeedService feedService;
 	private MapaSessionService mapaService;
+	@Mock private MapaServiceCache dummyMapaCache;
 	
 	@Before
 	public void prepare() {
+		
+		MockitoAnnotations.initMocks(this);
 		
 		this.mapaDAO 	   = new HibernateMapaDAO();
 		this.entrenadorDAO = new HibernateEntrenadorDAO();
@@ -62,16 +72,14 @@ public class TestHibernateMapaService {
 		this.mongoFeedDAO  = new MongoFeedDAO();
 		this.mapaService   = new MapaSessionService();
 		this.feedService   = new FeedSessionService(testService, mapaService, mongoFeedDAO);
-		this.service 	   = new MapaSessionService(this.mapaDAO, this.entrenadorDAO, this.testService, this.neo4jmapaDAO, this.feedService);
+		this.service 	   = new MapaSessionService(this.mapaDAO, this.entrenadorDAO, this.testService, this.neo4jmapaDAO, this.feedService, this.dummyMapaCache);
 		this.dataService   = new DataSessionService(new DataManager());
-		
 		
 		this.mapaService.setEntrenadorDAO(entrenadorDAO);
 		this.mapaService.setFeedService(feedService);
 		this.mapaService.setMapaDAO(mapaDAO);
 		this.mapaService.setNeo4jMapaDAO(neo4jmapaDAO);
 		this.mapaService.setService(testService);
-		
 		
 		this.dataService.crearSetDatosIniciales();
 		this.dataService.crearSetDeUbicaciones();
@@ -178,9 +186,11 @@ public class TestHibernateMapaService {
 	}
 	
 	@Test
-	public void dada_una_ubicacion_se_obtiene_la_cantidad_de_entrenadores_que_se_encuentran_inicialmente_en_la_ubicacion_especificada() {
+	public void dada_una_ubicacion_se_obtiene_la_cantidad_de_entrenadores_que_se_encuentran_inicialmente_en_la_ubicacion_especificada_y_se_aloja_en_una_cache() {
 	
 		Runner.runInSession(() -> {
+			
+			when(dummyMapaCache.get("Neverland")).thenReturn(null);
 			
 			Entrenador entrenador1 = this.testService.recuperarEntidad(Entrenador.class, "Explorador1");
 			Entrenador entrenador2 = this.testService.recuperarEntidad(Entrenador.class, "Explorador2");
@@ -192,10 +202,36 @@ public class TestHibernateMapaService {
 			Assert.assertEquals(entrenador1.getUbicacion().getNombre(), "Neverland");
 			Assert.assertEquals(entrenador2.getUbicacion().getNombre(), "Neverland");
 			Assert.assertEquals(entrenador3.getUbicacion().getNombre(), "Neverland");
+
+			verify(dummyMapaCache, times(1)).get("Neverland");
+			verify(dummyMapaCache, times(1)).put("Neverland", cantidadDeEntrenadores);
 			
 			return null;
 		});
 	}
+
+	@Test
+	public void dada_una_ubicacion_se_obtiene_la_cantidad_de_entrenadores_de_una_cache() {	
+		Runner.runInSession(() -> {
+			
+			when(dummyMapaCache.get("Neverland")).thenReturn(3);
+			
+			Entrenador entrenador1 = this.testService.recuperarEntidad(Entrenador.class, "Explorador1");
+			Entrenador entrenador2 = this.testService.recuperarEntidad(Entrenador.class, "Explorador2");
+			Entrenador entrenador3 = this.testService.recuperarEntidad(Entrenador.class, "Explorador3");
+			
+			int cantidadDeEntrenadores = this.service.cantidadEntrenadores("Neverland");
+			
+			Assert.assertEquals(3, cantidadDeEntrenadores);
+			Assert.assertEquals(entrenador1.getUbicacion().getNombre(), "Neverland");
+			Assert.assertEquals(entrenador2.getUbicacion().getNombre(), "Neverland");
+			Assert.assertEquals(entrenador3.getUbicacion().getNombre(), "Neverland");
+
+			verify(dummyMapaCache, times(0)).put(anyString(), anyInt());
+
+			return null;
+		});
+	}	
 	
 	@Test
 	public void dado_un_dojo_se_obtiene_el_campeon_actual() {
