@@ -2,6 +2,8 @@ package ar.edu.unq.epers.bichomon.backend.service.leaderboard;
 
 import java.util.List;
 
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.LeaderboardServiceCache;
+import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
@@ -15,14 +17,16 @@ import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 public class LeaderboardSessionService {
 	
 	private LeaderboardService leaderboardService;
+	private LeaderboardServiceCache leaderboardServiceCache;
 	
 	/**
 	 * Crea una instancia de EspecieSessionService que utilizará un dao,
 	 * a quien delegará los pedidos necesarios sobre una base de datos.
 	 * @param especieDAO
 	 */
-	public LeaderboardSessionService(LeaderboardService leaderboardService) {
-		this.leaderboardService = leaderboardService;
+	public LeaderboardSessionService(LeaderboardService leaderboardService, LeaderboardServiceCache leaderboardServiceCache) {
+		this.leaderboardService 	 = leaderboardService;
+		this.leaderboardServiceCache = leaderboardServiceCache;
 	}
 
 	/**
@@ -33,7 +37,14 @@ public class LeaderboardSessionService {
 	 */
 	public List<Entrenador> campeones() {
 		return Runner.runInSession(() -> {
-			return leaderboardService.campeones();
+			
+			List<Entrenador> campeones = leaderboardServiceCache.get("campeones");
+			if(campeones != null){
+				return campeones;
+			}
+			campeones = leaderboardService.campeones();
+			leaderboardServiceCache.put("campeones", campeones);
+			return campeones;
 		});
 	}
 

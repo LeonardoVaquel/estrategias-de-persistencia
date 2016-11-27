@@ -14,6 +14,8 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateLeaderboardDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.CacheProvider;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.LeaderboardServiceCache;
 import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -48,12 +50,14 @@ public class TestHibernateLeaderboardService {
 	private ExperienciaDAO experienciaDAO;
 	private MongoFeedDAO feedDAO;
 	private FeedService feedService;
+	private LeaderboardServiceCache leaderboardCache;
 	
 	@Before
 	public void prepare() {
 
+		this.leaderboardCache = CacheProvider.getInstance().getLeaderboardServiceCache();
 		this.hibernateLeaderboardDAO = new HibernateLeaderboardDAO();
-		this.service 	 = new LeaderboardSessionService(hibernateLeaderboardDAO);
+		this.service 	 = new LeaderboardSessionService(hibernateLeaderboardDAO, leaderboardCache);
 		this.dataService = new DataSessionService(new DataManager());
 		this.testService = new GenericService();
 

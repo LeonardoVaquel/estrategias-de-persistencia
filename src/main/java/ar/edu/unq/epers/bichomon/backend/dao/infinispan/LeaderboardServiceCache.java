@@ -9,16 +9,16 @@ import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 /**
  * LeaderboardServiceCache es una Clase que se encarga de administrar
  * una especie de ranking de los {@link Entrenador} campeones en un 
- * {@link Dojo}.
+ * {@link String}.
  * 
  * @author leonardo
  *
  */
 public class LeaderboardServiceCache {
 
-	private RemoteCache<Dojo, List<Entrenador>> realCache;
+	private RemoteCache<String, List<Entrenador>> realCache;
 
-	public LeaderboardServiceCache(RemoteCache<Dojo, List<Entrenador>> realCache){
+	public LeaderboardServiceCache(RemoteCache<String, List<Entrenador>> realCache){
 		this.realCache = realCache;
 	};
 	
@@ -26,11 +26,11 @@ public class LeaderboardServiceCache {
 		this.realCache.clear();
 	}
 
-	public List<Entrenador> put(Dojo key, List<Entrenador> value) {
+	public List<Entrenador> put(String key, List<Entrenador> value) {
 		return this.realCache.put(key, value);
 	}
 	
-	public List<Entrenador> get(List<Entrenador> key) {
+	public List<Entrenador> get(String key) {
 		return this.realCache.get(key);
 	}
 

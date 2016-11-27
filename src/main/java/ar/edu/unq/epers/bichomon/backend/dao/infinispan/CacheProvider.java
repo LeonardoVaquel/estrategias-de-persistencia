@@ -6,7 +6,16 @@ import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
+/**
+ * La clase CacheProvider tiene la funcionalidad de proveer
+ * los distintos tipos de cache donde se van a almacenar y
+ * consultar datos en la BBDD.
+ * 
+ * @author leonardo
+ *
+ */
 public class CacheProvider {
 	
 	private static CacheProvider INSTANCE;
@@ -28,15 +37,23 @@ public class CacheProvider {
 
 		this.cacheManager = new RemoteCacheManager(builder.build());
 		
+		// Cache de MapaService
 		RemoteCache<String, Integer> realCache = this.cacheManager.getCache();
 		this.mapaServiceCache = new MapaServiceCache(realCache);
 		
-//		RemoteCache<String, List<Entrenador>>  
+		// Cache de LeaderboardService
+		RemoteCache<String, List<Entrenador>> realCache2 = this.cacheManager.getCache();
+		this.leaderboardCache = new LeaderboardServiceCache(realCache2);
 		
 	}
 	
+
 	public MapaServiceCache getMapaServiceCache() {
 		return this.mapaServiceCache;
+	}
+	
+	public LeaderboardServiceCache getLeaderboardServiceCache(){
+		return this.leaderboardCache;
 	}
 
 }
