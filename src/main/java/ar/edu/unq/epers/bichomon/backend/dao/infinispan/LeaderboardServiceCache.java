@@ -5,7 +5,6 @@ import java.util.List;
 import org.infinispan.client.hotrod.RemoteCache;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 /**
  * LeaderboardServiceCache es una Clase que se encarga de administrar
  * una especie de ranking de los {@link Entrenador} campeones en un 

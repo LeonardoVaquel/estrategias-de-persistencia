@@ -1,5 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,12 @@ import ar.edu.unq.epers.bichomon.backend.service.mapa.CaminoMuyCostoso;
  * @author santiago
  */
 @Entity
-public class Entrenador {
+public class Entrenador implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	private String nombre;
 	private Integer monedas;
