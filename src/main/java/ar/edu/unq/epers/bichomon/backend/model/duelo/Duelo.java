@@ -41,16 +41,6 @@ public class Duelo {// Tiene que devolver un ResultadoCombate con el ganador
 	 * que es retado.
 	 */
 	public ResultadoCombate iniciarDuelo(){
-//		try{
-//			if(this.estaEnDojo(retador)){
-//				this.comenzarCombate();
-//			}
-//		}catch(UbicacionException e){
-//			System.out.println(e.getMessage());
-//		}finally{
-//			return combatResult;
-//		}
-		
 		this.comenzarCombate();
 		return combatResult;
 	}

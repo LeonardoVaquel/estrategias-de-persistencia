@@ -20,7 +20,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateLeaderboardDAO;
-import ar.edu.unq.epers.bichomon.backend.dao.infinispan.LeaderboardServiceCache;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.ServiceCache;
 import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -55,7 +55,7 @@ public class TestHibernateLeaderboardService {
 	private ExperienciaDAO experienciaDAO;
 	private MongoFeedDAO feedDAO;
 	private FeedService feedService;
-	private @Mock LeaderboardServiceCache leaderboardCache;
+	private @Mock ServiceCache serviceCache;
 	
 	@Before
 	public void prepare() {
@@ -63,7 +63,7 @@ public class TestHibernateLeaderboardService {
 		MockitoAnnotations.initMocks(this);
 		
 		this.hibernateLeaderboardDAO = new HibernateLeaderboardDAO();
-		this.service 	 = new LeaderboardSessionService(hibernateLeaderboardDAO, leaderboardCache);
+		this.service 	 = new LeaderboardSessionService(hibernateLeaderboardDAO, serviceCache);
 		this.dataService = new DataSessionService(new DataManager());
 		this.testService = new GenericService();
 
@@ -75,6 +75,7 @@ public class TestHibernateLeaderboardService {
 		this.bichoService 	= new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, feedService);
 
 		dataService.crearSetDatosIniciales();
+		
 	}
 	
 	@After
@@ -86,7 +87,7 @@ public class TestHibernateLeaderboardService {
 	public void se_obtienen_aquellos_entrenadores_que_poseen_un_bicho_que_actualmente_es_campeon_en_orden_descendente_por_fecha_de_victoria() {
 
 		Runner.runInSession(() -> {
-			when(leaderboardCache.get("campeones")).thenReturn(null);
+			when(serviceCache.get("campeones")).thenReturn(null);
 			Entrenador entrenador1 = this.testService.recuperarEntidad(Entrenador.class, "Vegetal");
 
 			Bicho bicho1 = this.testService.recuperarEntidad(Bicho.class, 8);
@@ -101,7 +102,7 @@ public class TestHibernateLeaderboardService {
 			Assert.assertEquals(entrenadores.get(2).getNombre(), "Jackson");
 			Assert.assertEquals(entrenadores.get(3).getNombre(), "Vegetal");
 			
-			verify(leaderboardCache, times(1)).put("campeones", entrenadores);
+			verify(serviceCache, times(1)).put("campeones", entrenadores);
 
 			return null;
 		});
@@ -114,14 +115,23 @@ public class TestHibernateLeaderboardService {
 		Runner.runInSession(()-> {
 			
 			List<Entrenador> entrenadores = this.service.campeones();
-
-			when(leaderboardCache.get("campeones")).thenReturn(entrenadores);
 			
-			// Como la lista esta cacheada nunca se agrega a la cache entrenadores.
-			verify(leaderboardCache, times(0)).put("campeones", entrenadores);
+			when(serviceCache.get("campeones")).thenReturn(entrenadores);
 			
-		return null;
+			List<Entrenador> entrenadoresCache = this.service.campeones();
+			
+			// put es llamado solamente una vez al asignar la variable 'entrenadores',
+			// en el excersice no es tenido en cuenta
+			// get es llamado dos veces, en la asignación de la variable retornando null
+			// y por segunda vez en el excersice retornando una lista
+			verify(serviceCache, times(1)).put("campeones", entrenadores);
+			verify(serviceCache, times(2)).get("campeones");
+			
+			Assert.assertNotNull(entrenadoresCache);
+			Assert.assertEquals(3, entrenadoresCache.size());
+			
+			return null;
 		});
-		}
+	}
 	
 }

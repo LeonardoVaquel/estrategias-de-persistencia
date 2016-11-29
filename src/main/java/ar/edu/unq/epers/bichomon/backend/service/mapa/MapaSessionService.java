@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.service.mapa;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
@@ -62,45 +63,49 @@ public class MapaSessionService implements MapaService {
 		this.mapaCache     = mapaCache;
 	}
 	
-	/**
-	 * Dado un nombre de {@link Entrenador} y un nombre de {@link Ubicacion} se mueve al entrenador
-	 * a la ubicación especificada.
-	 * Se espera que la {@link Ubicacion} de un entrenador se modifique por la del nombre pasado
-	 * como parámetro
-	 */
-	@Override
-	public void mover(String nombreEntrenador, String ubicacionDestino) {
-		Runner.runInSession(() -> {
-		
-			Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
-			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, ubicacionDestino);
-			String ubicacionOrigen = entrenador.getUbicacion().getNombre();
-			Integer costo = this.neo4jMapaDAO.getCostoLindantes(ubicacionOrigen, ubicacionDestino);
-			
-			entrenador.mover(ubicacion, costo);
-			this.feedService.saveArribo(nombreEntrenador, ubicacionDestino, ubicacionOrigen);
-			this.mapaCache.incrementValue(ubicacionDestino, 1);
-			this.mapaCache.decrementValue(ubicacionOrigen, 1);
-			
-			return null;
-		});		
+	public void guardarArribo(String nombreEntrenador, String ubicacionDestino, String ubicacionOrigen) {
+		this.feedService.saveArribo(nombreEntrenador, ubicacionDestino, ubicacionOrigen);
 	}
 	
 	/**
-	 * Dado un nombre de {@link Entrenador} y un nombre de {@link Ubicacion} se mueve a dicho entrenador a la ubicacion
-	 * pasada como parámetro.
-	 * En caso que el entrenador no cuente con monedas suficientes para realizar el movimiento, 
-	 * se levantará una excepción {@link CaminoMuyCostoso}
+	 * Dado un nombre de {@link Entrenador} y un nombre de {@link Ubicacion} se delega a otro método indicando
+	 * un costo entre ubicaciones lindantes.
+	 */
+	@Override
+	public void mover(String nombreEntrenador, String ubicacionDestino) {
+		moverConCosto(nombreEntrenador, ubicacionDestino, (origen, destino) -> {
+			return this.neo4jMapaDAO.getCostoLindantes(origen, destino);
+		});
+	}
+	
+	/**
+	 * Dado un nombre de {@link Entrenador} y un nombre de {@link Ubicacion} se delega a otro método indicando
+	 * un costo entre ubicaciones.
 	 */
 	@Override
 	public void moverMasCorto(String nombreEntrenador, String ubicacionDestino) {
+		moverConCosto(nombreEntrenador, ubicacionDestino, (origen, destino) -> {
+			return this.neo4jMapaDAO.getCostoEntreUbicaciones(origen, destino);
+		});
+	}
+	
+	/**
+	 * Dado un nombre de {@link Entrenador}, un nombre de {@link Ubicacion} y una función que calcula el costo entre ubicaciones, 
+	 * se mueve al entrenador a la ubicación pasada como parámetro.
+	 * En caso que el entrenador no cuente con monedas suficientes para realizar el movimiento,
+	 * se levantara una excepción {@link CaminoMuyCostoso}
+	 * @param nombreEntrenador
+	 * @param ubicacionDestino
+	 * @param costoPorMoverse
+	 */
+	public void moverConCosto(String nombreEntrenador, String ubicacionDestino, BiFunction<String, String, Integer> costoPorMoverse) {
 		
-			Runner.runInSession(() -> {
+		Runner.runInSession(() -> {
 			
 			Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
 			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, ubicacionDestino);
 			String ubicacionOrigen = entrenador.getUbicacion().getNombre();
-			Integer costo = this.neo4jMapaDAO.getCostoEntreUbicaciones(ubicacionOrigen, ubicacionDestino);
+			Integer costo = costoPorMoverse.apply(ubicacionOrigen, ubicacionDestino);
 			
 			entrenador.mover(ubicacion, costo);
 			this.feedService.saveArribo(nombreEntrenador, ubicacionDestino, ubicacionOrigen);

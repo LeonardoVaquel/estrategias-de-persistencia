@@ -72,19 +72,5 @@ public class TestMongoDBFeedDAO {
 		
 	}
 	
-//	@Test
-//	public void se_recuperan_eventos_por_nombre_de_ubicacion() {
-//		
-//		List<Evento> eventos = this.dao.feedUbicacion("Vegeta");
-//		
-//		Assert.assertNotNull(eventos.get(0));
-//		Assert.assertNotNull(eventos.get(1));
-//		Assert.assertEquals(eventos.get(0).getUbicacion(), "Dojo DonBosco");
-//		Assert.assertEquals(eventos.get(0).getTipo(), "Captura");
-//		Assert.assertEquals(eventos.get(1).getUbicacion(), "Dojo DonBosco");
-//		Assert.assertEquals(eventos.get(1).getTipo(), "Coronacion");
-//		Assert.assertEquals(2, eventos.size());
-//	}
-	
 }
 
