@@ -70,6 +70,7 @@ public class TestHibernateEspecieService {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	@After
 	public void limpiarTodo() {
 		

@@ -469,6 +469,7 @@ public class DataManager implements DataService {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eliminarTablas() {
 		Runner.runInSession(() -> {

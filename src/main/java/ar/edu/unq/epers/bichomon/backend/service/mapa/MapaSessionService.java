@@ -4,7 +4,7 @@ import java.util.List;
 
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
-import ar.edu.unq.epers.bichomon.backend.dao.infinispan.MapaServiceCache;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.ServiceCache;
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -23,7 +23,7 @@ public class MapaSessionService implements MapaService {
 	private MapaDAO mapaDAO;
 	private Neo4jMapaDAO neo4jMapaDAO;
 	private FeedService feedService;
-	private MapaServiceCache mapaCache; 
+	private ServiceCache mapaCache; 
 	
 	public MapaSessionService() {}
 	
@@ -53,7 +53,7 @@ public class MapaSessionService implements MapaService {
 	 * @param mapaDAO
 	 */
 	public MapaSessionService(MapaDAO mapaDAO, EntrenadorDAO entrenadorDAO, GenericService service, 
-			Neo4jMapaDAO neo4jMapaDAO, FeedService feedService, MapaServiceCache mapaCache) {
+			Neo4jMapaDAO neo4jMapaDAO, FeedService feedService, ServiceCache mapaCache) {
 		this.service 	   = service;
 		this.mapaDAO	   = mapaDAO;
 		this.entrenadorDAO = entrenadorDAO;
@@ -69,19 +69,18 @@ public class MapaSessionService implements MapaService {
 	 * como parámetro
 	 */
 	@Override
-	public void mover(String nombreEntrenador, String nombreUbicacion) {
+	public void mover(String nombreEntrenador, String ubicacionDestino) {
 		Runner.runInSession(() -> {
 		
 			Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
-			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, nombreUbicacion);
-			
+			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, ubicacionDestino);
 			String ubicacionOrigen = entrenador.getUbicacion().getNombre();
-			
-			Integer costo = this.neo4jMapaDAO.getCostoLindantes(ubicacionOrigen, nombreUbicacion);
+			Integer costo = this.neo4jMapaDAO.getCostoLindantes(ubicacionOrigen, ubicacionDestino);
 			
 			entrenador.mover(ubicacion, costo);
-			
-			this.feedService.saveArribo(nombreEntrenador, nombreUbicacion, ubicacionOrigen);
+			this.feedService.saveArribo(nombreEntrenador, ubicacionDestino, ubicacionOrigen);
+			this.mapaCache.incrementValue(ubicacionDestino, 1);
+			this.mapaCache.decrementValue(ubicacionOrigen, 1);
 			
 			return null;
 		});		
@@ -94,19 +93,19 @@ public class MapaSessionService implements MapaService {
 	 * se levantará una excepción {@link CaminoMuyCostoso}
 	 */
 	@Override
-	public void moverMasCorto(String nombreEntrenador, String nombreUbicacion) {
+	public void moverMasCorto(String nombreEntrenador, String ubicacionDestino) {
 		
 			Runner.runInSession(() -> {
 			
 			Entrenador entrenador = this.entrenadorDAO.getEntrenador(nombreEntrenador);
-			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, nombreUbicacion);
-			
-			String desde = entrenador.getUbicacion().getNombre();
-			String hasta = ubicacion.getNombre();
-			
-			Integer costo = this.neo4jMapaDAO.getCostoEntreUbicaciones(desde, hasta);
+			Ubicacion ubicacion   = this.service.recuperarEntidad(Ubicacion.class, ubicacionDestino);
+			String ubicacionOrigen = entrenador.getUbicacion().getNombre();
+			Integer costo = this.neo4jMapaDAO.getCostoEntreUbicaciones(ubicacionOrigen, ubicacionDestino);
 			
 			entrenador.mover(ubicacion, costo);
+			this.feedService.saveArribo(nombreEntrenador, ubicacionDestino, ubicacionOrigen);
+			this.mapaCache.incrementValue(ubicacionDestino, 1);
+			this.mapaCache.decrementValue(ubicacionOrigen, 1);
 			
 			return null;
 		});

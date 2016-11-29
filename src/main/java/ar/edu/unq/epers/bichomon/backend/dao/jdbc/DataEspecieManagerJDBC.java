@@ -64,6 +64,7 @@ public class DataEspecieManagerJDBC implements DataService {
 		dao.crearEspecie(DATAEspecies.get("Bottimon"));		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eliminarTablas() {
 		Runner.runInSession( () -> {

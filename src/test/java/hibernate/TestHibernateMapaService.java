@@ -19,7 +19,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.MapaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateMapaDAO;
-import ar.edu.unq.epers.bichomon.backend.dao.infinispan.MapaServiceCache;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.ServiceCache;
 import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -58,7 +58,7 @@ public class TestHibernateMapaService {
 	private MongoFeedDAO mongoFeedDAO;
 	private FeedService feedService;
 	private MapaSessionService mapaService;
-	@Mock private MapaServiceCache dummyMapaCache;
+	@Mock private ServiceCache dummyMapaCache;
 	
 	@Before
 	public void prepare() {
@@ -120,6 +120,9 @@ public class TestHibernateMapaService {
 			Assert.assertEquals("Santiago", arriboFeedUbicacion.getEntrenador());
 			Assert.assertEquals("Neverland", arriboFeedUbicacion.getUbicacion());
 			Assert.assertEquals("Arribo", arriboFeedUbicacion.getTipo());
+			
+			verify(dummyMapaCache, times(1)).incrementValue(arriboFeedEntrenador.getUbicacion(), 1);
+			verify(dummyMapaCache, times(1)).decrementValue(arriboFeedEntrenador.getUbicacionOrigen(), 1);
 			
 			return null;
 		});

@@ -11,12 +11,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import ar.edu.unq.epers.bichomon.backend.dao.infinispan.CacheProvider;
-import ar.edu.unq.epers.bichomon.backend.dao.infinispan.LeaderboardServiceCache;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.ServiceCache;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 public class TestInfinispanLeaderboardServiceCache {
 
-	private LeaderboardServiceCache cache;
+	private ServiceCache cache;
 	private @Mock Entrenador entrenador1, entrenador2, entrenador3;
 	private List<Entrenador> listaDeCampeones;
 	
@@ -25,7 +25,7 @@ public class TestInfinispanLeaderboardServiceCache {
 		
 		MockitoAnnotations.initMocks(this);
 		
-		this.cache = CacheProvider.getInstance().getLeaderboardServiceCache();
+		this.cache = CacheProvider.getInstance().getServiceCache();
 		
 		listaDeCampeones = new ArrayList<>();
 		listaDeCampeones.add(entrenador3);

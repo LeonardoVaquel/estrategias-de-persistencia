@@ -53,6 +53,7 @@ public class HibernateMapaDAO implements MapaDAO {
 	 * @param nombresDeUbicacion - recibe una lista de nombres de {@link Ubicacion}
 	 * @return una lista de ubicaciones cuyos nombres se encuentran en la lista pasada como parámetro
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public List<Ubicacion> getUbicacionesDeNombre(List<String> nombresDeUbicacion) {
 		
