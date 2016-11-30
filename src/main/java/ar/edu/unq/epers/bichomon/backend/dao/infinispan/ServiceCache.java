@@ -41,10 +41,15 @@ public class ServiceCache {
 	public int size() {
 		return this.realCache.size();
 	}
+	
+	public void remove(Object key){
+		realCache.remove(key);
+	}
 
+	
 	/**
-	 * Dada una 
-	 * @param ubicacionOrigen
+	 * Se incrementa el valor de key en n.
+	 * @param String key y int n
 	 */
 	public void incrementValue(String key, int n) {
 		try {
@@ -61,6 +66,11 @@ public class ServiceCache {
 		}
 	}
 
+	/**
+	 * Se decrementa en n el valor de key.
+	 * @param key un String.
+	 * @param n un int.
+	 */
 	public void decrementValue(String key, int n) {
 		try {
 			Integer v = (Integer) this.get(key);

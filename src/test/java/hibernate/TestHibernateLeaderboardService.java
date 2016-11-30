@@ -72,7 +72,7 @@ public class TestHibernateLeaderboardService {
 		this.experienciaDAO = new HibernateExperienciaDAO();
 		this.feedDAO        = new MongoFeedDAO();
 		this.feedService    = new FeedSessionService(feedDAO);
-		this.bichoService 	= new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, feedService);
+		this.bichoService 	= new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, feedService, serviceCache);
 
 		dataService.crearSetDatosIniciales();
 		

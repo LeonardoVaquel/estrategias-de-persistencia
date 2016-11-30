@@ -51,4 +51,13 @@ public class TestInfinispanLeaderboardServiceCache {
 		
 		Assert.assertNull(result);
 	}
+	
+	@Test
+	public void la_cache_se_invalida_en_remove(){
+
+		cache.remove("campeones");
+		List<Entrenador> result = cache.get("campeones");
+		
+		Assert.assertNull(result);
+	}
 }

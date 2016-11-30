@@ -4,6 +4,7 @@ package ar.edu.unq.epers.bichomon.backend.service.bicho;
 import ar.edu.unq.epers.bichomon.backend.dao.BichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.EntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.ExperienciaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.ServiceCache;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -31,12 +32,14 @@ public class BichoSessionService implements BichoService {
 	private EntrenadorDAO 	entrenadorDAO;
 	private ExperienciaDAO 	expDAO;
 	private FeedService feedService;
+	private ServiceCache leaderboardServiceCache;
 	
-	public BichoSessionService(BichoDAO bichoDAO, EntrenadorDAO entrenadorDAO, ExperienciaDAO expDAO, FeedService feedService) {
-		this.bichoDAO 		= bichoDAO;
-		this.entrenadorDAO 	= entrenadorDAO;
-		this.expDAO 		= expDAO;
-		this.feedService    = feedService;
+	public BichoSessionService(BichoDAO bichoDAO, EntrenadorDAO entrenadorDAO, ExperienciaDAO expDAO, FeedService feedService, ServiceCache cache) {
+		this.bichoDAO 					= bichoDAO;
+		this.entrenadorDAO 				= entrenadorDAO;
+		this.expDAO 					= expDAO;
+		this.feedService    			= feedService;
+		this.leaderboardServiceCache	= cache;
 	}
 	
 	public Bicho getBicho(int idBicho) {
@@ -154,14 +157,18 @@ public class BichoSessionService implements BichoService {
 			Entrenador entrenadorGanador = resultadoCombate.getBichoGanador().getOwner(); 
 			Entrenador entrenadorPerdedor = resultadoCombate.getBichoPerdedor().getOwner();
 			
+			
 			entrenadorGanador.gainsExp(experienciaPorCombate, expCfg);
 			entrenadorPerdedor.gainsExp(experienciaPorCombate, expCfg);
 			
 			if(idBicho == resultadoCombate.getBichoGanador().getId()) {
+				// Se invalida la cache
+				this.leaderboardServiceCache.remove("campeones");
 				this.feedService.saveCoronacion(entrenadorGanador.getNombre(), entrenadorGanador.getUbicacion().getNombre(), entrenadorPerdedor.getNombre());
 			}
 			
 			return resultadoCombate;
 		});
 	}
+	
 }

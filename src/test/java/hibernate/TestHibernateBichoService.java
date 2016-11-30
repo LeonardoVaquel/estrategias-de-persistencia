@@ -1,6 +1,8 @@
 package hibernate;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -18,7 +20,9 @@ import ar.edu.unq.epers.bichomon.backend.dao.ExperienciaDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateEntrenadorDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateExperienciaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateLeaderboardDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateMapaDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.infinispan.ServiceCache;
 import ar.edu.unq.epers.bichomon.backend.dao.mongod.MongoFeedDAO;
 import ar.edu.unq.epers.bichomon.backend.dao.neo4j.Neo4jMapaDAO;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -42,6 +46,7 @@ import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.feed.FeedService;
 import ar.edu.unq.epers.bichomon.backend.service.feed.FeedSessionService;
+import ar.edu.unq.epers.bichomon.backend.service.leaderboard.LeaderboardSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.mapa.MapaSessionService;
 import ar.edu.unq.epers.bichomon.backend.service.runner.Runner;
 
@@ -65,25 +70,32 @@ public class TestHibernateBichoService {
 	private MapaSessionService mapaService;
 	private HibernateMapaDAO mapaDAO;
 	private Neo4jMapaDAO neo4jMapaDAO;
+	private LeaderboardSessionService leaderboardService;
+	private HibernateLeaderboardDAO leaderboardDAO;
+	
 	
 	@Mock private BichomonRandom dummyRandom;
+	private @Mock ServiceCache serviceCache;
+	
 	
 	@Before
 	public void prepare() {
 		
 		MockitoAnnotations.initMocks(this);
 		
-		this.bichoDAO       = new HibernateBichoDAO();
-		this.entrenadorDAO  = new HibernateEntrenadorDAO();
-		this.experienciaDAO = new HibernateExperienciaDAO();
-		this.mongoFeedDAO   = new MongoFeedDAO();
-		this.testService    = new GenericService();
-		this.mapaService    = new MapaSessionService();
-		this.feedService    = new FeedSessionService(testService, mapaService, mongoFeedDAO);
-		this.service        = new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, feedService);
-		this.dataService    = new DataSessionService(new DataManager());
-		this.neo4jMapaDAO   = new Neo4jMapaDAO();
-		this.mapaDAO        = new HibernateMapaDAO();
+		this.bichoDAO       	= new HibernateBichoDAO();
+		this.entrenadorDAO  	= new HibernateEntrenadorDAO();
+		this.experienciaDAO 	= new HibernateExperienciaDAO();
+		this.mongoFeedDAO   	= new MongoFeedDAO();
+		this.testService    	= new GenericService();
+		this.mapaService    	= new MapaSessionService();
+		this.feedService    	= new FeedSessionService(testService, mapaService, mongoFeedDAO);
+		this.service        	= new BichoSessionService(bichoDAO, entrenadorDAO, experienciaDAO, feedService, serviceCache);
+		this.dataService    	= new DataSessionService(new DataManager());
+		this.neo4jMapaDAO   	= new Neo4jMapaDAO();
+		this.mapaDAO        	= new HibernateMapaDAO();
+		this.leaderboardDAO 	= new HibernateLeaderboardDAO();
+		this.leaderboardService	= new LeaderboardSessionService(leaderboardDAO, serviceCache);
 		
 		this.mapaService.setEntrenadorDAO(entrenadorDAO);
 		this.mapaService.setFeedService(feedService);
@@ -351,6 +363,14 @@ public class TestHibernateBichoService {
 			Assert.assertEquals(nombreUbicacion, coronacionFeedUbicacion.getUbicacion());
 			Assert.assertNotNull(coronacionFeedUbicacion.getFecha());
 			Assert.assertEquals(1, feedUbicacion.size());
+			
+			verify(serviceCache, times(1)).remove("campeones");
+			
+			// Se pide los campeones entonces como la cache estaba invalidada
+			// se hace el hql y la lista de campeones se cache de nuevo.
+			List<Entrenador> ls = leaderboardService.campeones();
+			
+			verify(serviceCache, times(1)).put("campeones",ls);
 			
 			return null;
 		});
