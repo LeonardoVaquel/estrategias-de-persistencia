@@ -1,5 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.dao.infinispan;
 
+import java.util.function.BiFunction;
+
 import org.infinispan.client.hotrod.RemoteCache;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -46,20 +48,32 @@ public class ServiceCache {
 		realCache.remove(key);
 	}
 
+	/**
+	 * Dada una key, una cantidad a resolver y una función se agrega como valor la cantidad
+	 * especificada como parámetro, o el resultado de la función aplicada.
+	 * @param key - String - la key de un map
+	 * @param n - Integer - una cantidad
+	 * @param operation - BiFunction - se espera una suma o una resta
+	 */
+	public void putValueWithOperation(String key, Integer n, BiFunction<Integer, Integer, Integer> operation) {
+		
+		Integer v = (Integer) this.get(key);
+		if(v == null){
+			this.put(key, n);
+		}
+		else {
+			this.put(key, operation.apply(v, n));
+		}
+	}
 	
 	/**
 	 * Se incrementa el valor de key en n.
-	 * @param String key y int n
+	 * @param key - String
+	 * @param n - Integer
 	 */
 	public void incrementValue(String key, int n) {
 		try {
-			Integer v = (Integer) this.get(key);
-			if(v == null){
-				this.put(key, n);
-			}
-			else {
-				this.put(key, v+n);
-			}
+			putValueWithOperation(key, n, (Integer a, Integer b) -> { return a+b; });
 		}
 		catch(ClassCastException e) {
 			throw e;
@@ -73,13 +87,7 @@ public class ServiceCache {
 	 */
 	public void decrementValue(String key, int n) {
 		try {
-			Integer v = (Integer) this.get(key);
-			if(v == null){
-				this.put(key, 0);
-			}
-			else {
-				this.put(key, v-n);
-			}
+			putValueWithOperation(key, n, (Integer a, Integer b) -> { return a-b; });
 		}
 		catch(ClassCastException e) {
 			throw e;
