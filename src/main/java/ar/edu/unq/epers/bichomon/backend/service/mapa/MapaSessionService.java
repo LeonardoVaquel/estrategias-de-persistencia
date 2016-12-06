@@ -27,26 +27,6 @@ public class MapaSessionService implements MapaService {
 	private ServiceCache mapaCache; 
 	
 	public MapaSessionService() {}
-	
-	public void setService(GenericService service) {
-		this.service = service;
-	}
-
-	public void setEntrenadorDAO(EntrenadorDAO entrenadorDAO) {
-		this.entrenadorDAO = entrenadorDAO;
-	}
-
-	public void setMapaDAO(MapaDAO mapaDAO) {
-		this.mapaDAO = mapaDAO;
-	}
-
-	public void setNeo4jMapaDAO(Neo4jMapaDAO neo4jMapaDAO) {
-		this.neo4jMapaDAO = neo4jMapaDAO;
-	}
-
-	public void setFeedService(FeedService feedService) {
-		this.feedService = feedService;
-	}
 
 	/**
 	 * Crea una instancia de MapaSessionService que utilizará un dao,
@@ -61,10 +41,6 @@ public class MapaSessionService implements MapaService {
 		this.neo4jMapaDAO  = neo4jMapaDAO;
 		this.feedService   = feedService;
 		this.mapaCache     = mapaCache;
-	}
-	
-	public void guardarArribo(String nombreEntrenador, String ubicacionDestino, String ubicacionOrigen) {
-		this.feedService.saveArribo(nombreEntrenador, ubicacionDestino, ubicacionOrigen);
 	}
 	
 	/**
@@ -191,6 +167,26 @@ public class MapaSessionService implements MapaService {
 			this.neo4jMapaDAO.conectar(nombreUbicacion1, nombreUbicacion2, tipoCamino);
 			return null;
 		});
+	}
+	
+	public void setService(GenericService service) {
+		this.service = service;
+	}
+
+	public void setEntrenadorDAO(EntrenadorDAO entrenadorDAO) {
+		this.entrenadorDAO = entrenadorDAO;
+	}
+
+	public void setMapaDAO(MapaDAO mapaDAO) {
+		this.mapaDAO = mapaDAO;
+	}
+
+	public void setNeo4jMapaDAO(Neo4jMapaDAO neo4jMapaDAO) {
+		this.neo4jMapaDAO = neo4jMapaDAO;
+	}
+
+	public void setFeedService(FeedService feedService) {
+		this.feedService = feedService;
 	}
 	
 }
